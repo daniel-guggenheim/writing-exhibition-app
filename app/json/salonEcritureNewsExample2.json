@@ -1,0 +1,28 @@
+{
+    "articles": [
+        {
+            "id": 0,
+            "category": 2,
+            "title": "Titre",
+            "intro": "Texte de l'intro...",
+	        "content": "Le <b>contenu</b> de l'article avec balises.",
+	        "author": "Sylvie Guggenheim",
+	        "source": ["source1", "source2", "source3"],
+            "date": "2016-10-26",
+            "created_at": "2016-10-24",
+            "updated_at": "2016-10-28"
+        },
+        {
+            "id": 2,
+            "category": 3,
+            "title": "Titre",
+            "intro": "Texte de l'intro 2...",
+	        "content": "Le <b>contenu</b> de l'article avec balises hahaha v2.",
+	        "author": "Sylvie Guggenheim",
+	        "source": ["source 42"],
+            "date": "2016-07-15",
+            "created_at": "2016-07-18",
+            "updated_at": "2016-10-16"
+        }
+        ]
+}

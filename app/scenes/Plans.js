@@ -9,20 +9,19 @@ import {
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 
-
-export default class ProgrammeSalon extends Component {
+export default class InformationsPratiques extends Component {
   render() {
     return (
-
-      <Container>
+<Container>
         <Header>
-
-          <Title>Programme du Salon</Title>
+         
+          <Title>Plans</Title>
 
         </Header>
 
         <Content>
-          <Text>Ici vous trouverez le programme du salon</Text>
+          <Text>Ici vous trouverez les differents plans des sites.</Text>
+
         </Content>
 
         <Footer>
@@ -32,13 +31,13 @@ export default class ProgrammeSalon extends Component {
               Actualités
             </Button>
 
-            <Button transparent disabled>
-              <Icon name='ios-list-box' />
+            <Button transparent onPress={Actions.programmeSalon}>
+              <Icon name='ios-list-box-outline' />
               <Text>Programme</Text>
             </Button>
 
-            <Button transparent onPress={Actions.plans}>
-              <Icon name='ios-map-outline' />
+            <Button transparent disabled>
+              <Icon name='ios-map' />
               Plan des sites
             </Button>
 
@@ -49,6 +48,9 @@ export default class ProgrammeSalon extends Component {
           </FooterTab>
         </Footer>
       </Container>
+
+       
+
     );
   }
 }

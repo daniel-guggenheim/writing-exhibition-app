@@ -30,17 +30,20 @@ export default class InformationsPratiques extends Component {
               <Icon name='ios-cafe-outline' />
               Actualités
             </Button>
-          </FooterTab>
-          <FooterTab>
+
             <Button transparent onPress={Actions.programmeSalon}>
               <Icon name='ios-list-box-outline' />
-              Programme salon
+              <Text>Programme</Text>
             </Button>
-          </FooterTab>
-          <FooterTab>
-            <Button disabled transparent onPress={Actions.informationsPratiques}>
+
+            <Button transparent onPress={Actions.plans}>
+              <Icon name='ios-map-outline' />
+              Plan des sites
+            </Button>
+
+            <Button transparent disabled>
               <Icon name='ios-information-circle' />
-              <Text style={{textAlign:'center'}}>Informations</Text>
+              <Text>Informations</Text>
             </Button>
           </FooterTab>
         </Footer>

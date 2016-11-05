@@ -19,17 +19,16 @@ export default class Actualites extends Component {
                     <Button transparent onPress={() => Actions.pop()}>
                         <Icon name='ios-arrow-back' />
                     </Button>
-                    <Title>{this.props.article}</Title>
+                    <Title>{this.props.article.title}</Title>
 
                 </Header>
 
                 <Content>
-                    <Text>Hello actualites</Text>
+                <Text>{this.props.article.title}</Text>
+                <Text>{this.props.article.intro}</Text>
+                    <Text>{this.props.article.content}</Text>
                 </Content>
 
-                <Footer>
-
-                </Footer>
             </Container>
         );
     }

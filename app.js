@@ -14,13 +14,20 @@ import {
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Scene, Router } from 'react-native-router-flux';
 
-
 import Actualites from './app/scenes/Actualites';
 import ProgrammeSalon from './app/scenes/ProgrammeSalon';
+import Plans from './app/scenes/Plans';
 import InformationsPratiques from './app/scenes/InformationsPratiques';
 import ActualitesDetails from './app/scenes/ActualitesDetails';
 
+
+
 class SalonEcritureApp extends Component {
+
+    
+
+
+
     render() {
         return (
             <Router>
@@ -29,6 +36,7 @@ class SalonEcritureApp extends Component {
                         <Scene key="actualitesList" component={Actualites} title="Actualites" hideNavBar={true}/>
                         <Scene key="actualitesDetails" component={ActualitesDetails} title="Actualites" hideNavBar={true}/>
                     </Scene>
+                    <Scene key="plans" component={Plans} title="Plans" hideNavBar={true}/>
                     <Scene key="programmeSalon" component={ProgrammeSalon} title="ProgrammeSalon" hideNavBar={true}/>
                     <Scene key="informationsPratiques" component={InformationsPratiques} title="InformationsPratiques" hideNavBar={true}/>
                 </Scene>
