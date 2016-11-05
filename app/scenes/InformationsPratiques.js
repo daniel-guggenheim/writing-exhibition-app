@@ -8,13 +8,18 @@ import {
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
+import myTheme from '../themes/myTheme';
+
+var GLOBAL = require('../global/GlobalVariables');
+
+
 
 export default class InformationsPratiques extends Component {
   render() {
     return (
-<Container>
+      <Container theme={myTheme}>
         <Header>
-         
+
           <Title>Informations Pratiques</Title>
 
         </Header>
@@ -49,7 +54,7 @@ export default class InformationsPratiques extends Component {
         </Footer>
       </Container>
 
-       
+
 
     );
   }

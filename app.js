@@ -24,11 +24,7 @@ import ActualitesDetails from './app/scenes/ActualitesDetails';
 
 class SalonEcritureApp extends Component {
 
-    
-
-
-
-    render() {
+     render() {
         return (
             <Router>
                 <Scene key="root" tabs={true}>
