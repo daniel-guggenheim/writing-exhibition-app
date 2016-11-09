@@ -4,13 +4,15 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 
 var GLOBAL = require('../global/GlobalVariables');
+var logo_icon = require("../images/logo/logo.png");
 
 export default class ProgrammeSalon extends Component {
   render() {
@@ -18,13 +20,16 @@ export default class ProgrammeSalon extends Component {
 
       <Container theme={myTheme}>
         <Header>
+          <Button transparent disabled>
+            <Image resizeMode={"contain"} style={{width: 35}} source={logo_icon} />
+          </Button>
 
           <Title>Programme du Salon</Title>
 
         </Header>
 
-        <Content>
-          <Text>Ici vous trouverez le programme du salon</Text>
+        <Content style={styles.content}>
+          <Text style={styles.comingSoon}>Programme du salon disponible sous peu...</Text>
         </Content>
 
         <Footer>
@@ -56,6 +61,14 @@ export default class ProgrammeSalon extends Component {
 }
 
 const styles = StyleSheet.create({
+  content: {
+    margin: 10,
+    marginTop: 12,
+  },
+  comingSoon: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

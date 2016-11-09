@@ -9,9 +9,10 @@ import {
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
+var HTMLView = require('react-native-htmlview')
 
 var GLOBAL = require('../global/GlobalVariables');
-const TITLE_MAX_CHAR_LIMIT = 30;
+const TITLE_MAX_CHAR_LIMIT = 40;
 
 export default class Actualites extends Component {
     constructor(props) {
@@ -27,8 +28,21 @@ export default class Actualites extends Component {
         }
     }
 
+    renderSourceIfExists(article) {
+        if (article.source != "") {
+            return (
+                <View>
+                    <View style={styles.separator} />
+                    <Text style={styles.text}>Sources:</Text>
+                    <HTMLView value={article.source} stylesheet={styles} />
+                </View>
+            );
+        }
+    }
+
     render() {
         var article = this.props.article;
+
         return (
 
             <Container theme={myTheme}>
@@ -36,7 +50,7 @@ export default class Actualites extends Component {
                     <Button transparent onPress={() => Actions.pop()}>
                         <Icon name='ios-arrow-back' />
                     </Button>
-                    <Title><Text>{this.get_title_string()}</Text></Title>
+                    <Title><Text style={styles.headerTitle}>{this.get_title_string()}</Text></Title>
                 </Header>
 
                 <Content>
@@ -51,7 +65,9 @@ export default class Actualites extends Component {
                         <View>
                             <Text style={styles.titreArticle}>{article.title}</Text>
                             <Text style={styles.introArticle}>{article.intro}</Text>
-                            <Text style={styles.introArticle}>{article.content}</Text>
+                            <HTMLView value={article.content} stylesheet={styles} />
+                            <Text style={styles.author}>{article.author}</Text>
+                            {this.renderSourceIfExists(article)}
                         </View>
                     </View>
                 </Content>
@@ -62,12 +78,16 @@ export default class Actualites extends Component {
 }
 
 const styles = StyleSheet.create({
-    titleHeader: {
-        color: 'red',
+    headerTitle: {
+        fontSize: 15,
     },
     main: {
-        margin:10,
-        marginTop:12,
+        margin: 10,
+        marginTop: 12,
+        marginBottom:3,
+    },
+    text: {
+        color: 'black'
     },
     categoryAndDate: {
         flex: 1,
@@ -87,21 +107,62 @@ const styles = StyleSheet.create({
     },
     category: {
         // fontStyle: 'italic',
-        color: '#5A5D5E',
+        color: 'black',
         fontSize: 14,
         // backgroundColor:'orange',
     },
     date: {
         fontSize: 15,
+        color: 'black'
     },
     titreArticle: {
-        marginTop: 10,
-        marginBottom:12,
+        marginTop: 12,
+        marginBottom: 12,
         fontSize: 19,
         fontWeight: 'bold',
+        color: 'black',
         // textAlign:'center',
     },
     introArticle: {
-        marginBottom:5,
+        marginBottom: 5,
+        color: 'black',
+    },
+    author: {
+        textAlign: 'right',
+        color: 'black',
+        fontStyle: 'italic',
+        marginTop: 10,
+    },
+    separator: {
+        marginTop: 15,
+        marginBottom: 8,
+        height: 1,
+        backgroundColor: 'black',
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    h2: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'black',
+        marginTop: 5,
+    },
+    ul: {
+        marginBottom: 10,
+        color: 'black',
+    },
+    p: {
+        color: 'black',
+    },
+    li: {
+        color: 'black',
+    },
+    b: {
+        color: 'black',
+        fontWeight: 'bold',
+    },
+    em: {
+        color: 'black',
+        fontStyle: 'italic',
     },
 });

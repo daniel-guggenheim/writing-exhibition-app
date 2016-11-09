@@ -19,13 +19,12 @@ export default class InformationsPratiques extends Component {
       <Container theme={myTheme}>
         <Header>
 
-          <Title>Plans</Title>
+          <Title>Plans des sites</Title>
 
         </Header>
 
-        <Content>
-          <Text>Ici vous trouverez les differents plans des sites.</Text>
-
+        <Content style={styles.content}>
+          <Text style={styles.comingSoon}>Plans des sites disponible sous peu...</Text>
         </Content>
 
         <Footer>
@@ -60,6 +59,14 @@ export default class InformationsPratiques extends Component {
 }
 
 const styles = StyleSheet.create({
+   content: {
+    margin: 10,
+    marginTop: 12,
+  },
+  comingSoon: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

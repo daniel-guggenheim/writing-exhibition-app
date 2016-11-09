@@ -3,13 +3,18 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
+  Image,
 } from 'react-native';
 import { Footer, FooterTab, Spinner, Text, View, Content, Container, Header, Title, Button, Icon, ListItem, List } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
+var moment = require('moment');
 var GLOBAL = require('../global/GlobalVariables');
+
+const NB_OF_LAST_DAYS_WITH_HUMANIZED_DATE = 7;
+var logo_icon = require("../images/logo/logo.png");
 
 export default class Actualites extends Component {
   constructor(props) {
@@ -22,11 +27,11 @@ export default class Actualites extends Component {
 
   componentDidMount() {
     var that = this;
-    this.search();
+    this.fetchArticlesFromWeb();
   }
 
-  search() {
-    // Set loading to true when the search starts to display a Spinner
+  fetchArticlesFromWeb() {
+    // Set loading to true when the fetch starts to display a Spinner
     this.setState({
       loading: true
     });
@@ -40,8 +45,8 @@ export default class Actualites extends Component {
           articles: responseJson,
           loading: false,
         });
-        console.log('Next------------------');
-        console.log(this.state.articles[0].author);
+        // console.log('Next------------------');
+        // console.log(this.state.articles[0].author);
       })
       .catch((error) => {
         that.setState({
@@ -52,13 +57,33 @@ export default class Actualites extends Component {
   }
 
 
+  getFormatedDate(strDate) {
+    var momentDate = moment(strDate, "DD.MM.YYYY");
+    var diffInDays = moment().diff(momentDate, 'days');
+    // console.log(strDate + " ==> " + moment().diff(momentDate, 'days'));
+    if(diffInDays == 0){
+      return "Aujourd'hui";
+    } else if(diffInDays == 1){
+       return "Hier";
+    } else if(diffInDays > 1 && diffInDays < 7){
+      return "Il y a " + diffInDays + " jours";
+    } else if(diffInDays >= 7 && diffInDays < 10){
+      return "Il y a une semaine"
+    } else {
+      return strDate;
+    }
+  }
+
   render() {
     return (
 
       <Container theme={myTheme}>
-        <Header iconRight={true}>
+        <Header>
+          <Button transparent disabled>
+            <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
+          </Button>
           <Title>Actualités</Title>
-          <Button transparent onPress={() => this.search()}>
+          <Button transparent onPress={() => this.fetchArticlesFromWeb()}>
             <Icon name='ios-refresh' />
           </Button>
         </Header>
@@ -69,14 +94,14 @@ export default class Actualites extends Component {
               <View>
                 <View style={styles.categoryAndDate}>
                   <View style={styles.categoryWithSquare}>
-                    <Icon name='ios-square' style={[styles.categorySquare, {color: GLOBAL.ACTUALITES_COLOR[article.category]}]} />
+                    <Icon name='ios-square' style={[styles.categorySquare, { color: GLOBAL.ACTUALITES_COLOR[article.category] }]} />
                     <Text style={styles.category}>{GLOBAL.ACTUALITES_CATEGORY[article.category]}</Text>
                   </View>
-                  <Text style={styles.date}>{article.date}</Text>
+                  <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
                 </View>
                 <View>
                   <Text style={styles.titreArticle}>{article.title}</Text>
-                  <Text style={styles.introArticle}>{article.intro}</Text>
+                  <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
                 </View>
               </View>
             </ListItem>
@@ -124,9 +149,9 @@ const styles = StyleSheet.create({
   },
   categorySquare: {
     // color:'red',
-    fontSize:7,
-    marginRight:5,
-    marginTop:5,
+    fontSize: 10,
+    marginRight: 5,
+    marginTop: 5,
   },
   category: {
     // fontStyle: 'italic',
@@ -139,7 +164,7 @@ const styles = StyleSheet.create({
   },
   titreArticle: {
     marginTop: 7,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   introArticle: {
