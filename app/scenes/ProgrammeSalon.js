@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  WebView
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
@@ -14,14 +15,44 @@ import myTheme from '../themes/myTheme';
 var GLOBAL = require('../global/GlobalVariables');
 var logo_icon = require("../images/logo/logo.png");
 
+
+
+var DomParser = require('react-native-html-parser').DOMParser;
+
 export default class ProgrammeSalon extends Component {
+
+  
+  componentDidMount() {
+    let html = `<html>
+                        <body>
+                            <div id="b">
+                                <a href="example.org">
+                                <div class="inA">
+                                    <br>bbbb</br>
+                                </div>
+                            </div>
+                            <div class="bb">
+                                Test
+                            </div>
+                        </body>
+                    </html>`
+    let doc = new DomParser().parseFromString(html, 'text/html')
+    console.log('---------------TESTING------------------------')
+    console.log(doc.querySelect('#b .inA'))
+    console.log(doc.getElementsByTagName('a'))
+    console.log(doc.querySelect('#b a[href="example.org"]'))
+  }
+
+
+
+
   render() {
     return (
 
       <Container theme={myTheme}>
         <Header>
           <Button transparent disabled>
-            <Image resizeMode={"contain"} style={{width: 35}} source={logo_icon} />
+            <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
           </Button>
 
           <Title>Programme du Salon</Title>
@@ -64,6 +95,7 @@ const styles = StyleSheet.create({
   content: {
     margin: 10,
     marginTop: 12,
+    flex: 1,
   },
   comingSoon: {
     fontSize: 16,

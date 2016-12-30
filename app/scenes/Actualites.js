@@ -37,7 +37,7 @@ export default class Actualites extends Component {
     });
     var that = this;
 
-    return fetch('https://salonecriture.firebaseio.com/articles.json')
+    return fetch('https://salonecriture.firebaseio.com/posts.json')
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson);

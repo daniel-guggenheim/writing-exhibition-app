@@ -4,8 +4,7 @@ import {
     AppRegistry,
     StyleSheet,
     Text,
-    View,
-    WebView
+    View
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
@@ -54,24 +53,24 @@ export default class Actualites extends Component {
                     <Title><Text style={styles.headerTitle}>{this.get_title_string()}</Text></Title>
                 </Header>
 
-                <View style={styles.main}>
-
-                    <WebView
-                        source={{ uri: article.article_url }}
-                        style={{ borderWidth: 1, flex: 1 }}
-                        // scalesPageToFit={true}
-                        renderError={() => (
-                            <View  style={styles.pageError}>
-                                <Text style={styles.textPageError}>
-                                    Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
-                                </Text>
-                            </View>)}
-                        startInLoadingState={true}
-                        />
-
-                </View>
-
-
+                <Content>
+                    <View style={styles.main}>
+                        <View style={styles.categoryAndDate}>
+                            <View style={styles.categoryWithSquare}>
+                                <Icon name='ios-square' style={[styles.categorySquare, { color: GLOBAL.ACTUALITES_COLOR[article.category] }]} />
+                                <Text style={styles.category}>{GLOBAL.ACTUALITES_CATEGORY[article.category]}</Text>
+                            </View>
+                            <Text style={styles.date}>{article.date}</Text>
+                        </View>
+                        <View>
+                            <Text style={styles.titreArticle}>{article.title}</Text>
+                            <Text style={styles.introArticle}>{article.intro}</Text>
+                            <HTMLView value={article.content} stylesheet={styles} />
+                            <Text style={styles.author}>{article.author}</Text>
+                            {this.renderSourceIfExists(article)}
+                        </View>
+                    </View>
+                </Content>
 
             </Container>
         );
@@ -83,17 +82,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     main: {
-        // margin: 10,
-        // marginTop: 12,
-        marginBottom: 3,
-        flex: 1,
-    },
-    pageError: {
-        margin:10,
-    },
-    textPageError: {
-        color: 'red',
-        fontSize: 16,
+        margin: 10,
+        marginTop: 12,
+        marginBottom:3,
     },
     text: {
         color: 'black'
