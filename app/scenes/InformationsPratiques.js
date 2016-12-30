@@ -4,13 +4,53 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  NetInfo
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 
 var GLOBAL = require('../global/GlobalVariables');
+
+
+
+class IsConnected extends Component {
+  state = {
+    isConnected: null,
+  };
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+        'change',
+        this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+        (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+        'change',
+        this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+  };
+
+  render() {
+    return (
+        <View>
+          <Text>{this.state.isConnected ? 'Online' : 'Offline'}</Text>
+        </View>
+    );
+  }
+}
 
 
 
@@ -25,6 +65,7 @@ export default class InformationsPratiques extends Component {
         </Header>
 
         <Content style={styles.content}>
+          <IsConnected />
           <Text style={styles.comingSoon}>Informations pratiques disponible sous peu...</Text>
         </Content>
 
