@@ -9,7 +9,8 @@ import {
     AppRegistry,
     StyleSheet,
     Text,
-    View
+    View,
+    NetInfo
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import { Scene, Router } from 'react-native-router-flux';
@@ -23,18 +24,57 @@ import ActualitesDetails from './app/scenes/ActualitesDetails';
 
 
 class SalonEcritureApp extends Component {
+    state = {
+        deviceIsConnected: null,
+        testText: 'hey'
+    };
 
-     render() {
+    componentDidMount() {
+        //Helper to know if the device is connected to internet
+        //Listener that will detect any change
+        NetInfo.isConnected.addEventListener(
+            'change',
+            this._handleConnectivityChange
+        );
+        NetInfo.isConnected.fetch().done(
+            (isConnected) => {
+                console.log('Device connected? ' + isConnected);
+                this.setState({ deviceIsConnected: isConnected });
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener(
+            'change',
+            this._handleConnectivityChange
+        );
+    }
+
+    _handleConnectivityChange = (isConnected) => {
+        console.log('Device connected? ' + isConnected);
+        this.setState({
+            deviceIsConnected: isConnected,
+        });
+    };
+
+    deviceIsConnected(){
+        console.log('CALL: device is connected: '+this.state.deviceIsConnected)
+        return this.state.deviceIsConnected;
+    }
+
+
+    render() {
         return (
             <Router>
                 <Scene key="root" tabs={true}>
                     <Scene key="actualites" hideNavBar={true}>
-                        <Scene key="actualitesList" component={Actualites} title="Actualites" hideNavBar={true}/>
-                        <Scene key="actualitesDetails" component={ActualitesDetails} title="Actualites" hideNavBar={true}/>
+                        <Scene key="actualitesList" component={Actualites} title="Actualites" hideNavBar={true} />
+                        <Scene key="actualitesDetails" component={ActualitesDetails} title="Actualites" hideNavBar={true} />
                     </Scene>
-                    <Scene key="plans" component={Plans} title="Plans" hideNavBar={true}/>
-                    <Scene key="programmeSalon" component={ProgrammeSalon} title="ProgrammeSalon" hideNavBar={true}/>
-                    <Scene key="informationsPratiques" component={InformationsPratiques} title="InformationsPratiques" hideNavBar={true}/>
+                    <Scene key="plans" component={Plans} title="Plans" hideNavBar={true} />
+                    <Scene key="programmeSalon" component={ProgrammeSalon} title="ProgrammeSalon" hideNavBar={true} />
+                    <Scene key="informationsPratiques" component={InformationsPratiques} title="InformationsPratiques" hideNavBar={true} />
                 </Scene>
             </Router>
         );

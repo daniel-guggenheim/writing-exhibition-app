@@ -21,7 +21,8 @@ export default class Actualites extends Component {
     super(props);
     this.state = {
       loading: false,
-      articles: []
+      articles: [],
+      last_update: 'never',
     }
   }
 
@@ -61,13 +62,13 @@ export default class Actualites extends Component {
     var momentDate = moment(strDate, "DD.MM.YYYY");
     var diffInDays = moment().diff(momentDate, 'days');
     // console.log(strDate + " ==> " + moment().diff(momentDate, 'days'));
-    if(diffInDays == 0){
+    if (diffInDays == 0) {
       return "Aujourd'hui";
-    } else if(diffInDays == 1){
-       return "Hier";
-    } else if(diffInDays > 1 && diffInDays < 7){
+    } else if (diffInDays == 1) {
+      return "Hier";
+    } else if (diffInDays > 1 && diffInDays < 7) {
       return "Il y a " + diffInDays + " jours";
-    } else if(diffInDays >= 7 && diffInDays < 10){
+    } else if (diffInDays >= 7 && diffInDays < 10) {
       return "Il y a une semaine"
     } else {
       return strDate;
