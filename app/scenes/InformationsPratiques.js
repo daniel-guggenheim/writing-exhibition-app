@@ -30,7 +30,7 @@ import {
   ActivityIndicator,
   Linking
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Icon, H1, H2, H3, Text, Card, CardItem } from 'native-base';
+import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Thumbnail, Icon, H1, H2, H3, Text, Card, CardItem } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
@@ -235,36 +235,40 @@ export default class InformationsPratiques extends Component {
 
 
           <View style={styles.mainContentView}>
-            <View style={[styles.infoIndivView, styles.horaires]}>
-              <InlineTitle>Horaires</InlineTitle>
-              <Text><Text style={styles.horairesDate}>- Jeudi 2 mars : </Text><Text style={styles.horairesHeure}>17h00</Text></Text>
-              <Text style={styles.horairesCause}>  Inauguration et ouverture officielle du salon</Text>
-              <Text style={styles.horairesLieu}>  (Salle polyvalente d’Echichens)</Text>
-
-              <Text><Text style={styles.horairesDate}>- Vendredi 3 mars : </Text><Text style={styles.horairesHeure}>09h00 à 21h00</Text></Text>
-              <Text style={styles.horairesLieu}>  (sur les trois sites)</Text>
-
-              <Text><Text style={styles.horairesDate}>-  Samedi 4 mars : </Text><Text style={styles.horairesHeure}>09h00 à 21h00</Text></Text>
-              <Text style={styles.horairesLieu}>  (sur les trois sites)</Text>
-            </View>
-
-            <View style={styles.infoIndivView}>
-              <InlineTitle>Lieux</InlineTitle>
-              {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
-                return (
-                  <View style={styles.lieuInfo} key={i}>
-                    <Text selectable={true} style={styles.lieuName}>- {lieu.name}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr2}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr3}</Text>
-                  </View>
-                );
-              })}
-            </View>
-
-             <Card>
+            <Card>
               <CardItem header>
-                <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{fontSize: 30, marginRight: 8, }} />                            
+              <Thumbnail size={40} style={styles.titleThumbnail} source={require("../images/logo/logo.png")}/>
+                <H2 style={styles.titleInfo}>Salon International de l'Écriture</H2>
+
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem header>
+                <Icon name="ios-clock" style={{ fontSize: 30, marginRight: 8, }} />
+                <H2>Horaires</H2>
+              </CardItem>
+
+              <CardItem>
+                <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> Inauguration du salon</Text>
+                <Text><Text style={styles.horairesDate}>À partir de 17h</Text> (sur invitation)</Text>
+                <Text><Text style={styles.horairesDate}>À partir de 20h30</Text> (tout public)</Text>
+                <Text note>(Salle polyvalente d’Echichens)</Text>
+              </CardItem>
+
+              <CardItem>
+                <Text><Text style={styles.horairesHeure}>Vendredi 3 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
+                <Text note>(Sur les trois sites)</Text>
+              </CardItem>
+
+              <CardItem>
+                <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
+                <Text note>(Sur les trois sites)</Text>
+              </CardItem>
+            </Card>
+
+            <Card>
+              <CardItem header>
+                <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{ fontSize: 30, marginRight: 8, }} />
                 <H2>Lieux</H2>
               </CardItem>
               {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
@@ -277,10 +281,10 @@ export default class InformationsPratiques extends Component {
                   </CardItem>
                 );
               })}
-              </Card>
+            </Card>
             <Card>
               <CardItem header>
-                <Icon name="md-car" style={{fontSize: 30, marginRight: 8, }} />              
+                <Icon name="md-car" style={{ fontSize: 30, marginRight: 8, }} />
                 <H2>Accès au salon</H2>
               </CardItem>
               <CardItem>
@@ -301,20 +305,6 @@ export default class InformationsPratiques extends Component {
 
               </CardItem>
             </Card>
-
-
-            <View style={styles.infoIndivView}>
-              <InlineTitle>Accès</InlineTitle>
-              <View style={styles.lieuInfo}>
-                <Text style={styles.accesTitle}>En voiture :</Text>
-                <Text selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
-              </View>
-              <View style={styles.lieuInfo}>
-                <Text style={styles.accesTitle}>En transports publiques :</Text>
-                <Text selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
-              </View>
-              <Text style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
-            </View>
 
 
             <View style={styles.infoIndivView}>
@@ -383,7 +373,7 @@ export default class InformationsPratiques extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </Container >
 
 
 
@@ -404,6 +394,15 @@ const styles = StyleSheet.create({
   mainContentView: {
     marginTop: 10,
   },
+  titleThumbnail: {
+    marginRight:-15,
+  },
+  titleInfo: {
+    // backgroundColor:'red',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+
   infoIndivView: {
     marginTop: 12,
     marginBottom: 8,
@@ -454,6 +453,7 @@ const styles = StyleSheet.create({
   lieuAddr: {
     // marginLeft: 8,
     // marginTop: -4,
+    // fontSize: 14,
     lineHeight: 20,
   },
 
