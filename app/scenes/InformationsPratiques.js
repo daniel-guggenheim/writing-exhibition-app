@@ -28,6 +28,7 @@ import {
   NetInfo,
   AsyncStorage,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Icon, H1, H2, H3, Text } from 'native-base';
 import { Actions } from 'react-native-router-flux'
@@ -42,6 +43,8 @@ var LAST_CHECK_STORAGE_KEY = '@infoPratiqueLastCheck';
 
 var basicTextJSONLocation = '../json/info_pratique_texts_template.json';
 
+var SALON_ECRITURE_WEBSITE_ADDR = 'www.salonecriture.org';
+
 export default class InformationsPratiques extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +56,8 @@ export default class InformationsPratiques extends Component {
       textFieldsContent: {
         last_update: null,
         text1_dates: null,
-        text2_horaires: null
+        text2_horaires: null,
+        lieux: [],
       },
     };
   }
@@ -190,6 +194,16 @@ export default class InformationsPratiques extends Component {
     }
   };
 
+  clickUrl(url) {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log('Don\'t know how to open URI: ' + url);
+      }
+    });
+  }
+
 
   /** ---------------------------- RENDER FUNCTION ---------------------------- */
 
@@ -219,17 +233,63 @@ export default class InformationsPratiques extends Component {
 
 
           <View style={styles.mainContentView}>
-            <View style={styles.infoIndivView}>
-              <InlineTitle>Horaires:</InlineTitle>
-              <Text style={styles.horairesDate}>{this.state.textFieldsContent.text2_horaires}</Text>
+            <View style={[styles.infoIndivView, styles.horaires]}>
+              <InlineTitle>Horaires</InlineTitle>
+              <Text><Text style={styles.horairesDate}>- Jeudi 2 mars : </Text><Text style={styles.horairesHeure}>17h00</Text></Text>
+              <Text style={styles.horairesCause}>  Inauguration et ouverture officielle du salon</Text>
+              <Text style={styles.horairesLieu}>  (Salle polyvalente d’Echichens)</Text>
+
+              <Text><Text style={styles.horairesDate}>- Vendredi 3 mars : </Text><Text style={styles.horairesHeure}>09h00 à 21h00</Text></Text>
+              <Text style={styles.horairesLieu}>  (sur les trois sites)</Text>
+
+              <Text><Text style={styles.horairesDate}>-  Samedi 4 mars : </Text><Text style={styles.horairesHeure}>09h00 à 21h00</Text></Text>
+              <Text style={styles.horairesLieu}>  (sur les trois sites)</Text>
             </View>
 
             <View style={styles.infoIndivView}>
-              <InlineTitle>Lieux:</InlineTitle>
-              <Text>Autre</Text>
+              <InlineTitle>Lieux</InlineTitle>
+              {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
+                return (
+                  <View style={styles.lieuInfo} key={i}>
+                    <Text style={styles.lieuName}>- {lieu.name}</Text>
+                    <Text style={styles.lieuAddr}>{lieu.addr1}</Text>
+                    <Text style={styles.lieuAddr}>{lieu.addr2}</Text>
+                    <Text style={styles.lieuAddr}>{lieu.addr3}</Text>
+                  </View>
+                );
+              })}
             </View>
 
+
             <View style={styles.infoIndivView}>
+              <InlineTitle>Accès</InlineTitle>
+              <View style={styles.lieuInfo}>
+                <Text style={styles.accesTitle}>En voiture :</Text>
+                <Text>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
+              </View>
+              <View style={styles.lieuInfo}>
+                <Text style={styles.accesTitle}>En transports publiques :</Text>
+                <Text>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
+              </View>
+              <Text style={[styles.accesTitle, { textAlign: 'center' }]}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
+            </View>
+
+
+            <View style={styles.infoIndivView}>
+              <InlineTitle>Contacts</InlineTitle>
+              <Text>
+                <Text style={styles.accesTitle}>Site Internet : </Text>
+                <Text onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>{SALON_ECRITURE_WEBSITE_ADDR}</Text>
+              </Text>
+
+
+            </View>
+
+
+
+            <View style={styles.infoIndivView}>
+              <InlineTitle>Tests:</InlineTitle>
+              <Text>Testing: {this.state.textFieldsContent.text1_dates}</Text>
             </View>
           </View>
         </Content>
@@ -279,25 +339,61 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoIndivView: {
-    marginTop: 5,
+    marginBottom: 8,
   },
 
   sectionTitre: {
     fontWeight: 'bold',
-    fontSize: 24,
-    textAlign:'center',
+    fontSize: 22,
+    textAlign: 'center',
     paddingBottom: 8,
-    marginLeft:32,
-    marginRight:32,
-    marginBottom:8,
-    borderBottomWidth:1,
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 8,
+    borderBottomWidth: 1,
+  },
+
+  horaires: {
+    // alignItems: 'center',
   },
 
   horairesDate: {
     fontSize: 16,
+    // backgroundColor:'blue',
+  },
+  horairesHeure: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    margin: 0, padding: 0,
+  },
+  horairesCause: {
+    fontSize: 16,
+    marginTop: -5,
+  },
+  horairesLieu: {
+    fontSize: 14,
+    marginTop: -5,
+    marginBottom: 10,
   },
 
+  lieuInfo: {
+    marginBottom: 5,
+  },
 
+  lieuName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  lieuAddr: {
+    marginLeft: 8,
+    // marginTop: -4,
+    lineHeight: 20,
+  },
+
+  accesTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 
 
   offlineText: {
