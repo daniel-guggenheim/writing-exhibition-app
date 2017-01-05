@@ -27,8 +27,9 @@ import {
   View,
   NetInfo,
   AsyncStorage,
+  ActivityIndicator,
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon, H1, H2, H3, Text } from 'native-base';
+import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Icon, H1, H2, H3, Text } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 
@@ -48,12 +49,18 @@ export default class InformationsPratiques extends Component {
       deviceIsConnected: null,
       last_check: null,
       last_update: null,
+      loadingContentUpdate: false,
       textFieldsContent: {
         last_update: null,
-        text1_dates: '',
-        text2_horaires: ''
+        text1_dates: null,
+        text2_horaires: null
       },
     };
+  }
+
+
+  componentWillMount() {
+    this._loadInfoPratiqueFromDisk();
   }
 
   /**
@@ -63,21 +70,22 @@ export default class InformationsPratiques extends Component {
    */
   componentDidMount() {
     //Load data from disk
-    this._loadInfoPratiqueFromDisk().done(
-      () => {
-        //Network listener
-        NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
-        //Check network
-        NetInfo.isConnected.fetch().done(
-          (isConnected) => {
-            this.setState({ deviceIsConnected: isConnected });
-            if (isConnected) {
-              //Load data from internet
-              this.fetchUpdateContent();
-            }
-          }
-        );
-      });
+    // this._loadInfoPratiqueFromDisk().done(
+    //   () => {
+    //Network listener
+    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
+    //Check network
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => {
+        console.log('Initial is connected: ' + isConnected);
+        this.setState({ deviceIsConnected: isConnected });
+        if (isConnected) {
+          //Load data from internet
+          this.fetchUpdateContent();
+        }
+      }
+    );
+    // });
   }
 
   componentWillUnmount() {
@@ -94,11 +102,18 @@ export default class InformationsPratiques extends Component {
     try {
       let textContentLocalDB = await AsyncStorage.getItem(INFO_PRATIQUE_STORAGE_KEY);
       if (textContentLocalDB !== null) {
+        let lastCheckLocalDB = await AsyncStorage.getItem(LAST_CHECK_STORAGE_KEY);
         console.log('Done getting infos from disk...');
-        console.log(textContentLocalDB);
+        console.log('Last check from local DB: ' + lastCheckLocalDB);
+        console.log('Text from local DB: ' + textContentLocalDB);
+
         let parsedTextContentLocalDB = JSON.parse(textContentLocalDB);
-        console.log('Parsed: ' + parsedTextContentLocalDB);
-        this.setState({ textFieldsContent: parsedTextContentLocalDB });
+        let parsedlastCheckLocalDB = JSON.parse(lastCheckLocalDB);
+        this.setState({
+          textFieldsContent: parsedTextContentLocalDB,
+          last_check: parsedlastCheckLocalDB,
+          last_update: parsedTextContentLocalDB.last_update
+        });
         // this.forceUpdate();
       } else {
         console.log('Nothing on disk... Initializing basic template...');
@@ -121,6 +136,7 @@ export default class InformationsPratiques extends Component {
       let lastOnlineUpdate = await that.fetchJsonURL(LAST_ONLINE_UPDATE_URL);
       console.log('last online update = ' + lastOnlineUpdate);
       if (lastOnlineUpdate != that.state.last_update) {
+        that.setState({ loadingContentUpdate: true })
         let newContent = await that.fetchJsonURL(INFO_PRATIQUE_TEXT_CONTENT_URL);
         let lastCheck = Date.now();
 
@@ -133,11 +149,12 @@ export default class InformationsPratiques extends Component {
         that.setState({
           last_update: lastOnlineUpdate,
           last_check: lastCheck,
-          textFieldsContent: newContent
+          textFieldsContent: newContent,
+          loadingContentUpdate: false,
         });
-
       }
     } catch (error) {
+      that.setState({ loadingContentUpdate: false })
       console.error(error);
     }
   }
@@ -163,6 +180,7 @@ export default class InformationsPratiques extends Component {
    * Network listener to detect change in connectivity
    */
   _handleConnectivityChange = (isConnected) => {
+    console.log('Is connected: ' + isConnected);
     this.setState({
       deviceIsConnected: isConnected,
     });
@@ -184,17 +202,36 @@ export default class InformationsPratiques extends Component {
 
         <Content style={styles.content}>
           {/*Offline component*/}
-          {!this.state.deviceIsConnected ?
-            <View style={styles.offlineInfo}>
+          {!this.state.deviceIsConnected && this.state.deviceIsConnected != null ?
+            <View>
               <Text style={styles.offlineText}>Hors ligne</Text>
             </View>
             : null
           }
-          <Text><InlineTitle>Dates:</InlineTitle> {this.state.textFieldsContent.text1_dates}</Text>
-          <InlineTitle>Horaires:</InlineTitle>
-          <Text>{this.state.textFieldsContent.text2_horaires}</Text>
-          <InlineTitle>Lieux:</InlineTitle>
-          <Text>Autre</Text>
+          {this.state.loadingContentUpdate ?
+            <View style={styles.loadingContent}>
+              <Text>Mise-à-jour</Text>
+              <ActivityIndicator style={styles.spinner} />
+            </View>
+            : null
+          }
+
+
+
+          <View style={styles.mainContentView}>
+            <View style={styles.infoIndivView}>
+              <InlineTitle>Horaires:</InlineTitle>
+              <Text style={styles.horairesDate}>{this.state.textFieldsContent.text2_horaires}</Text>
+            </View>
+
+            <View style={styles.infoIndivView}>
+              <InlineTitle>Lieux:</InlineTitle>
+              <Text>Autre</Text>
+            </View>
+
+            <View style={styles.infoIndivView}>
+            </View>
+          </View>
         </Content>
 
         <Footer>
@@ -230,40 +267,49 @@ export default class InformationsPratiques extends Component {
 
 
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-const InlineTitle = (props) => <Text style={{ fontWeight: 'bold', fontSize: 17 }}>{props.children}</Text>
+const InlineTitle = (props) => <Text style={styles.sectionTitre}>{props.children}</Text>
 
 
 const styles = StyleSheet.create({
   content: {
-    margin: 10,
-    marginTop: 12,
+    margin: 8,
+    marginTop: 2,
   },
-  offlineInfo: {
-    // backgroundColor: '#f4f4f4',
+  mainContentView: {
+    marginTop: 10,
   },
+  infoIndivView: {
+    marginTop: 5,
+  },
+
+  sectionTitre: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    textAlign:'center',
+    paddingBottom: 8,
+    marginLeft:32,
+    marginRight:32,
+    marginBottom:8,
+    borderBottomWidth:1,
+  },
+
+  horairesDate: {
+    fontSize: 16,
+  },
+
+
+
+
   offlineText: {
     textAlign: 'center',
     color: 'red',
     fontStyle: 'italic',
   },
-  comingSoon: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  loadingContent: {
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    marginBottom: 8,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  spinner: {
+    marginTop: 6,
   },
 });
