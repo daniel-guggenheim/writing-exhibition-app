@@ -29,7 +29,6 @@ import {
   AsyncStorage,
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon, H1, H2, H3, Text } from 'native-base';
-import MapView from 'react-native-maps';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 
@@ -195,14 +194,6 @@ export default class InformationsPratiques extends Component {
           <InlineTitle>Horaires:</InlineTitle>
           <Text>{this.state.textFieldsContent.text2_horaires}</Text>
           <InlineTitle>Lieux:</InlineTitle>
-          <MapView
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            />
           <Text>Autre</Text>
         </Content>
 
@@ -246,9 +237,6 @@ const styles = StyleSheet.create({
   content: {
     margin: 10,
     marginTop: 12,
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
   },
   offlineInfo: {
     // backgroundColor: '#f4f4f4',
