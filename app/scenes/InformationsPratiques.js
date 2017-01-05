@@ -28,11 +28,13 @@ import {
   NetInfo,
   AsyncStorage,
   ActivityIndicator,
-  Linking,
+  Linking
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Icon, H1, H2, H3, Text } from 'native-base';
+import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Icon, H1, H2, H3, Text, Card, CardItem } from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
+import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
+
 
 var GLOBAL = require('../global/GlobalVariables');
 
@@ -43,7 +45,7 @@ var LAST_CHECK_STORAGE_KEY = '@infoPratiqueLastCheck';
 
 var basicTextJSONLocation = '../json/info_pratique_texts_template.json';
 
-var SALON_ECRITURE_WEBSITE_ADDR = 'www.salonecriture.org';
+var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 
 export default class InformationsPratiques extends Component {
   constructor(props) {
@@ -251,46 +253,110 @@ export default class InformationsPratiques extends Component {
               {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
                 return (
                   <View style={styles.lieuInfo} key={i}>
-                    <Text style={styles.lieuName}>- {lieu.name}</Text>
-                    <Text style={styles.lieuAddr}>{lieu.addr1}</Text>
-                    <Text style={styles.lieuAddr}>{lieu.addr2}</Text>
-                    <Text style={styles.lieuAddr}>{lieu.addr3}</Text>
+                    <Text selectable={true} style={styles.lieuName}>- {lieu.name}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr2}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr3}</Text>
                   </View>
                 );
               })}
             </View>
+
+             <Card>
+              <CardItem header>
+                <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{fontSize: 30, marginRight: 8, }} />                            
+                <H2>Lieux</H2>
+              </CardItem>
+              {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
+                return (
+                  <CardItem key={i}>
+                    <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr2}</Text>
+                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr3}</Text>
+                  </CardItem>
+                );
+              })}
+              </Card>
+            <Card>
+              <CardItem header>
+                <Icon name="md-car" style={{fontSize: 30, marginRight: 8, }} />              
+                <H2>Accès au salon</H2>
+              </CardItem>
+              <CardItem>
+                <Text style={styles.accesTitle}>En voiture :</Text>
+                <Text selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
+
+              </CardItem>
+              <CardItem>
+
+                <Text style={styles.accesTitle}>En transports publiques :</Text>
+                <Text selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
+
+
+              </CardItem>
+              <CardItem style={styles.cardItem}>
+                <Icon name="ios-information-circle" style={{ color: 'green', fontSize: 30, marginRight: 8, }} />
+                <Text style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
+
+              </CardItem>
+            </Card>
 
 
             <View style={styles.infoIndivView}>
               <InlineTitle>Accès</InlineTitle>
               <View style={styles.lieuInfo}>
                 <Text style={styles.accesTitle}>En voiture :</Text>
-                <Text>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
+                <Text selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
               </View>
               <View style={styles.lieuInfo}>
                 <Text style={styles.accesTitle}>En transports publiques :</Text>
-                <Text>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
+                <Text selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
               </View>
-              <Text style={[styles.accesTitle, { textAlign: 'center' }]}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
+              <Text style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
             </View>
 
 
             <View style={styles.infoIndivView}>
               <InlineTitle>Contacts</InlineTitle>
-              <Text>
+              <Text selectable={true}>
                 <Text style={styles.accesTitle}>Site Internet : </Text>
-                <Text onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>{SALON_ECRITURE_WEBSITE_ADDR}</Text>
+                <Text style={styles.url} onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
+                  www.salonecriture.org
+                </Text>
+
               </Text>
 
+              <Text selectable={true}>
+                <Text style={styles.accesTitle}>Email : </Text>
+                <Text>
+                  info@salonecriture.org
+                </Text>
+              </Text>
+
+              <Text selectable={true}>
+                <Text style={styles.accesTitle}>Présidente du Salon : </Text>
+                <Text>
+                  Sylvie Guggenheim, tél. +4179 488 93 29
+                </Text>
+              </Text>
+
+              <Text selectable={true}>
+                <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
+                <Text>
+                  Michel Ackermann, tél. +4176 436 17 16
+                </Text>
+              </Text>
+
+              <Text selectable={true}>
+                <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
+                <Text>
+                  association SylMa
+                </Text>
+              </Text>
 
             </View>
 
-
-
-            <View style={styles.infoIndivView}>
-              <InlineTitle>Tests:</InlineTitle>
-              <Text>Testing: {this.state.textFieldsContent.text1_dates}</Text>
-            </View>
           </View>
         </Content>
 
@@ -339,6 +405,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoIndivView: {
+    marginTop: 12,
     marginBottom: 8,
   },
 
@@ -385,7 +452,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   lieuAddr: {
-    marginLeft: 8,
+    // marginLeft: 8,
     // marginTop: -4,
     lineHeight: 20,
   },
@@ -394,6 +461,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  infoSupp: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    // textAlign: 'center',
+  },
+
+
+
+  url: {
+    textDecorationLine: 'underline',
+    color: '#0000EE',
+  },
+
+
+
+  cardItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+
 
 
   offlineText: {
