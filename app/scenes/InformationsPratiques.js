@@ -40,8 +40,12 @@ import {
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
+import MaterialDesignTheme from '../themes/MaterialDesignTheme';
+
 
 var college_image = require("../images/lieux/college_colombier2.jpg");
+var echichens_image = require("../images/lieux/echichens2.jpg");
+
 //require('../images/lieux/'+lieu.image_name)
 
 var GLOBAL = require('../global/GlobalVariables');
@@ -281,17 +285,23 @@ export default class InformationsPratiques extends Component {
               {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
                 return (
                   <CardItem key={i}>
-                    <Grid>
-                    <Row>
-                          <Image style={{ width: 400, height: 120 }} resizeMode='contain' source={college_image} />
-                          </Row>
+                    <Grid selectable={true}>
+                      <Row>
+                        <Image style={styles.lieuImage} source={college_image} />
+                      </Row>
                       <Row>
                         <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
                       </Row>
                       <Row>
-                        <Col backgroundColor='blue'>
-                          <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text></Col>
-                        <Col backgroundColor='red'></Col>
+                        <Col>
+                          <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
+                        </Col>
+                        <View style={styles.lieuItineraryView}>
+                          <Button success iconRight>
+                            Itinéraire
+                           <Icon theme={MaterialDesignTheme} name="directions" />
+                          </Button>
+                        </View>
                       </Row>
                     </Grid>
                   </CardItem>
@@ -475,6 +485,18 @@ const styles = StyleSheet.create({
     // fontSize: 14,
     lineHeight: 20,
   },
+  lieuImage: {
+    flex: 1,
+    width: 50,
+    height: 100,
+    resizeMode: 'contain'
+  },
+  lieuItineraryView: {
+    justifyContent: 'center',
+    marginLeft: 16,
+    marginRight: 0,
+  },
+
 
   accesTitle: {
     fontSize: 16,
