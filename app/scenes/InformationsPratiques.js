@@ -28,13 +28,21 @@ import {
   NetInfo,
   AsyncStorage,
   ActivityIndicator,
-  Linking
+  Linking,
+  Image
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Spinner, Thumbnail, Icon, H1, H2, H3, Text, Card, CardItem } from 'native-base';
+import {
+  Container, Header, Tabs, Title,
+  Content, Footer, FooterTab, Button, Spinner,
+  Thumbnail, Icon, H1, H2, H3, Text, Card,
+  CardItem, Grid, Row, Col
+} from 'native-base';
 import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 
+var college_image = require("../images/lieux/college_colombier2.jpg");
+//require('../images/lieux/'+lieu.image_name)
 
 var GLOBAL = require('../global/GlobalVariables');
 
@@ -235,13 +243,8 @@ export default class InformationsPratiques extends Component {
 
 
           <View style={styles.mainContentView}>
-            <Card>
-              <CardItem header>
-              <Thumbnail size={40} style={styles.titleThumbnail} source={require("../images/logo/logo.png")}/>
-                <H2 style={styles.titleInfo}>Salon International de l'Écriture</H2>
 
-              </CardItem>
-            </Card>
+            {/* -------------- Horaires -------------- */}
             <Card>
               <CardItem header>
                 <Icon name="ios-clock" style={{ fontSize: 30, marginRight: 8, }} />
@@ -266,87 +269,101 @@ export default class InformationsPratiques extends Component {
               </CardItem>
             </Card>
 
+
+
+            {/* -------------- Lieux -------------- */}
             <Card>
               <CardItem header>
                 <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{ fontSize: 30, marginRight: 8, }} />
                 <H2>Lieux</H2>
               </CardItem>
+
               {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
                 return (
                   <CardItem key={i}>
-                    <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr2}</Text>
-                    <Text selectable={true} style={styles.lieuAddr}>{lieu.addr3}</Text>
+                    <Grid>
+                    <Row>
+                          <Image style={{ width: 400, height: 120 }} resizeMode='contain' source={college_image} />
+                          </Row>
+                      <Row>
+                        <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
+                      </Row>
+                      <Row>
+                        <Col backgroundColor='blue'>
+                          <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text></Col>
+                        <Col backgroundColor='red'></Col>
+                      </Row>
+                    </Grid>
                   </CardItem>
                 );
               })}
             </Card>
+
+
+            {/* -------------- Accès au Salon -------------- */}
             <Card>
               <CardItem header>
                 <Icon name="md-car" style={{ fontSize: 30, marginRight: 8, }} />
-                <H2>Accès au salon</H2>
+                <H2>Accès au Salon</H2>
               </CardItem>
+
               <CardItem>
                 <Text style={styles.accesTitle}>En voiture :</Text>
-                <Text selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
-
+                <Text selectable={true} selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
               </CardItem>
+
               <CardItem>
-
-                <Text style={styles.accesTitle}>En transports publiques :</Text>
-                <Text selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
-
-
+                <Text style={styles.accesTitle}>En transports publics :</Text>
+                <Text selectable={true} selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
               </CardItem>
+
               <CardItem style={styles.cardItem}>
                 <Icon name="ios-information-circle" style={{ color: 'green', fontSize: 30, marginRight: 8, }} />
-                <Text style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
-
+                <Text selectable={true} style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
               </CardItem>
             </Card>
 
 
-            <View style={styles.infoIndivView}>
-              <InlineTitle>Contacts</InlineTitle>
-              <Text selectable={true}>
-                <Text style={styles.accesTitle}>Site Internet : </Text>
-                <Text style={styles.url} onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
-                  www.salonecriture.org
+
+            {/* -------------- Contacts -------------- */}
+            <Card>
+              <CardItem header>
+                <Icon name="md-people" style={{ fontSize: 30, marginRight: 8, }} />
+                <H2>Contacts</H2>
+              </CardItem>
+
+              <CardItem>
+                <Text selectable={true}>
+                  <Text style={styles.accesTitle}>Site Internet : </Text>
+                  <Text style={styles.url} onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
+                    www.salonecriture.org
                 </Text>
-
-              </Text>
-
-              <Text selectable={true}>
-                <Text style={styles.accesTitle}>Email : </Text>
-                <Text>
-                  info@salonecriture.org
                 </Text>
-              </Text>
-
-              <Text selectable={true}>
-                <Text style={styles.accesTitle}>Présidente du Salon : </Text>
-                <Text>
-                  Sylvie Guggenheim, tél. +4179 488 93 29
+                <Text selectable={true}>
+                  <Text style={styles.accesTitle}>Email : </Text>
+                  <Text>
+                    info@salonecriture.org
                 </Text>
-              </Text>
+                </Text>
+              </CardItem>
 
-              <Text selectable={true}>
+              <CardItem>
+                <View style={{ marginBottom: 8, }}>
+                  <Text style={styles.accesTitle}>Présidente du Salon : </Text>
+                  <Text selectable={true}>Sylvie Guggenheim</Text>
+                </View>
                 <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
-                <Text>
-                  Michel Ackermann, tél. +4176 436 17 16
+                <Text selectable={true}>Michel Ackermann</Text>
+              </CardItem>
+
+              <CardItem>
+                <Text selectable={true}>
+                  <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
+                  <Text>Association SylMa</Text>
                 </Text>
-              </Text>
+              </CardItem>
 
-              <Text selectable={true}>
-                <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
-                <Text>
-                  association SylMa
-                </Text>
-              </Text>
-
-            </View>
-
+            </Card>
           </View>
         </Content>
 
@@ -388,14 +405,16 @@ const InlineTitle = (props) => <Text style={styles.sectionTitre}>{props.children
 
 const styles = StyleSheet.create({
   content: {
-    margin: 8,
     marginTop: 2,
+    marginBottom: 8,
+    paddingRight: 8,
+    paddingLeft: 8,
   },
   mainContentView: {
     marginTop: 10,
   },
   titleThumbnail: {
-    marginRight:-15,
+    marginRight: -15,
   },
   titleInfo: {
     // backgroundColor:'red',
