@@ -1,25 +1,3 @@
-/**
-This part is about having practical information about the salon.
-The challenge was to make it work online AND offline, and to update offline information
-if there is a connexion.
-
----
-- The following "algorithm" was used here: -
-First, try to load data from local DB.
-  If there is data, set state with data from local DB
-  If no data, set state with default data (from json file).
-Check if internet connexion && update was not done already the same hour:
-  If yes, download last udpate date.
-    If the date is more recent that our date
-      Download data.
-      Put data in local DB
-      Update last update date
-      Update state with new data.
-    If not more recent, do nothing
-  If no connexion, do nothing.
-
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -42,22 +20,49 @@ import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 import MaterialDesignTheme from '../themes/MaterialDesignTheme';
 
+/**
+This part is about having practical information about the salon.
+The challenge was to make it work online AND offline, and to update offline information
+if there is a connexion.
 
-var college_image = require("../images/lieux/college_colombier2.jpg");
-var echichens_image = require("../images/lieux/echichens2.jpg");
+---
+- The following "algorithm" was used here: -
+First, try to load data from local DB.
+  If there is data, set state with data from local DB
+  If no data, set state with default data (from json file).
+Check if internet connexion && update was not done already the same hour:
+  If yes, download last udpate date.
+    If the date is more recent that our date
+      Download data.
+      Put data in local DB
+      Update last update date
+      Update state with new data.
+    If not more recent, do nothing
+  If no connexion, do nothing.
 
-//require('../images/lieux/'+lieu.image_name)
+ */
 
 var GLOBAL = require('../global/GlobalVariables');
-
 var LAST_ONLINE_UPDATE_URL = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json'
 var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json'
 var INFO_PRATIQUE_STORAGE_KEY = '@infoPratiqueContent';
 var LAST_CHECK_STORAGE_KEY = '@infoPratiqueLastCheck';
-
 var basicTextJSONLocation = '../json/info_pratique_texts_template.json';
-
 var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
+
+var lieux_images_sources_by_id = [
+  require("../images/lieux/colombier_centre.jpg"),
+  require("../images/lieux/college_colombier.jpg"),
+  require("../images/lieux/echichens.jpg")
+];
+
+
+
+
+
+
+
+
 
 export default class InformationsPratiques extends Component {
   constructor(props) {
@@ -282,12 +287,12 @@ export default class InformationsPratiques extends Component {
                 <H2>Lieux</H2>
               </CardItem>
 
-              {(this.state.textFieldsContent.lieux).map(function (lieu, i) {
+              {(this.state.textFieldsContent.lieux).map((lieu, i) => {
                 return (
                   <CardItem key={i}>
                     <Grid selectable={true}>
                       <Row>
-                        <Image style={styles.lieuImage} source={college_image} />
+                        <Image style={styles.lieuImage} source={lieux_images_sources_by_id[i]} />
                       </Row>
                       <Row>
                         <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
@@ -297,7 +302,7 @@ export default class InformationsPratiques extends Component {
                           <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
                         </Col>
                         <View style={styles.lieuItineraryView}>
-                          <Button success iconRight>
+                          <Button success iconRight  onPress={() => this.clickUrl(lieu.gps_addr)}>
                             Itinéraire
                            <Icon theme={MaterialDesignTheme} name="directions" />
                           </Button>
@@ -488,7 +493,7 @@ const styles = StyleSheet.create({
   lieuImage: {
     flex: 1,
     width: 50,
-    height: 100,
+    height: 130,
     resizeMode: 'contain'
   },
   lieuItineraryView: {
