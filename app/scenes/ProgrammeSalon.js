@@ -38,9 +38,13 @@ export default class ProgrammeSalon extends Component {
                     </html>`
     let doc = new DomParser().parseFromString(html, 'text/html')
     console.log('---------------TESTING------------------------')
-    console.log(doc.querySelect('#b .inA'))
-    console.log(doc.getElementsByTagName('a'))
-    console.log(doc.querySelect('#b a[href="example.org"]'))
+    console.log("doc.querySelect('#b .inA')");
+    var a = doc.querySelect('#b .inA');
+    // console.log(a);
+    console.log("doc.getElementsByTagName('a')")
+    var b = doc.getElementsByTagName('a')
+    console.log("doc.querySelect('#b a[href=\"example.org\"]')")
+    var c = doc.querySelect('#b a[href="example.org"]')
   }
 
 
@@ -75,10 +79,10 @@ export default class ProgrammeSalon extends Component {
               <Text>Programme</Text>
             </Button>
 
-            <Button transparent onPress={Actions.plans}>
+            {/*<Button transparent onPress={Actions.plans}>
               <Icon name='ios-map-outline' />
               Plan des sites
-            </Button>
+            </Button>*/}
 
             <Button transparent onPress={Actions.informationsPratiques}>
               <Icon name='ios-information-circle-outline' />

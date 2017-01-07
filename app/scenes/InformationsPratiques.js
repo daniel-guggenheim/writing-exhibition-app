@@ -59,11 +59,6 @@ var lieux_images_sources_by_id = [
 
 
 
-
-
-
-
-
 export default class InformationsPratiques extends Component {
   constructor(props) {
     super(props);
@@ -81,20 +76,18 @@ export default class InformationsPratiques extends Component {
     };
   }
 
-
+  /**
+   * Load text content from disk, or from default json file if this has failed.
+   */
   componentWillMount() {
     this._loadInfoPratiqueFromDisk();
   }
 
   /**
-   * Load text content from disk, or from default json file if this has failed.
-   * Then, check with netinfo if device is connected to internet, add listener to detect changes.
+   * Check with netinfo if device is connected to internet, add listener to detect changes.
    * If it is the case, check if there is any update on the data text.
    */
   componentDidMount() {
-    //Load data from disk
-    // this._loadInfoPratiqueFromDisk().done(
-    //   () => {
     //Network listener
     NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
     //Check network
@@ -102,6 +95,7 @@ export default class InformationsPratiques extends Component {
       (isConnected) => {
         console.log('Initial is connected: ' + isConnected);
         this.setState({ deviceIsConnected: isConnected });
+        //TODO: Add if it has been less than a period of time
         if (isConnected) {
           //Load data from internet
           this.fetchUpdateContent();
@@ -213,7 +207,7 @@ export default class InformationsPratiques extends Component {
     }
   };
 
-  clickUrl(url) {
+  _clickUrl(url) {
     Linking.canOpenURL(url).then(supported => {
       if (supported) {
         Linking.openURL(url);
@@ -302,7 +296,7 @@ export default class InformationsPratiques extends Component {
                           <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
                         </Col>
                         <View style={styles.lieuItineraryView}>
-                          <Button success iconRight  onPress={() => this.clickUrl(lieu.gps_addr)}>
+                          <Button success iconRight  onPress={() => this._clickUrl(lieu.gps_addr)}>
                             Itinéraire
                            <Icon theme={MaterialDesignTheme} name="directions" />
                           </Button>
@@ -350,7 +344,7 @@ export default class InformationsPratiques extends Component {
               <CardItem>
                 <Text selectable={true}>
                   <Text style={styles.accesTitle}>Site Internet : </Text>
-                  <Text style={styles.url} onPress={() => this.clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
+                  <Text style={styles.url} onPress={() => this._clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
                     www.salonecriture.org
                 </Text>
                 </Text>
@@ -394,10 +388,10 @@ export default class InformationsPratiques extends Component {
               <Text>Programme</Text>
             </Button>
 
-            <Button transparent onPress={Actions.plans}>
+            {/*<Button transparent onPress={Actions.plans}>
               <Icon name='ios-map-outline' />
               Plan des sites
-            </Button>
+            </Button>*/}
 
             <Button transparent disabled>
               <Icon name='ios-information-circle' />
@@ -412,10 +406,6 @@ export default class InformationsPratiques extends Component {
     );
   }
 }
-
-
-const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-const InlineTitle = (props) => <Text style={styles.sectionTitre}>{props.children}</Text>
 
 
 const styles = StyleSheet.create({

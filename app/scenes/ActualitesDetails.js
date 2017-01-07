@@ -15,6 +15,13 @@ var HTMLView = require('react-native-htmlview')
 var GLOBAL = require('../global/GlobalVariables');
 const TITLE_MAX_CHAR_LIMIT = 40;
 
+
+/*
+Charger la page et enlever le dessus => marche pas, la page devrait etre chargee en entier dabord
+charger lapage deja coupée dans le json et la lire
+
+*/
+
 export default class Actualites extends Component {
     constructor(props) {
         super(props);
@@ -55,24 +62,18 @@ export default class Actualites extends Component {
                 </Header>
 
                 <View style={styles.main}>
-
                     <WebView
                         source={{ uri: article.article_url }}
                         style={{ borderWidth: 1, flex: 1 }}
-                        // scalesPageToFit={true}
+                        // scalesPageToFit={true}                     
                         renderError={() => (
                             <View  style={styles.pageError}>
                                 <Text style={styles.textPageError}>
                                     Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
                                 </Text>
                             </View>)}
-                        startInLoadingState={true}
                         />
-
                 </View>
-
-
-
             </Container>
         );
     }

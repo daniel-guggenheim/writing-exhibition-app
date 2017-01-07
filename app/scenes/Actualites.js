@@ -121,10 +121,10 @@ export default class Actualites extends Component {
               <Text>Programme</Text>
             </Button>
 
-            <Button transparent onPress={Actions.plans}>
+            {/*<Button transparent onPress={Actions.plans}>
               <Icon name='ios-map-outline' />
               Plan des sites
-            </Button>
+            </Button>*/}
 
             <Button transparent onPress={Actions.informationsPratiques}>
               <Icon name='ios-information-circle-outline' />
