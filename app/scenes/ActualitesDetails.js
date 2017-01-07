@@ -63,7 +63,9 @@ export default class Actualites extends Component {
 
                 <View style={styles.main}>
                     <WebView
-                        source={{ uri: article.article_url }}
+                        //source={{ uri: article.article_url }}
+                        source={{ html: article.author }}
+                        // source={ require('../static/html/actualites-test2.html')}
                         style={{ borderWidth: 1, flex: 1 }}
                         // scalesPageToFit={true}                     
                         renderError={() => (
