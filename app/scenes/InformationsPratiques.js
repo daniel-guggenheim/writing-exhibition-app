@@ -15,7 +15,6 @@ import {
   Thumbnail, Icon, H1, H2, H3, Text, Card,
   CardItem, Grid, Row, Col
 } from 'native-base';
-import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 import MaterialDesignTheme from '../themes/MaterialDesignTheme';
@@ -375,30 +374,6 @@ export default class InformationsPratiques extends Component {
             </Card>
           </View>
         </Content>
-
-        <Footer>
-          <FooterTab>
-            <Button transparent onPress={Actions.actualites}>
-              <Icon name='ios-cafe-outline' />
-              Actualités
-            </Button>
-
-            <Button transparent onPress={Actions.programmeSalon}>
-              <Icon name='ios-list-box-outline' />
-              <Text>Programme</Text>
-            </Button>
-
-            {/*<Button transparent onPress={Actions.plans}>
-              <Icon name='ios-map-outline' />
-              Plan des sites
-            </Button>*/}
-
-            <Button transparent disabled>
-              <Icon name='ios-information-circle' />
-              <Text>Informations</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container >
 
 

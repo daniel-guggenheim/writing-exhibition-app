@@ -23,28 +23,28 @@ export default class ProgrammeSalon extends Component {
 
   
   componentDidMount() {
-    let html = `<html>
-                        <body>
-                            <div id="b">
-                                <a href="example.org">
-                                <div class="inA">
-                                    <br>bbbb</br>
-                                </div>
-                            </div>
-                            <div class="bb">
-                                Test
-                            </div>
-                        </body>
-                    </html>`
-    let doc = new DomParser().parseFromString(html, 'text/html')
-    console.log('---------------TESTING------------------------')
-    console.log("doc.querySelect('#b .inA')");
-    var a = doc.querySelect('#b .inA');
-    // console.log(a);
-    console.log("doc.getElementsByTagName('a')")
-    var b = doc.getElementsByTagName('a')
-    console.log("doc.querySelect('#b a[href=\"example.org\"]')")
-    var c = doc.querySelect('#b a[href="example.org"]')
+    // let html = `<html>
+    //                     <body>
+    //                         <div id="b">
+    //                             <a href="example.org">
+    //                             <div class="inA">
+    //                                 <br>bbbb</br>
+    //                             </div>
+    //                         </div>
+    //                         <div class="bb">
+    //                             Test
+    //                         </div>
+    //                     </body>
+    //                 </html>`
+    // let doc = new DomParser().parseFromString(html, 'text/html')
+    // console.log('---------------TESTING------------------------')
+    // console.log("doc.querySelect('#b .inA')");
+    // var a = doc.querySelect('#b .inA');
+    // // console.log(a);
+    // console.log("doc.getElementsByTagName('a')")
+    // var b = doc.getElementsByTagName('a')
+    // console.log("doc.querySelect('#b a[href=\"example.org\"]')")
+    // var c = doc.querySelect('#b a[href="example.org"]')
   }
 
 
@@ -66,30 +66,6 @@ export default class ProgrammeSalon extends Component {
         <Content style={styles.content}>
           <Text style={styles.comingSoon}>Programme du salon disponible sous peu...</Text>
         </Content>
-
-        <Footer>
-          <FooterTab>
-            <Button transparent onPress={Actions.actualites}>
-              <Icon name='ios-cafe-outline' />
-              Actualités
-            </Button>
-
-            <Button transparent disabled>
-              <Icon name='ios-list-box' />
-              <Text>Programme</Text>
-            </Button>
-
-            {/*<Button transparent onPress={Actions.plans}>
-              <Icon name='ios-map-outline' />
-              Plan des sites
-            </Button>*/}
-
-            <Button transparent onPress={Actions.informationsPratiques}>
-              <Icon name='ios-information-circle-outline' />
-              <Text>Informations</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }

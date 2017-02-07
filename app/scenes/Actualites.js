@@ -109,7 +109,7 @@ export default class Actualites extends Component {
           } />}
         </Content>
 
-        <Footer>
+        {/*<Footer>
           <FooterTab>
             <Button transparent disabled>
               <Icon name='ios-cafe' />
@@ -124,14 +124,14 @@ export default class Actualites extends Component {
             {/*<Button transparent onPress={Actions.plans}>
               <Icon name='ios-map-outline' />
               Plan des sites
-            </Button>*/}
+            </Button>/}
 
             <Button transparent onPress={Actions.informationsPratiques}>
               <Icon name='ios-information-circle-outline' />
               <Text>Informations</Text>
             </Button>
           </FooterTab>
-        </Footer>
+        </Footer>*/}
       </Container>
     );
   }
