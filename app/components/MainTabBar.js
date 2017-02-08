@@ -13,7 +13,7 @@ const PASSIVE_COLOR = [189, 195, 199];
 const rgb_color = (colArray) => `rgb(${colArray[0]}, ${colArray[1]}, ${colArray[2]})`;
 
 
-const FacebookTabBar = React.createClass({
+const MainTabBar = React.createClass({
     tabIcons: [],
 
     propTypes: {
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FacebookTabBar;
+export default MainTabBar;

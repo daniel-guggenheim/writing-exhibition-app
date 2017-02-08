@@ -16,17 +16,19 @@ import {
     ScrollView,
     Image,
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon, Spinner } from 'native-base';
 
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 
-import MainTabBar from './FacebookTab';
+import MainTabBar from './app/components/MainTabBar';
 
 import Actualites from './app/scenes/Actualites';
 import ProgrammeSalon from './app/scenes/ProgrammeSalon';
 import Plans from './app/scenes/Plans';
 import InformationsPratiques from './app/scenes/InformationsPratiques';
 import ActualitesDetails from './app/scenes/ActualitesDetails';
+import SplashScreen from './app/scenes/SplashScreen';
+
 
 var GLOBAL = require('./app/global/GlobalVariables');
 
@@ -39,16 +41,16 @@ class SalonEcritureApp extends Component {
     componentDidMount() {
         //Helper to know if the device is connected to internet
         //Listener that will detect any change
-        NetInfo.isConnected.addEventListener(
-            'change',
-            this._handleConnectivityChange
-        );
-        NetInfo.isConnected.fetch().done(
-            (isConnected) => {
-                console.log('Device connected? ' + isConnected);
-                this.setState({ deviceIsConnected: isConnected });
-            }
-        );
+        // NetInfo.isConnected.addEventListener(
+        //     'change',
+        //     this._handleConnectivityChange
+        // );
+        // NetInfo.isConnected.fetch().done(
+        //     (isConnected) => {
+        //         console.log('Device connected? ' + isConnected);
+        //         this.setState({ deviceIsConnected: isConnected });
+        //     }
+        // );
     }
 
     componentWillUnmount() {
@@ -59,17 +61,40 @@ class SalonEcritureApp extends Component {
     }
 
     _handleConnectivityChange = (isConnected) => {
-        console.log('Device connected? ' + isConnected);
+        console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
         this.setState({
             deviceIsConnected: isConnected,
         });
     };
 
-    deviceIsConnected() {
-        console.log('CALL: device is connected: ' + this.state.deviceIsConnected)
-        return this.state.deviceIsConnected;
+    // deviceIsConnected() {
+    //     console.log('CALL: device is connected: ' + this.state.deviceIsConnected)
+    //     return this.state.deviceIsConnected;
+    // }
+
+
+
+    /************************  STARTING - NEW ************************/
+
+    async setupNetworkObservation() {
+        NetInfo.isConnected.addEventListener(
+            'change',
+            this._handleConnectivityChange
+        );
+        try {
+            let isConnected = await NetInfo.isConnected.fetch();
+            this.setState({ deviceIsConnected: isConnected });
+            return true;
+        } catch (error) {
+            // that.setState({ loadingContentUpdate: false })
+            console.error(error);
+            return false;
+        }
     }
 
+
+
+    /************************  NAVIGATION ************************/
 
     render() {
         return (
@@ -90,7 +115,7 @@ class SalonEcritureApp extends Component {
     _navigatorRenderScene(route, navigator) {
         switch (route.index) {
             case 0:
-                return <SplashScreen navigator={navigator} />;
+                return <SplashScreen navigator={navigator} setupNetworkObservation={() => this.setupNetworkObservation()} />;
             case 1:
                 return <MainTabView deviceIsConnected={this.state.deviceIsConnected} />;
             case 2:
@@ -130,25 +155,30 @@ class SalonEcritureApp extends Component {
 
 
 
-class SplashScreen extends Component {
 
-    componentWillMount () {
+/*class SplashScreen extends Component {
+
+    componentWillMount() {
         var navigator = this.props.navigator;
-        setTimeout (() => {
+        // await setupNetworkObservation();
+
+        setTimeout(() => {
             navigator.replace({
                 index: 1, //<-- This is the View you go to
             });
-        }, 2000);// <-- Time until it jumps to "MainView" windowSize.width  .... windowSize.height
+        }, 2000);// <-- Time until it jumps to "MainView"
     }
 
-    render () {
+    render() {
         return (
-            <View style={{flex: 1, backgroundColor: GLOBAL.GENERAL_BACKGROUND_COLOR, alignItems: 'center', justifyContent: 'center'}}>
-                <Image style={{ width: 200, height: 200}} source={require('./app/images/logo/logo@4x.png')}></Image>
+            <View style={{ flex: 1, backgroundColor: GLOBAL.THEME_COLOR, alignItems: 'center', justifyContent: 'center' }}>
+                <Image style={{ width: 100, height: 100 }} source={require('./app/images/logo/logo@4x.png')}></Image>
+                <Text style={{ fontSize: 22, marginTop: 20 }}>Salon de l'Écriture</Text>
+                <Spinner color={GLOBAL.GENERAL_BACKGROUND_COLOR} />
             </View>
         );
     }
-}
+}*/
 
 
 
@@ -175,7 +205,7 @@ class MainTabView extends Component {
 
 
             <ScrollableTabView
-                style={{ }}
+                style={{}}
                 initialPage={1}
                 renderTabBar={() => <MainTabBar />}
                 tabBarPosition='bottom'
