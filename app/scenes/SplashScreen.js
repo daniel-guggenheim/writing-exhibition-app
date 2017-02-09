@@ -11,24 +11,30 @@ import {
     Image,
 } from 'react-native';
 
-import {Spinner } from 'native-base';
+import { Spinner } from 'native-base';
 
 var GLOBAL = require('../global/GlobalVariables');
 
-
-
 export default class SplashScreen extends Component {
-
-    componentDidMount() {
-        var navigator = this.props.navigator;
-        var that = this;
-        this.props.setupNetworkObservation();
-        // var setupNetwork = await that.props.setupNetworkObservation();
-        setTimeout(() => {
+    async _executeStartSetup(navigator) {
+        let that = this;
+        try {
+            await that.props.setupNetworkObservation();
+            await that.props.loadDataFromDisk();
+            await that.props.fetchUpdateContent();
+            await that.props.fetchArticlesFromWeb();
+            // Changing view
             navigator.replace({
                 index: 1, //<-- This is the View you go to
             });
-        }, 2000);// <-- Time until it jumps to "MainView"
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    componentDidMount() {
+        this._executeStartSetup(this.props.navigator);
     }
 
     render() {

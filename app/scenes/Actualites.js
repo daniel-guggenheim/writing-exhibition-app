@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -16,47 +16,38 @@ var GLOBAL = require('../global/GlobalVariables');
 const NB_OF_LAST_DAYS_WITH_HUMANIZED_DATE = 7;
 var logo_icon = require("../images/logo/logo.png");
 
-export default class Actualites extends Component {
+
+const propTypes = {
+  articles: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      article_url: PropTypes.string,
+      author: PropTypes.string,
+      category: PropTypes.number,
+      created_at: PropTypes.string,
+      date: PropTypes.string,
+      intro: PropTypes.string,
+      title: PropTypes.string,
+      updated_at: PropTypes.string,
+    }
+    )).isRequired,
+  fetchArticlesFromWeb: React.PropTypes.func.isRequired,
+  loading: React.PropTypes.bool.isRequired,
+  goToActualitesDetails: React.PropTypes.func.isRequired,
+};
+
+
+const defaultProps = {
+};
+
+
+class Actualites extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      articles: [],
       last_update: 'never',
     }
   }
-
-  componentDidMount() {
-    var that = this;
-    this.fetchArticlesFromWeb();
-  }
-
-  fetchArticlesFromWeb() {
-    // Set loading to true when the fetch starts to display a Spinner
-    this.setState({
-      loading: true
-    });
-    var that = this;
-
-    return fetch('https://salonecriture.firebaseio.com/posts.json')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        // console.log(responseJson);
-        that.setState({
-          articles: responseJson,
-          loading: false,
-        });
-        // console.log('Next------------------');
-        // console.log(this.state.articles[0].author);
-      })
-      .catch((error) => {
-        that.setState({
-          loading: false
-        });
-        console.error(error);
-      })
-  }
-
 
   getFormatedDate(strDate) {
     var momentDate = moment(strDate, "DD.MM.YYYY");
@@ -76,6 +67,8 @@ export default class Actualites extends Component {
   }
 
   render() {
+    let articles = this.props.articles;
+
     return (
 
       <Container theme={myTheme}>
@@ -84,14 +77,14 @@ export default class Actualites extends Component {
             <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
           </Button>
           <Title>Actualités</Title>
-          <Button transparent onPress={() => this.fetchArticlesFromWeb()}>
+          <Button transparent onPress={() => this.props.fetchArticlesFromWeb()}>
             <Icon name='ios-refresh' />
           </Button>
         </Header>
 
         <Content>
-          {this.state.loading ? <Spinner /> : <List dataArray={this.state.articles} renderRow={(article) =>
-            <ListItem button onPress={() => Actions.actualitesDetails({ article: article })}>
+          {this.state.loading ? <Spinner /> : <List dataArray={articles} renderRow={(article) =>
+            <ListItem button onPress={() => this.props.goToActualitesDetails(article)}>
               <View>
                 <View style={styles.categoryAndDate}>
                   <View style={styles.categoryWithSquare}>
@@ -172,3 +165,10 @@ const styles = StyleSheet.create({
 
   },
 });
+
+
+
+Actualites.propTypes = propTypes;
+Actualites.defaultProps = defaultProps;
+
+export default Actualites;

@@ -8,7 +8,6 @@ import {
     WebView
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
-import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 var HTMLView = require('react-native-htmlview')
 
@@ -19,10 +18,9 @@ const TITLE_MAX_CHAR_LIMIT = 40;
 /*
 Charger la page et enlever le dessus => marche pas, la page devrait etre chargee en entier dabord
 charger lapage deja coupée dans le json et la lire
-
 */
 
-export default class Actualites extends Component {
+export default class ActualitesDetails extends Component {
     constructor(props) {
         super(props);
     }
@@ -49,13 +47,14 @@ export default class Actualites extends Component {
     }
 
     render() {
-        var article = this.props.article;
+        let article = this.props.article;
+        console.log('---- ArRTICLE: ', article);
 
         return (
 
             <Container theme={myTheme}>
                 <Header>
-                    <Button transparent onPress={() => Actions.pop()}>
+                    <Button transparent onPress={() => this.props.goBackOneScene()}>
                         <Icon name='ios-arrow-back' />
                     </Button>
                     <Title><Text style={styles.headerTitle}>{this.get_title_string()}</Text></Title>

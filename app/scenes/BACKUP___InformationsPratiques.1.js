@@ -61,20 +61,162 @@ const propTypes = {
     last_update: PropTypes.string,
     text1_dates: PropTypes.string,
     text2_horaires: PropTypes.string,
-    lieux: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        addr1: PropTypes.string,
-        name: PropTypes.string,
-        gps_addr: PropTypes.string,
-      }
-      )),
-  }).isRequired,
+    lieux: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+  }),
 };
 
 const defaultProps = {
 };
 
+
+
 class InformationsPratiques extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      deviceIsConnected: null,
+      last_check: null,
+      last_update: null,
+      loadingContentUpdate: false,
+      textFieldsContent: {
+        last_update: null,
+        text1_dates: null,
+        text2_horaires: null,
+        lieux: [],
+      },
+    };
+  }
+
+  /**
+   * Load text content from disk, or from default json file if this has failed.
+   */
+  FALSEFALSEFALSE______componentWillMount() {
+    this._loadInfoPratiqueFromDisk();
+  }
+
+  /**
+   * Check with netinfo if device is connected to internet, add listener to detect changes.
+   * If it is the case, check if there is any update on the data text.
+   */
+  FALSEFALSEFALSE______componentDidMount() {
+    //Network listener
+    NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
+    //Check network
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => {
+        console.log('Initial is connected: ' + isConnected);
+        this.setState({ deviceIsConnected: isConnected });
+        //TODO: Add if it has been less than a period of time
+        if (isConnected) {
+          //Load data from internet
+          this.fetchUpdateContent();
+        }
+      }
+    );
+    // });
+  }
+
+  FALSEFALSEFALSE______componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('change', this._handleConnectivityChange);
+  }
+
+
+  /**
+   * Load information pratique from disk
+   * TODO: Load from json if failed to load from disk
+   */
+  async _loadInfoPratiqueFromDisk() {
+    console.log('Entering initial loading...');
+    try {
+      let textContentLocalDB = await AsyncStorage.getItem(INFO_PRATIQUE_STORAGE_KEY);
+      if (textContentLocalDB !== null) {
+        let lastCheckLocalDB = await AsyncStorage.getItem(LAST_CHECK_STORAGE_KEY);
+        console.log('Done getting infos from disk...');
+        console.log('Last check from local DB: ' + lastCheckLocalDB);
+        console.log('Text from local DB: ' + textContentLocalDB);
+
+        let parsedTextContentLocalDB = JSON.parse(textContentLocalDB);
+        let parsedlastCheckLocalDB = JSON.parse(lastCheckLocalDB);
+        this.setState({
+          textFieldsContent: parsedTextContentLocalDB,
+          last_check: parsedlastCheckLocalDB,
+          last_update: parsedTextContentLocalDB.last_update
+        });
+        // this.forceUpdate();
+      } else {
+        console.log('Nothing on disk... Initializing basic template...');
+        // TODO: Initialize basic text content json
+        // let basicTextContentJSON = require(basicTextJSONLocation);
+        // this.setState({textFieldsContent: basicTextContentJSON});
+      }
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error);
+    }
+  };
+
+
+  /**
+   * Check if there is updated text content on the internet and fetch it to the device.
+   */
+  async fetchUpdateContent() {
+    var that = this;
+    try {
+      let lastOnlineUpdate = await that.fetchJsonURL(LAST_ONLINE_UPDATE_URL);
+      console.log('last online update = ' + lastOnlineUpdate);
+      if (lastOnlineUpdate != that.state.last_update) {
+        that.setState({ loadingContentUpdate: true })
+        let newContent = await that.fetchJsonURL(INFO_PRATIQUE_TEXT_CONTENT_URL);
+        let lastCheck = Date.now();
+
+        //Store data in local db
+        await AsyncStorage.multiSet([
+          [INFO_PRATIQUE_STORAGE_KEY, JSON.stringify(newContent)],
+          [LAST_CHECK_STORAGE_KEY, JSON.stringify(lastCheck)]]);
+
+        //Update date and data
+        that.setState({
+          last_update: lastOnlineUpdate,
+          last_check: lastCheck,
+          textFieldsContent: newContent,
+          loadingContentUpdate: false,
+        });
+      }
+    } catch (error) {
+      that.setState({ loadingContentUpdate: false })
+      console.error(error);
+    }
+  }
+
+  /**
+   * Helper function. Fetch a url and parse it to json.
+   * @param {String} url : The url where to fetch the data
+   * @return {JSON} map between text keys and text content {strings}
+   */
+  async fetchJsonURL(url) {
+    try {
+      let response = await fetch(url);
+      let responseJson = await response.json();
+      console.log('URL: ' + url + '\n response: ' + responseJson)
+      return responseJson;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  /**
+   * Network listener to detect change in connectivity
+   */
+  _handleConnectivityChange = (isConnected) => {
+    console.log('Is connected: ' + isConnected);
+    this.setState({
+      deviceIsConnected: isConnected,
+    });
+    //TODO: Add if it has been less than a period of time
+    if (isConnected) {
+      this.fetchUpdateContent();
+    }
+  };
 
   _clickUrl(url) {
     Linking.canOpenURL(url).then(supported => {
@@ -92,7 +234,11 @@ class InformationsPratiques extends Component {
   render() {
     let deviceIsConnected = this.props.deviceIsConnected;
     let loadingContentUpdate = false;
-    let lieux = this.props.textFieldsContent.lieux;
+    let textFieldsContent = this.props.textFieldsContent;
+    let lieux = this.props.lieux;
+    console.log('------------------- RENDER -----------------')
+    console.log(textFieldsContent)
+    // let lieux = this.props.textFieldsContent;
 
     return (
       <Container theme={myTheme}>
