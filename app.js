@@ -102,7 +102,7 @@ class SalonEcritureApp extends Component {
     }
 
     goToActualitesDetails(navigator, to_article_info, to_article_html) {
-        console.log('Goto actualite detail : '+ to_article_info);
+        console.log('Goto actualite detail : '+ to_article_info.id);
         navigator.push({ index: 2, article_infos: to_article_info, article_html: to_article_html });
     }
 

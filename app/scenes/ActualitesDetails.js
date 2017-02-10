@@ -8,7 +8,7 @@ import {
     WebView,
     BackAndroid
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+import { Spinner, Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import myTheme from '../themes/myTheme';
 var HTMLView = require('react-native-htmlview')
 
@@ -43,6 +43,13 @@ class ActualitesDetails extends Component {
     constructor(props) {
         super(props);
         this._addBackAndroidListener(props);
+        this.state = {
+            start: true,
+        };
+    }
+
+    componentDidMount(){
+        this.setState({start: false})
     }
 
     _addBackAndroidListener(props) {
@@ -89,18 +96,20 @@ class ActualitesDetails extends Component {
                 </Header>
 
                 <View style={styles.main}>
-                    <WebView
-                        source={{ html: article_html }}
-                        // source={ require('../static/html/actualites-test2.html')}
-                        style={{ borderWidth: 1, flex: 1 }}
-                        // scalesPageToFit={true}                     
-                        renderError={() => (
-                            <View style={styles.pageError}>
-                                <Text style={styles.textPageError}>
-                                    Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
+                    {this.state.start ? <Spinner /> :
+                        <WebView
+                            source={{ html: article_html }}
+                            // source={ require('../static/html/actualites-test2.html')}
+                            style={{ borderWidth: 1, flex: 1 }}
+                            // scalesPageToFit={true}                     
+                            renderError={() => (
+                                <View style={styles.pageError}>
+                                    <Text style={styles.textPageError}>
+                                        Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
                                 </Text>
-                            </View>)}
-                    />
+                                </View>)}
+                        />
+                    }
                 </View>
             </Container>
         );

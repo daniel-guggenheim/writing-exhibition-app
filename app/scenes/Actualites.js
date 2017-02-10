@@ -81,17 +81,17 @@ class Actualites extends Component {
 
         <Content>
           {this.props.loading ? <Spinner /> : <List dataArray={articles} renderRow={(article) =>
-            <ListItem button onPress={() => {console.log('go to in fct: '+article.id);this.props.goToActualitesDetails(article, articlesHTML[article.id])}}>
+            <ListItem button onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}>
               <View>
                 <View style={styles.categoryAndDate}>
                   <View style={styles.categoryWithSquare}>
-                    <Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />
+                    {/*<Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />*/}
                     <Text style={styles.category}>{article.category}</Text>
                   </View>
                   <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
                 </View>
                 <View>
-                  <Text style={styles.titreArticle}>{article.id}: {article.title}</Text>
+                  <Text style={styles.titreArticle}>{article.title}</Text>
                   <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
                 </View>
               </View>
