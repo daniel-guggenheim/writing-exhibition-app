@@ -1,11 +1,12 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
     AppRegistry,
     StyleSheet,
     Text,
     View,
-    WebView
+    WebView,
+    BackAndroid
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import myTheme from '../themes/myTheme';
@@ -20,13 +21,39 @@ Charger la page et enlever le dessus => marche pas, la page devrait etre chargee
 charger lapage deja coupée dans le json et la lire
 */
 
-export default class ActualitesDetails extends Component {
+
+const propTypes = {
+    article_infos: React.PropTypes.shape({
+        category: PropTypes.string,
+        date: PropTypes.string,
+        id: PropTypes.number,
+        intro: PropTypes.string,
+        title: PropTypes.string,
+    }).isRequired,
+    article_html: PropTypes.string.isRequired,
+};
+
+const defaultProps = {
+    // text: 'Hello World',
+};
+
+
+
+class ActualitesDetails extends Component {
     constructor(props) {
         super(props);
+        this._addBackAndroidListener(props);
+    }
+
+    _addBackAndroidListener(props) {
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            props.goBackOneScene();
+            return true
+        });
     }
 
     get_title_string() {
-        var title = this.props.article.title;
+        var title = this.props.article_infos.title;
         if (title.length > TITLE_MAX_CHAR_LIMIT) {
             return ((title.substring(0, TITLE_MAX_CHAR_LIMIT - 3)) + '...');
         } else {
@@ -34,7 +61,7 @@ export default class ActualitesDetails extends Component {
         }
     }
 
-    renderSourceIfExists(article) {
+    NONONONONOrenderSourceIfExists(article) {
         if (article.source != "") {
             return (
                 <View>
@@ -47,7 +74,8 @@ export default class ActualitesDetails extends Component {
     }
 
     render() {
-        let article = this.props.article;
+        let article = this.props.article_infos;
+        let article_html = this.props.article_html;
         console.log('---- ArRTICLE: ', article);
 
         return (
@@ -62,18 +90,17 @@ export default class ActualitesDetails extends Component {
 
                 <View style={styles.main}>
                     <WebView
-                        //source={{ uri: article.article_url }}
-                        source={{ html: article.author }}
+                        source={{ html: article_html }}
                         // source={ require('../static/html/actualites-test2.html')}
                         style={{ borderWidth: 1, flex: 1 }}
                         // scalesPageToFit={true}                     
                         renderError={() => (
-                            <View  style={styles.pageError}>
+                            <View style={styles.pageError}>
                                 <Text style={styles.textPageError}>
                                     Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
                                 </Text>
                             </View>)}
-                        />
+                    />
                 </View>
             </Container>
         );
@@ -91,7 +118,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     pageError: {
-        margin:10,
+        margin: 10,
     },
     textPageError: {
         color: 'red',
@@ -177,3 +204,12 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
 });
+
+
+
+
+
+ActualitesDetails.propTypes = propTypes;
+ActualitesDetails.defaultProps = defaultProps;
+
+export default ActualitesDetails;

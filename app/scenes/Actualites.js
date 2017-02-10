@@ -18,18 +18,16 @@ var logo_icon = require("../images/logo/logo.png");
 
 
 const propTypes = {
-  articles: React.PropTypes.arrayOf(
+  articlesInfo: React.PropTypes.arrayOf(
     React.PropTypes.shape({
-      article_url: PropTypes.string,
-      author: PropTypes.string,
-      category: PropTypes.number,
-      created_at: PropTypes.string,
+      category: PropTypes.string,
       date: PropTypes.string,
+      id: PropTypes.number,
       intro: PropTypes.string,
       title: PropTypes.string,
-      updated_at: PropTypes.string,
     }
     )).isRequired,
+  articlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
   fetchArticlesFromWeb: React.PropTypes.func.isRequired,
   loading: React.PropTypes.bool.isRequired,
   goToActualitesDetails: React.PropTypes.func.isRequired,
@@ -44,7 +42,6 @@ class Actualites extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       last_update: 'never',
     }
   }
@@ -67,10 +64,10 @@ class Actualites extends Component {
   }
 
   render() {
-    let articles = this.props.articles;
+    let articles = this.props.articlesInfo;
+    let articlesHTML = this.props.articlesContent;
 
     return (
-
       <Container theme={myTheme}>
         <Header>
           <Button transparent disabled>
@@ -83,18 +80,18 @@ class Actualites extends Component {
         </Header>
 
         <Content>
-          {this.state.loading ? <Spinner /> : <List dataArray={articles} renderRow={(article) =>
-            <ListItem button onPress={() => this.props.goToActualitesDetails(article)}>
+          {this.props.loading ? <Spinner /> : <List dataArray={articles} renderRow={(article) =>
+            <ListItem button onPress={() => {console.log('go to in fct: '+article.id);this.props.goToActualitesDetails(article, articlesHTML[article.id])}}>
               <View>
                 <View style={styles.categoryAndDate}>
                   <View style={styles.categoryWithSquare}>
-                    <Icon name='ios-square' style={[styles.categorySquare, { color: GLOBAL.ACTUALITES_COLOR[article.category] }]} />
-                    <Text style={styles.category}>{GLOBAL.ACTUALITES_CATEGORY[article.category]}</Text>
+                    <Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />
+                    <Text style={styles.category}>{article.category}</Text>
                   </View>
                   <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
                 </View>
                 <View>
-                  <Text style={styles.titreArticle}>{article.title}</Text>
+                  <Text style={styles.titreArticle}>{article.id}: {article.title}</Text>
                   <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
                 </View>
               </View>

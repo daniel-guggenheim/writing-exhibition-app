@@ -1,7 +1,6 @@
 /**
  * @flow
  */
-
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -9,53 +8,107 @@ import {
     Navigator,
     AsyncStorage,
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon, Spinner } from 'native-base';
 
+//Scenes
 import SplashScreen from './app/scenes/SplashScreen';
 import MainTabView from './app/scenes/MainTabView';
 import ActualitesDetails from './app/scenes/ActualitesDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');
-var URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json'
-var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json'
+
+//Info pratiques URL
+var URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json';
+var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json';
+
+// Articles URL
+var URL_ARTICLES_INFOS = 'https://salonecriture.firebaseio.com/posts_v1_1/articles_info.json';
+var URL_ARTICLES_CONTENT = 'https://salonecriture.firebaseio.com/posts_v1_1/articles_html.json';
+
+//Storage keys
 var INFO_PRATIQUE_STORAGE_KEY = '@infoPratiqueContent';
 var LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY = '@infoPratiqueLastCheck';
+
+//Basic JSON
 var basicTextJSONLocation = './app/json/info_pratique_texts_template.json';
+
+//Other
 var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 
-var lieux_images_sources_by_id = [
-    require("./app/images/lieux/colombier_centre.jpg"),
-    require("./app/images/lieux/college_colombier.jpg"),
-    require("./app/images/lieux/echichens.jpg")
-];
-
 class SalonEcritureApp extends Component {
-    state = {
-        deviceIsConnected: null,
-        testText: 'hey',
-        lastCheckForOnlineUpdate: null,
-        lastServerUpdateDate: null,
-        articlesActualites: null,
-        infosPratiquesStrings: {
-            last_update: null,
-            text1_dates: null,
-            text2_horaires: null,
-            lieux: [],
-        },
-        actualiteArticlesIsLoading: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            deviceIsConnected: null,
+            testText: 'hey',
+            lastCheckForOnlineUpdate: null,
+            lastServerUpdateDate: null,
+            actualitesArticlesInfos: null,
+            actualitesArticlesContent: null,
+            infosPratiquesStrings: null,
+            actualiteArticlesIsLoading: false,
+        };
+    }
 
     componentWillUnmount() {
         //Remove network change listener
         NetInfo.isConnected.removeEventListener('change', this._handleConnectivityChange);
     }
 
-    _handleConnectivityChange = (isConnected) => {
-        console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
-        this.setState({ deviceIsConnected: isConnected });
-    };
 
-    /************************  START  ************************/
+    /************************  NAVIGATION ************************/
+
+    render() {
+        return (
+            <Navigator
+                initialRoute={{ index: 0 }}
+                renderScene={(route, navigator) => this._navigatorRenderScene(route, navigator)}
+                configureScene={(route, routeStack) => { return Navigator.SceneConfigs.FadeAndroid; }}
+            />);
+    }
+
+    _navigatorRenderScene(route, navigator) {
+        switch (route.index) {
+            case GLOBAL.ROUTES.SplashScreen:
+                return <SplashScreen
+                    navigator={navigator}
+                    setupNetworkObservation={() => this.setupNetworkObservation()}
+                    loadDataFromDisk={() => this.loadDataFromDisk()}
+                    fetchUpdateContent={() => this.fetchUpdateContent()}
+                    fetchArticlesFromWeb={() => this.fetchArticlesFromWeb()}
+                />;
+            case GLOBAL.ROUTES.MainTabView:
+                return <MainTabView
+                    deviceIsConnected={this.state.deviceIsConnected}
+                    infosPratiquesStrings={this.state.infosPratiquesStrings}
+                    actualitesArticlesInfos={this.state.actualitesArticlesInfos}
+                    actualitesArticlesContent={this.state.actualitesArticlesContent}
+                    fetchArticlesFromWeb={() => this.fetchArticlesFromWeb()}
+                    actualiteArticlesIsLoading={this.state.actualiteArticlesIsLoading}
+                    goToActualitesDetails={(to_article_info, to_article_html) => this.goToActualitesDetails(navigator, to_article_info, to_article_html)}
+                />;
+            case GLOBAL.ROUTES.ActualitesDetails:
+                return <ActualitesDetails
+                    article_infos={route.article_infos}
+                    article_html={route.article_html}
+                    goBackOneScene={() => this.goBackOneScene(navigator)}
+                />;
+            default:
+                console.error('Error with the navigation! Index = ' + route.index + ' is not a valid navigation index.')
+        }
+    }
+
+    goBackOneScene(navigator) {
+        navigator.pop();
+    }
+
+    goToActualitesDetails(navigator, to_article_info, to_article_html) {
+        console.log('Goto actualite detail : '+ to_article_info);
+        navigator.push({ index: 2, article_infos: to_article_info, article_html: to_article_html });
+    }
+
+
+
+    /**************************  NETWORK  **************************/
 
     /**
      * Detect if device is connected to internet, and setup a listener that will detect any change.
@@ -67,12 +120,21 @@ class SalonEcritureApp extends Component {
             this.setState({ deviceIsConnected: isConnected });
             return true;
         } catch (error) {
+            console.log('Problem while checking for network.')
             // that.setState({ actualiteArticlesIsLoading: false })
-            console.error(error);
+            // console.error(error);
             return false;
         }
     }
 
+    _handleConnectivityChange = (isConnected) => {
+        console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
+        this.setState({ deviceIsConnected: isConnected });
+    };
+
+
+
+    /************************  LOAD FROM DISK  ************************/
 
     /**
      * Load information pratique from disk
@@ -86,7 +148,7 @@ class SalonEcritureApp extends Component {
                 let lastCheckLocalDB = await AsyncStorage.getItem(LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY);
                 console.log('Done getting infos from disk...');
                 console.log('Last check from local DB: ' + lastCheckLocalDB);
-                console.log('Text from local DB: ' + textContentLocalDB);
+                // console.log('Text from local DB: ' + textContentLocalDB);
 
                 let parsedTextContentLocalDB = JSON.parse(textContentLocalDB);
                 let parsedlastCheckLocalDB = JSON.parse(lastCheckLocalDB);
@@ -105,19 +167,32 @@ class SalonEcritureApp extends Component {
         } catch (error) {
             console.log('AsyncStorage error: ' + error);
         }
-        console.log('------------------- AFTER INSIDE STORAGE ---------------');
-        console.log(this.state.infosPratiquesStrings)
+        // console.log('------------------- AFTER INSIDE STORAGE ---------------');
+        // console.log(this.state.infosPratiquesStrings)
     };
+
+
+
+
+    /************************  FETCH FROM WEB  ************************/
 
     /**
      * Check if there is updated text content on the internet and fetch it to the device.
+     * Gerer les cas hors connexion!!!
      */
     async fetchUpdateContent() {
         var that = this;
+        let newLastServerUpdateDate = undefined;
         try {
-            let newLastServerUpdateDate = await that.fetchJsonURL(URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES);
-            console.log('last online update = ' + newLastServerUpdateDate);
-            if (newLastServerUpdateDate != that.state.lastServerUpdateDate) {
+            newLastServerUpdateDate = await that.fetchJsonURL(URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES);
+        } catch (error) {
+            console.log('Error while fetching date.')
+            that.setState({ actualiteArticlesIsLoading: false })
+            console.error(error);
+        }
+        console.log('last online update = ' + newLastServerUpdateDate);
+        try {
+            if (newLastServerUpdateDate != undefined && newLastServerUpdateDate != that.state.lastServerUpdateDate) {
                 that.setState({ actualiteArticlesIsLoading: true })
                 let newContent = await that.fetchJsonURL(INFO_PRATIQUE_TEXT_CONTENT_URL);
                 let now = Date.now();
@@ -136,6 +211,7 @@ class SalonEcritureApp extends Component {
                 });
             }
         } catch (error) {
+            console.log('Error while fetching updated content.')
             that.setState({ actualiteArticlesIsLoading: false })
             console.error(error);
         }
@@ -147,124 +223,39 @@ class SalonEcritureApp extends Component {
      * @return {JSON} map between text keys and text content {strings}
      */
     async fetchJsonURL(url) {
+        this.setState({ actualiteArticlesIsLoading: true });
         try {
             let response = await fetch(url);
             let responseJson = await response.json();
-            console.log('URL: ' + url + '\n response: ' + responseJson)
+            console.log('Fetching JSON from URL: ' + url + '\n So the response is: ' + responseJson)
+            this.setState({ actualiteArticlesIsLoading: false });
             return responseJson;
         } catch (error) {
+            console.log('Error while fetching json with url: ', url);
             console.error(error);
+            this.setState({ actualiteArticlesIsLoading: false });
+            return undefined;
         }
     }
 
 
+    /**
+     * Fetch all articles from the web. Change the state with the fetched Json.
+     */
     async fetchArticlesFromWeb() {
-        // Set loading to true when the fetch starts to display a Spinner
-        this.setState({
-            loading: true
-        });
-        var that = this;
-
-        return fetch('https://salonecriture.firebaseio.com/posts.json')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson);
-                that.setState({
-                    articlesActualites: responseJson,
-                    loading: false,
-                });
-                // console.log('Next------------------');
-                // console.log(this.state.articles[0].author);
-                console.log('Finished fetching articles from the web: ', responseJson);
-            })
-            .catch((error) => {
-                that.setState({
-                    loading: false
-                });
-                console.error(error);
-            })
-    }
-
-
-
-    /************************  NAVIGATION ************************/
-
-    render() {
-        return (
-            <Navigator
-                initialRoute={{ index: 0 }}
-                renderScene={(route, navigator) => this._navigatorRenderScene(route, navigator)}
-                configureScene={(route, routeStack) => {
-                    if (route.index == 2) {
-                        return Navigator.SceneConfigs.FadeAndroid;
-                    } else {
-                        return Navigator.SceneConfigs.FloatFromRight;
-                    }
-                }}
-            />);
-    }
-
-
-    _navigatorRenderScene(route, navigator) {
-        switch (route.index) {
-            case 0:
-                return <SplashScreen
-                    navigator={navigator}
-                    setupNetworkObservation={() => this.setupNetworkObservation()}
-                    loadDataFromDisk={() => this.loadDataFromDisk()}
-                    fetchUpdateContent={() => this.fetchUpdateContent()}
-                    fetchArticlesFromWeb={() => this.fetchArticlesFromWeb()}
-                />;
-            case 1:
-                return <MainTabView
-                    deviceIsConnected={this.state.deviceIsConnected}
-                    infosPratiquesStrings={this.state.infosPratiquesStrings}
-                    articlesActualites={this.state.articlesActualites}
-                    fetchArticlesFromWeb={() => this.fetchArticlesFromWeb()}
-                    actualiteArticlesIsLoading={this.state.actualiteArticlesIsLoading}
-                    goToActualitesDetails= {(article) => this.goToActualitesDetails(navigator, article)}
-                />;
-            case 2:
-                return <ActualitesDetails
-                    article={route.article}
-                    goBackOneScene={() => this.goBackOneScene(navigator)}
-                />;
-            case 3:
-                return <ActualitesDetails
-                 />;
-            default:
-                console.error('Error with the navigation! Index = ' + route.index + ' is not a valid navigation index.')
+        let actualitesArticlesInfos = await this.fetchJsonURL(URL_ARTICLES_INFOS);
+        let actualitesArticlesContent = await this.fetchJsonURL(URL_ARTICLES_CONTENT);
+        if (actualitesArticlesInfos != undefined) {
+            this.setState({
+                actualitesArticlesInfos: actualitesArticlesInfos,
+                actualitesArticlesContent: actualitesArticlesContent,
+            });
         }
+        console.log('Finished fetching articles from the web. ');
     }
-
-
-
-    _onPressButton(navigator) {
-        navigator.push({ index: 1 })
-    }
-
-    goBackOneScene(navigator) {
-        navigator.pop();
-    }
-    
-    goToActualitesDetails(navigator, articleToGoTo) {
-        console.log('-------------------------------------------------------------- : ',articleToGoTo);
-        navigator.push({ index: 2 , article: articleToGoTo});
-    }
-
-    /*return (
-        <Router>
-            <Scene key="root" tabs={true}>
-                <Scene key="actualites" hideNavBar={true}>
-                    <Scene key="actualitesList" component={Actualites} title="Actualites" hideNavBar={true} />
-                    <Scene key="actualitesDetails" component={ActualitesDetails} title="Actualites" hideNavBar={true} />
-                </Scene>
-                <Scene key="plans" component={Plans} title="Plans" hideNavBar={true} />
-                <Scene key="programmeSalon" component={ProgrammeSalon} title="ProgrammeSalon" hideNavBar={true} />
-                <Scene key="informationsPratiques" component={InformationsPratiques} title="InformationsPratiques" hideNavBar={true} />
-            </Scene>
-        </Router>
-    );*/
 }
+
+
+/************************  APP REGISTRY  ************************/
 
 AppRegistry.registerComponent('SalonEcritureApp', () => SalonEcritureApp);

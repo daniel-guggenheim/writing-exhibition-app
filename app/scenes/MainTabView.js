@@ -24,18 +24,16 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 
 
 const propTypes = {
-    articlesActualites: React.PropTypes.arrayOf(
+    actualitesArticlesInfos: React.PropTypes.arrayOf(
         React.PropTypes.shape({
-            article_url: PropTypes.string,
-            author: PropTypes.string,
-            category: PropTypes.number,
-            created_at: PropTypes.string,
+            category: PropTypes.string,
             date: PropTypes.string,
+            id: PropTypes.number,
             intro: PropTypes.string,
             title: PropTypes.string,
-            updated_at: PropTypes.string,
         }
         )).isRequired,
+    actualitesArticlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
     fetchArticlesFromWeb: React.PropTypes.func.isRequired,
     infosPratiquesStrings: React.PropTypes.shape({
         last_update: PropTypes.string,
@@ -72,10 +70,11 @@ class MainTabView extends Component {
 
                 <Actualites
                     tabLabel="ios-cafe"
-                    articles={this.props.articlesActualites}
+                    articlesInfo={this.props.actualitesArticlesInfos}
+                    articlesContent={this.props.actualitesArticlesContent}
                     fetchArticlesFromWeb={this.props.fetchArticlesFromWeb}
                     loading={this.props.actualiteArticlesIsLoading}
-                    goToActualitesDetails={this.props.goToActualitesDetails}
+                    goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
                 />
 
                 <ProgrammeSalon tabLabel="ios-list-box-outline" />

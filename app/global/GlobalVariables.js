@@ -11,8 +11,13 @@ module.exports = {
         2: 'blue',
         3: '#E62727',
     },
+    ROUTES: {
+        'SplashScreen': 0,
+        'MainTabView': 1,
+        'ActualitesDetails': 2,
+    },
     GENERAL_BACKGROUND_COLOR : '#F0F3F7',
     THEME_COLOR : '#E8E0C5',
     TEXT_THEME_COLOR : '#002266',
-    NORMAL_TEXT_COLOR : 'black'
+    NORMAL_TEXT_COLOR : 'black',
 };
