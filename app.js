@@ -20,6 +20,10 @@ var GLOBAL = require('./app/global/GlobalVariables');
 const STATE_CONTENT_SUFFIX = 'Content';
 const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
 
+// Last check storage key
+const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 60;
+const LAST_CHECK_FOR_UPDATE_STORAGE_KEY = '@dateOfLastCheckForOnlineUpdate';
+
 // Global URL
 var URL_LAST_SERVER_UPDATES = "https://salonecriture.firebaseio.com/se_v001/last_updates.json";
 
@@ -57,20 +61,23 @@ class SalonEcritureApp extends Component {
 
 
             // New states
-            [GLOBAL.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]: null,
-            [GLOBAL.articles_infos.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+            dateOfLastCheckForOnlineUpdate: null,
 
-            [GLOBAL.articles_html.statePrefix + STATE_CONTENT_SUFFIX]: null,
-            [GLOBAL.articles_html.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
 
-            [GLOBAL.infos_pratiques.statePrefix + STATE_CONTENT_SUFFIX]: null,
-            [GLOBAL.infos_pratiques.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_html.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_html.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
 
-            [GLOBAL.programme.statePrefix + STATE_CONTENT_SUFFIX]: null,
-            [GLOBAL.programme.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.infos_pratiques.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.infos_pratiques.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
         };
     }
 
+    //TODO: the same for component didmount?? (enfin le contraire)
     componentWillUnmount() {
         //Remove network change listener
         NetInfo.isConnected.removeEventListener('change', this._handleConnectivityChange);
@@ -125,7 +132,7 @@ class SalonEcritureApp extends Component {
 
     goToActualitesDetails(navigator, to_article_info, to_article_html) {
         console.log('Goto actualite detail : ' + to_article_info.id);
-        navigator.push({ index: 2, article_infos: to_article_info, article_html: to_article_html });
+        navigator.push({ index: GLOBAL.ROUTES.ActualitesDetails, article_infos: to_article_info, article_html: to_article_html });
     }
 
 
@@ -195,20 +202,115 @@ class SalonEcritureApp extends Component {
 
 
 
+    /**
+     * Read in database to get a single element and returns it.
+     * Returns null if there is any problem or no element at all.
+     */
+    async _loadSingleJsonInDB(storageKey) {
 
-    /************************  FETCH FROM WEB  ************************/
+        //Trying to get data from db
+        let jsonData = null;
+        try {
+            jsonData = await AsyncStorage.getItem(storageKey);
+        } catch (error) {
+            console.log('Error while reading db address: ' + storageKey + '. It leads to error: ' + error);
+            console.error(error);
+            return null;
+        }
+
+        // It means probably that the db has not been initialized yet.
+        if (jsonData == null) {
+            return null;
+        }
+
+        //Trying to parse data to json
+        let data = null;
+        try {
+            data = JSON.parse(jsonData);
+        } catch (error) {
+            console.log('Error while parsing json data during database reading.It leads to error: ' + error);
+            console.error(error);
+            return null;
+        }
+
+        //Return the parsed data
+        return data;
+    }
+
+
 
 
     /**
-     * New function to fetch all data if there is the need
+     * Load all the data that was stored on the db in the state.
+     */
+    async loadDataFromDB() {
+        console.log('Starting to load all data from DB.');
+
+        //Iterating over all storage keys to load content and last update date in state.
+        for (const category of Object.keys(GLOBAL.URL_STORAGE_KEY_ADDRESS)) {
+            let addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[category];
+            console.log('Reading db at addresses: ' + addressesHelper.storageKeyContent +
+                ' and ' + addressesHelper.storageKeyLastRegisteredUpdate);
+
+            let content = this._loadSingleJsonInDB(addressesHelper.storageKeyContent);
+            let lastUpdate = this._loadSingleJsonInDB(addressesHelper.storageKeyLastRegisteredUpdate);
+
+            this.setState({
+                [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: lastUpdate,
+                [addressesHelper.statePrefix + STATE_CONTENT_SUFFIX]: content,
+            });
+        }
+
+        //Loading date of last check for online updates
+        this.setState({
+            dateOfLastCheckForOnlineUpdate: this._loadSingleJsonInDB(LAST_CHECK_FOR_UPDATE_STORAGE_KEY),
+        });
+        console.log('Finished loading data to state.');
+    }
+
+
+
+    /************************  FETCH FROM WEB  ************************/
+
+    /**
+     * Fetch all data to look for update, if the last search for update was less than a specific time ago.
+     * @return {boolean} : true if an update was performed, no if no update was performed.
+     */
+    async updateIfNecessary() {
+        let lastCheck = this.state.dateOfLastCheckForOnlineUpdate;
+        let now = Date.now();
+
+        let diffInMin = MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE + 1;
+        if (lastCheck != null) {
+            diffInMin = Math.abs(now - lastCheck) / 1000 / 60;
+        }
+        if (lastCheck == null || diffInMin >= MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE) {
+            try {
+                await AsyncStorage.setItem(LAST_CHECK_FOR_UPDATE_STORAGE_KEY, JSON.stringify(now));
+            } catch (error) {
+                console.log('Error while trying to store last check for update.');
+            }
+            this.setState({ dateOfLastCheckForOnlineUpdate: now })
+            await fetchAllToUpdateIfNeeded();
+            return True;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Check with the server if there is any need to update the local content.
+     * If it is the case, download the component that needs an update and replace it in the 
+     * current state and in the database.
+     * @return {boolean} : true if an update was done on any local component, false otherwise.
     */
     async fetchAllToUpdateIfNeeded() {
-        console.log('Starting to fetch all updates if needed.');
+        console.log('Starting to look online for updates...');
+        let updateWasDone = false;
 
-        //TODO: Continue ONLY if last check is less than 1 hours or so. (So it can be updated only each hour) => stupid?
-
-        /* "lastServerUpdateArr"" will contain an array of pairs:
-        [['categoryName1', lastUpdateDate], ['categoryName2', lastUpdateDate], ...] */
+        // "lastServerUpdateArr"" will contain an array of pairs:
+        // [['categoryName1', lastUpdateDate], ['categoryName2', lastUpdateDate], ...]
         lastServerUpdateArr = await that.fetchJsonURL(URL_LAST_SERVER_UPDATES);
 
         if (lastServerUpdateArr != undefined) {
@@ -221,44 +323,29 @@ class SalonEcritureApp extends Component {
                 console.log('Last update of "' + categoryStr + '" : ' + fetchedLastUpdate);
 
                 // Get the all the urls and key storage, if the server name exists
-                addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[categoryStr];
+                let addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[categoryStr];
                 if (addressesHelper == undefined) {
                     console.log('Trying to update with nonexistent variable: ', lastServerUpdateArr[i][0]);
-                    return;
+                } else {
+                    //Getting last update state
+                    lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
+
+                    //Getting update on content if needed
+                    let pairDateContent = await this.updateContent(fetchedLastUpdate, lastRegisteredUpdate, addressesHelper.url,
+                        addressesHelper.storageKeyContent, addressesHelper.storageKeyLastRegisteredUpdate);
+
+                    //Updating states if there was an update
+                    if (pairDateContent != undefined) {
+                        updateWasDone = true;
+                        this.setState({
+                            [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: pairDateContent[0],
+                            [addressesHelper.statePrefix + STATE_CONTENT_SUFFIX]: pairDateContent[1],
+                        });
+                    }
                 }
-
-                //Getting last update state
-                lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
-
-                //Getting update on content if needed
-                let pairDateContent = await this.updateContent(fetchedLastUpdate, lastRegisteredUpdate, addressesHelper.url,
-                    addressesHelper.storageKeyContent, addressesHelper.storageKeyLastRegisteredUpdate);
-
-                if (pairDateContent != undefined) {
-                    this.setState({
-                        [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: pairDateContent[0],
-                        [addressesHelper.statePrefix + STATE_CONTENT_SUFFIX]: pairDateContent[1],
-                    });
-                }
-
-                /*
-                 J'ai quoi comme variable? J'ai :
-                 1. la string de la position dans la database des data
-                 2. la string de l'url à récupérer.
-                 3. le nom de la variable dans state =>  je sais pas si je peux la stocker avec un string ou comme ça
-                 peut etre que je pourrai mettre une fonction en argument
-                 4. le nom de la string/position dans la database de la date de la derniere update
- 
-                 je pourrai faire une méthode qui fait tt le temps la meme chose, (chercher sur internet si la 
-                 date de mise a jour dit qu'il faut le faire et update la db)
-                 et je pourrais effectuer ça 3 x avec 3 différents paramètres pour les trucs
-                 je pourrais meme créer un objet dans global qui contient les differentes strings et faire 4a en passant l'objet
-                 de global a chaque fois (a chaque fois un différent.)
-                 */
-
             }
             this.setState({ currentlyFetchingContent: false });
-            return true;
+            return updateWasDone;
         } else {
             return false;
         }
@@ -267,14 +354,23 @@ class SalonEcritureApp extends Component {
 
 
     /**
-     * Check if there is updated text content on the internet. If it is the case, fetch it to the device
-     * and store it in the database.
-     * @return {Pair} : returns [lastRegisteredServerUpdate, newContent]
+     * Check if the local and online last server update date are different. If it is the case, 
+     * fetch the new last server update date and the new content to the device and store them in the database.
+     * @param {String} lastServerUpdate : a "date" of the current last update version of the server.
+     * @param {String} lastRegisteredServerUpdate : a "date" of the last update version of the server that was
+     * locally registered.
+     * @param {String} urlContent : The url where to fetch the updated content if needed
+     * @param {String} storageKeyContent : The db storage key where to save the content to fetch
+     * @param {String} storageKeyLastRegisteredServerUpdate : The db storage key where to save the 
+     * new server update if there was a new one.
+     * @return {Pair} : returns [lastRegisteredServerUpdate, newContent] if an update was needed and
+     * returns {undefined} if no update was needed or if an exception was thrown during it.
      */
     async updateContent(lastServerUpdate, lastRegisteredServerUpdate,
         urlContent, storageKeyContent, storageKeyLastRegisteredServerUpdate) {
         // If the content must be updated
         if (lastServerUpdate != lastRegisteredServerUpdate) {
+            console.log('Update needed. Starting to look at url: ' + urlContent);
 
             // Fetch new content
             newContent = await this.fetchJsonURL(urlContent);
@@ -301,6 +397,10 @@ class SalonEcritureApp extends Component {
     }
 
 
+    
+
+    /************************  OLD METHODS (fetch from web)  ************************/
+    
 
     /**
      * Check if there is updated text content on the internet and fetch it to the device.
@@ -401,9 +501,19 @@ class SalonEcritureApp extends Component {
         console.log(this.state['test' + kkk]);
         this.setState({ ['test' + kkk]: 'a brand new world..!' })
         console.log(this.state.testText);
+        console.log('TESTING database:');
+        let testNullVal = await AsyncStorage.getItem('aKeyJustToTry00');
+        console.log(testNullVal);
+        console.log(undefined == null);
+        console.log(testNullVal == undefined);
+        let qq = Date.now();
+        let q2 = Date.now() + 78 * 1000 * 60;
+        let ww = new Date('2017/02/13 12:00');
+        let dd = Math.abs((qq - q2)) / 1000 / 60 / 60;
+        console.log('d1: ' + qq + '  d2: ' + q2 + '   diff:' + dd + '   is:' + (dd > 1));
+        // this.loadDataFromDB();
+
         // console.log(GLOBAL.URL_STORAGE_KEY_ADDRESS['dwadwad'].testURL);
-
-
     }
 }
 
