@@ -128,12 +128,11 @@ class SalonEcritureApp extends Component {
         NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
         try {
             let isConnected = await NetInfo.isConnected.fetch();
+            console.log('Network initialization: '+ isConnected);
             this.setState({ deviceIsConnected: isConnected });
             return true;
         } catch (error) {
             console.log('Problem while checking for network.')
-            // that.setState({ actualiteArticlesIsLoading: false })
-            // console.error(error);
             return false;
         }
     }
@@ -141,6 +140,10 @@ class SalonEcritureApp extends Component {
     _handleConnectivityChange = (isConnected) => {
         console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
         this.setState({ deviceIsConnected: isConnected });
+        if(isConnected){
+            console.log('Network here: will try to update if needed.');
+            this.updateFromBackendIfNecessary(); //TODO: check if it works without await...
+        }
     };
 
 
@@ -236,7 +239,10 @@ class SalonEcritureApp extends Component {
         if (lastCheck != null) {
             diffInMin = Math.abs(now - lastCheck) / 1000 / 60;
         }
-        if (lastCheck == null || diffInMin >= MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE) {
+
+        //It will execute if there is network, AND if the time has passed or if it was the first time.
+        console.log('The difference is '+diffInMin + '. Network connected: '+ this.state.deviceIsConnected);
+        if ((lastCheck == null || diffInMin >= MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE) && this.state.deviceIsConnected) {
             console.log('Update needed.');
             try {
                 await this.fetchBackendToUpdateAll();
@@ -253,7 +259,7 @@ class SalonEcritureApp extends Component {
             this.setState({ dateOfLastCheckForOnlineUpdate: now });
             return true;
         } else {
-            console.log('Update not needed.');
+            console.log('Update not needed or no connection to internet.');
             return false;
         }
     }
