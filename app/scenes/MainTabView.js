@@ -34,7 +34,7 @@ const propTypes = {
         }
         )).isRequired,
     actualitesArticlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
-    fetchArticlesFromWeb: React.PropTypes.func.isRequired,
+    fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     infosPratiquesStrings: React.PropTypes.shape({
         last_update: PropTypes.string,
         text1_dates: PropTypes.string,
@@ -72,7 +72,7 @@ class MainTabView extends Component {
                     tabLabel="ios-cafe"
                     articlesInfo={this.props.actualitesArticlesInfos}
                     articlesContent={this.props.actualitesArticlesContent}
-                    fetchArticlesFromWeb={this.props.fetchArticlesFromWeb}
+                    fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
                     loading={this.props.actualiteArticlesIsLoading}
                     goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
                 />

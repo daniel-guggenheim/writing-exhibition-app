@@ -42,21 +42,24 @@ const defaultProps = {
 class ActualitesDetails extends Component {
     constructor(props) {
         super(props);
-        this._addBackAndroidListener(props);
         this.state = {
             start: true,
         };
     }
 
-    componentDidMount(){
-        this.setState({start: false})
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        this.setState({ start: false });
     }
 
-    _addBackAndroidListener(props) {
-        BackAndroid.addEventListener('hardwareBackPress', function () {
-            props.goBackOneScene();
-            return true
-        });
+    componentWillUnmount() {
+        //Remove android back button listener
+        BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+    }
+
+    _handleAndroidBackButton = () => {
+        this.props.goBackOneScene();
+        return true;
     }
 
     get_title_string() {

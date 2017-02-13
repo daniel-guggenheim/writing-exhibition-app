@@ -50,6 +50,7 @@ module.exports = {
             statePrefix: 'programme',
         }
     },
+    URL_LAST_SERVER_UPDATES: firebaseURL + 'last_updates.json',
     GENERAL_BACKGROUND_COLOR: '#F0F3F7',
     THEME_COLOR: '#E8E0C5',
     TEXT_THEME_COLOR: '#002266',

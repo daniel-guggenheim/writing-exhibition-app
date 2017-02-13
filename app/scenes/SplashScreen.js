@@ -15,28 +15,42 @@ import { Spinner } from 'native-base';
 
 var GLOBAL = require('../global/GlobalVariables');
 
-export default class SplashScreen extends Component {
+const loadingImage = require('../images/logo/logo@4x.png');
+
+const propTypes = {
+    loadDataFromDB: React.PropTypes.func.isRequired,
+    setupNetworkObservation: React.PropTypes.func.isRequired,
+    updateFromBackendIfNecessary: React.PropTypes.func.isRequired,
+    navigator: React.PropTypes.object.isRequired,
+};
+
+
+const defaultProps = {
+};
+
+
+class SplashScreen extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             loadingText: "",
         }
     }
-    async _executeStartSetup(navigator) {
+
+
+    async _executeStartSetup() {
         let that = this;
         try {
             this.setState({ loadingText: "Chargement des données." })
-            await that.props.loadDataFromDisk();
+            await that.props.loadDataFromDB();
             this.setState({ loadingText: "Test de connexion." })
             await that.props.setupNetworkObservation();
-            this.setState({ loadingText: "Obtention des mise-à-jours..." })
-            await that.props.fetchUpdateContent();
-            this.setState({ loadingText: "Obtention des articles..." })
-            await that.props.fetchArticlesFromWeb();
+            this.setState({ loadingText: "Obtention des articles et mise-à-jours..." })
+            await that.props.updateFromBackendIfNecessary();
             // Changing view
-            navigator.replace({
+            that.props.navigator.replace({
                 index: GLOBAL.ROUTES.MainTabView, //<-- This is the View you go to
-
             });
         } catch (error) {
             console.log('Error while splash screen.')
@@ -45,7 +59,7 @@ export default class SplashScreen extends Component {
     }
 
     componentDidMount() {
-        this._executeStartSetup(this.props.navigator);
+        this._executeStartSetup();
     }
 
     render() {
@@ -53,7 +67,7 @@ export default class SplashScreen extends Component {
             <View style={styles.main}>
                 <View></View>
                 <View style={styles.logoAndTitleView}>
-                    <Image style={{ width: 100, height: 100 }} source={require('../images/logo/logo@4x.png')}></Image>
+                    <Image style={{ width: 100, height: 100 }} source={loadingImage}></Image>
                     <Text style={styles.title}>Salon de l'Écriture</Text>
                 </View>
                 <View style={styles.textAndSpinnerView}>
@@ -91,3 +105,9 @@ const styles = StyleSheet.create({
     },
 
 });
+
+
+SplashScreen.propTypes = propTypes;
+SplashScreen.defaultProps = defaultProps;
+
+export default SplashScreen;

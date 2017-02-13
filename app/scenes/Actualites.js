@@ -28,7 +28,7 @@ const propTypes = {
     }
     )).isRequired,
   articlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
-  fetchArticlesFromWeb: React.PropTypes.func.isRequired,
+  fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
   loading: React.PropTypes.bool.isRequired,
   goToActualitesDetails: React.PropTypes.func.isRequired,
 };
@@ -74,7 +74,7 @@ class Actualites extends Component {
             <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
           </Button>
           <Title>Actualités</Title>
-          <Button transparent onPress={() => this.props.fetchArticlesFromWeb()}>
+          <Button transparent onPress={() => this.props.fetchBackendToUpdateAll()}>
             <Icon name='ios-refresh' />
           </Button>
         </Header>
