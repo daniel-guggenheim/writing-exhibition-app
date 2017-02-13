@@ -77,10 +77,10 @@ class MainTabView extends Component {
                     goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
                 />
 
-                <ProgrammeSalon tabLabel="ios-list-box-outline" />
+                <ProgrammeSalon tabLabel="ios-list-box" />
 
                 <InformationsPratiques
-                    tabLabel="ios-information-circle-outline"
+                    tabLabel="ios-information-circle"
                     textFieldsContent={this.props.infosPratiquesStrings}
                 />
 

@@ -16,6 +16,13 @@ import ActualitesDetails from './app/scenes/ActualitesDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');
 
+// States name
+const STATE_CONTENT_SUFFIX = 'Content';
+const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
+
+// Global URL
+var URL_LAST_SERVER_UPDATES = "https://salonecriture.firebaseio.com/se_v001/last_updates.json";
+
 //Info pratiques URL
 var URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json';
 var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json';
@@ -28,7 +35,7 @@ var URL_ARTICLES_CONTENT = 'https://salonecriture.firebaseio.com/posts_v1_1/arti
 var INFO_PRATIQUE_STORAGE_KEY = '@infoPratiqueContent';
 var LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY = '@infoPratiqueLastCheck';
 
-//Basic JSON
+//Basic JSON - TODO: USE IT OR REMOVE IT..!
 var basicTextJSONLocation = './app/json/info_pratique_texts_template.json';
 
 //Other
@@ -46,6 +53,21 @@ class SalonEcritureApp extends Component {
             actualitesArticlesContent: null,
             infosPratiquesStrings: null,
             actualiteArticlesIsLoading: false,
+            currentlyFetchingContent: false,
+
+
+            // New states
+            [GLOBAL.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.articles_infos.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+
+            [GLOBAL.articles_html.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.articles_html.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+
+            [GLOBAL.infos_pratiques.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.infos_pratiques.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
+
+            [GLOBAL.programme.statePrefix + STATE_CONTENT_SUFFIX]: null,
+            [GLOBAL.programme.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
         };
     }
 
@@ -102,7 +124,7 @@ class SalonEcritureApp extends Component {
     }
 
     goToActualitesDetails(navigator, to_article_info, to_article_html) {
-        console.log('Goto actualite detail : '+ to_article_info.id);
+        console.log('Goto actualite detail : ' + to_article_info.id);
         navigator.push({ index: 2, article_infos: to_article_info, article_html: to_article_html });
     }
 
@@ -176,6 +198,110 @@ class SalonEcritureApp extends Component {
 
     /************************  FETCH FROM WEB  ************************/
 
+
+    /**
+     * New function to fetch all data if there is the need
+    */
+    async fetchAllToUpdateIfNeeded() {
+        console.log('Starting to fetch all updates if needed.');
+
+        //TODO: Continue ONLY if last check is less than 1 hours or so. (So it can be updated only each hour) => stupid?
+
+        /* "lastServerUpdateArr"" will contain an array of pairs:
+        [['categoryName1', lastUpdateDate], ['categoryName2', lastUpdateDate], ...] */
+        lastServerUpdateArr = await that.fetchJsonURL(URL_LAST_SERVER_UPDATES);
+
+        if (lastServerUpdateArr != undefined) {
+            this.setState({ currentlyFetchingContent: true });
+            for (i = 0; i < lastServerUpdateArr.length; i++) {
+                //Understandable variables names
+                let categoryStr = lastServerUpdateArr[i][0];
+                let fetchedLastUpdate = lastServerUpdateArr[i][1];
+
+                console.log('Last update of "' + categoryStr + '" : ' + fetchedLastUpdate);
+
+                // Get the all the urls and key storage, if the server name exists
+                addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[categoryStr];
+                if (addressesHelper == undefined) {
+                    console.log('Trying to update with nonexistent variable: ', lastServerUpdateArr[i][0]);
+                    return;
+                }
+
+                //Getting last update state
+                lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
+
+                //Getting update on content if needed
+                let pairDateContent = await this.updateContent(fetchedLastUpdate, lastRegisteredUpdate, addressesHelper.url,
+                    addressesHelper.storageKeyContent, addressesHelper.storageKeyLastRegisteredUpdate);
+
+                if (pairDateContent != undefined) {
+                    this.setState({
+                        [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: pairDateContent[0],
+                        [addressesHelper.statePrefix + STATE_CONTENT_SUFFIX]: pairDateContent[1],
+                    });
+                }
+
+                /*
+                 J'ai quoi comme variable? J'ai :
+                 1. la string de la position dans la database des data
+                 2. la string de l'url à récupérer.
+                 3. le nom de la variable dans state =>  je sais pas si je peux la stocker avec un string ou comme ça
+                 peut etre que je pourrai mettre une fonction en argument
+                 4. le nom de la string/position dans la database de la date de la derniere update
+ 
+                 je pourrai faire une méthode qui fait tt le temps la meme chose, (chercher sur internet si la 
+                 date de mise a jour dit qu'il faut le faire et update la db)
+                 et je pourrais effectuer ça 3 x avec 3 différents paramètres pour les trucs
+                 je pourrais meme créer un objet dans global qui contient les differentes strings et faire 4a en passant l'objet
+                 de global a chaque fois (a chaque fois un différent.)
+                 */
+
+            }
+            this.setState({ currentlyFetchingContent: false });
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Check if there is updated text content on the internet. If it is the case, fetch it to the device
+     * and store it in the database.
+     * @return {Pair} : returns [lastRegisteredServerUpdate, newContent]
+     */
+    async updateContent(lastServerUpdate, lastRegisteredServerUpdate,
+        urlContent, storageKeyContent, storageKeyLastRegisteredServerUpdate) {
+        // If the content must be updated
+        if (lastServerUpdate != lastRegisteredServerUpdate) {
+
+            // Fetch new content
+            newContent = await this.fetchJsonURL(urlContent);
+
+            if (newContent != undefined) {
+                try {
+
+                    //Store new content and new update date in local db
+                    await AsyncStorage.multiSet([
+                        [storageKeyContent, JSON.stringify(newContent)],
+                        [storageKeyLastRegisteredServerUpdate, JSON.stringify(lastRegisteredServerUpdate)]]);
+
+                    return [lastRegisteredServerUpdate, newContent];
+
+                } catch (error) {
+                    console.log('Error while trying to store in database at address: '
+                        + storageKeyContent + ' or ' + storageKeyLastRegisteredServerUpdate);
+                    console.error(error); // TODO: remove error
+                }
+            }
+        }
+        // If no updates or any problem during fetch / db update, withdraw to previous state
+        return undefined;
+    }
+
+
+
     /**
      * Check if there is updated text content on the internet and fetch it to the device.
      * Gerer les cas hors connexion!!!
@@ -187,13 +313,12 @@ class SalonEcritureApp extends Component {
             newLastServerUpdateDate = await that.fetchJsonURL(URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES);
         } catch (error) {
             console.log('Error while fetching date.')
-            that.setState({ actualiteArticlesIsLoading: false })
             console.error(error);
         }
         console.log('last online update = ' + newLastServerUpdateDate);
         try {
             if (newLastServerUpdateDate != undefined && newLastServerUpdateDate != that.state.lastServerUpdateDate) {
-                that.setState({ actualiteArticlesIsLoading: true })
+                that.setState({ currentlyFetchingContent: true });
                 let newContent = await that.fetchJsonURL(INFO_PRATIQUE_TEXT_CONTENT_URL);
                 let now = Date.now();
 
@@ -212,7 +337,7 @@ class SalonEcritureApp extends Component {
             }
         } catch (error) {
             console.log('Error while fetching updated content.')
-            that.setState({ actualiteArticlesIsLoading: false })
+            that.setState({ currentlyFetchingContent: false })
             console.error(error);
         }
     }
@@ -225,14 +350,15 @@ class SalonEcritureApp extends Component {
     async fetchJsonURL(url) {
         this.setState({ actualiteArticlesIsLoading: true });
         try {
+            console.log('Fetching JSON from URL: ' + url);
             let response = await fetch(url);
             let responseJson = await response.json();
-            console.log('Fetching JSON from URL: ' + url + '\n So the response is: ' + responseJson)
+            // console.log('Fetching JSON from URL: ' + url + '\n So the response is: ' + responseJson)
             this.setState({ actualiteArticlesIsLoading: false });
             return responseJson;
         } catch (error) {
             console.log('Error while fetching json with url: ', url);
-            console.error(error);
+            // console.error(error);
             this.setState({ actualiteArticlesIsLoading: false });
             return undefined;
         }
@@ -245,13 +371,39 @@ class SalonEcritureApp extends Component {
     async fetchArticlesFromWeb() {
         let actualitesArticlesInfos = await this.fetchJsonURL(URL_ARTICLES_INFOS);
         let actualitesArticlesContent = await this.fetchJsonURL(URL_ARTICLES_CONTENT);
-        if (actualitesArticlesInfos != undefined) {
+        console.log('TESTING FETCH ALL UPDATE! :)');
+        // let testAllUpdt = await this.fetchAllToUpdateIfNeeded();
+        // console.log('lol')
+        // if (testAllUpdt) {
+        //     console.log('test?');
+        // }
+        if (actualitesArticlesInfos != undefined && actualitesArticlesContent != undefined) {
             this.setState({
                 actualitesArticlesInfos: actualitesArticlesInfos,
                 actualitesArticlesContent: actualitesArticlesContent,
             });
         }
+        console.log('Array tests:');
+        aa = [['aa', 1], ['bb', 2], ['cc', 3]];
+        for (i = 0; i < aa.length; i++) {
+            console.log(aa[i][0] + ' and ' + aa[i][1]);
+        }
+        [aaa, bbb] = ['hey', [1, 2, 3]];
+        // [aaa,bbb] = undefined;
+        console.log('TESTING UNDEF');
+        console.log(aaa);
+        console.log(bbb[1]);
         console.log('Finished fetching articles from the web. ');
+        // console.log(GLOBAL.URL_STORAGE_KEY_ADDRESS['infos_pratiques'].testURL);
+        console.log('testaa: ' + GLOBAL.URL_STORAGE_KEY_ADDRESS['dwadwad']);
+        var kkk = 'Text';
+        console.log('TESTING dynamic state:');
+        console.log(this.state['test' + kkk]);
+        this.setState({ ['test' + kkk]: 'a brand new world..!' })
+        console.log(this.state.testText);
+        // console.log(GLOBAL.URL_STORAGE_KEY_ADDRESS['dwadwad'].testURL);
+
+
     }
 }
 
