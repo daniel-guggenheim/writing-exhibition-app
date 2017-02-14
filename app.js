@@ -28,6 +28,8 @@ class SalonEcritureApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            variableTest: null,
+
             deviceIsConnected: null,
             currentlyFetchingContent: false,
             dateOfLastCheckForOnlineUpdate: null,

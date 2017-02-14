@@ -19,6 +19,9 @@ import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 import MaterialDesignTheme from '../themes/MaterialDesignTheme';
 
+import jsonDefaultContent from '../json/infos_pratiques_default_test.json';
+
+
 /**
 This part is about having practical information about the salon.
 The challenge was to make it work online AND offline, and to update offline information
@@ -61,13 +64,15 @@ const propTypes = {
         addr1: PropTypes.string,
         name: PropTypes.string,
         gps_addr: PropTypes.string,
-      }
+      },
       )),
-  }).isRequired,
+  }),
 };
 
 const defaultProps = {
 };
+
+
 
 class InformationsPratiques extends Component {
 
@@ -85,9 +90,15 @@ class InformationsPratiques extends Component {
   /** ---------------------------- RENDER FUNCTION ---------------------------- */
 
   render() {
+
+    let textContent = this.props.textFieldsContent;
+    if (textContent == null) {
+      textContent = jsonDefaultContent;
+    }
+
     let deviceIsConnected = this.props.deviceIsConnected;
     let loadingContentUpdate = false;
-    let lieux = this.props.textFieldsContent.lieux;
+    let lieux = textContent.lieux;
 
     return (
       <Container theme={myTheme}>

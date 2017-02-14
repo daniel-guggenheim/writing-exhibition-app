@@ -36,7 +36,6 @@ const propTypes = {
     articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
     fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     infosPratiquesContent: React.PropTypes.shape({
-        last_update: PropTypes.string,
         text1_dates: PropTypes.string,
         text2_horaires: PropTypes.string,
         lieux: React.PropTypes.arrayOf(
@@ -46,7 +45,7 @@ const propTypes = {
                 gps_addr: PropTypes.string,
             }
             )),
-    }).isRequired, //TODO: remove the isRequired
+    }),
     programmeContent: React.PropTypes.object.isRequired, //TODO: remove the isRequired
     actualiteArticlesIsLoading: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
