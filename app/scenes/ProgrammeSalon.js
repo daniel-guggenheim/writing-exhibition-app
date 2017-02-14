@@ -9,46 +9,12 @@ import {
   WebView
 } from 'react-native';
 import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
-import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 
 var GLOBAL = require('../global/GlobalVariables');
 var logo_icon = require("../images/logo/logo.png");
 
-
-
-var DomParser = require('react-native-html-parser').DOMParser;
-
 export default class ProgrammeSalon extends Component {
-
-  
-  componentDidMount() {
-    // let html = `<html>
-    //                     <body>
-    //                         <div id="b">
-    //                             <a href="example.org">
-    //                             <div class="inA">
-    //                                 <br>bbbb</br>
-    //                             </div>
-    //                         </div>
-    //                         <div class="bb">
-    //                             Test
-    //                         </div>
-    //                     </body>
-    //                 </html>`
-    // let doc = new DomParser().parseFromString(html, 'text/html')
-    // console.log('---------------TESTING------------------------')
-    // console.log("doc.querySelect('#b .inA')");
-    // var a = doc.querySelect('#b .inA');
-    // // console.log(a);
-    // console.log("doc.getElementsByTagName('a')")
-    // var b = doc.getElementsByTagName('a')
-    // console.log("doc.querySelect('#b a[href=\"example.org\"]')")
-    // var c = doc.querySelect('#b a[href="example.org"]')
-  }
-
-
-
 
   render() {
     return (

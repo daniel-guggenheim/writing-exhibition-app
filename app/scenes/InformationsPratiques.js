@@ -56,6 +56,7 @@ var lieux_images_sources_by_id = [
 
 
 const propTypes = {
+  loadingContentUpdate: React.PropTypes.bool,
   textFieldsContent: React.PropTypes.shape({
     text1_dates: PropTypes.string,
     text2_horaires: PropTypes.string,
@@ -70,6 +71,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  loadingContentUpdate: false,
 };
 
 
@@ -96,8 +98,7 @@ class InformationsPratiques extends Component {
       textContent = jsonDefaultContent;
     }
 
-    let deviceIsConnected = this.props.deviceIsConnected;
-    let loadingContentUpdate = false;
+    let loadingContentUpdate = this.props.loadingContentUpdate;
     let lieux = textContent.lieux;
 
     return (
@@ -107,13 +108,6 @@ class InformationsPratiques extends Component {
         </Header>
 
         <Content style={styles.content}>
-          {/*Offline component*/}
-          {!deviceIsConnected && deviceIsConnected != null ?
-            <View>
-              <Text style={styles.offlineText}>Hors ligne</Text>
-            </View>
-            : null
-          }
           {loadingContentUpdate ?
             <View style={styles.loadingContent}>
               <Text>Mise-à-jour</Text>
@@ -377,11 +371,6 @@ const styles = StyleSheet.create({
 
 
 
-  offlineText: {
-    textAlign: 'center',
-    color: 'red',
-    fontStyle: 'italic',
-  },
   loadingContent: {
     alignItems: 'center',
     marginBottom: 8,
