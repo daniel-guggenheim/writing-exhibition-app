@@ -99,7 +99,9 @@ class Actualites extends Component {
     let articlesHTML = this.props.articlesContent;
 
     //Test if the array is defined
-    if (typeof articles != "undefined" && articles != null && articles.length > 0) {
+    if (typeof articles != "undefined" && articles != null && articles.length > 0 &&
+      typeof articlesHTML != "undefined" && articlesHTML != null && articlesHTML.length > 0 &&
+      articles.length == articlesHTML.length) {
       // Return list of articles
       return (
         <List dataArray={articles} renderRow={(article) =>
@@ -130,7 +132,7 @@ class Actualites extends Component {
             success
             onPress={() => this.props.fetchBackendToUpdateAll()}
             style={styles.emptyArticlesButton}>
-              Rafraîchir la page
+            Rafraîchir la page
           </Button>
         </View>
       );
