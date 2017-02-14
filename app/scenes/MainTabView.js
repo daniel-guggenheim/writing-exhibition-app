@@ -24,7 +24,7 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 
 
 const propTypes = {
-    actualitesArticlesInfos: React.PropTypes.arrayOf(
+    articlesInfosContent: React.PropTypes.arrayOf(
         React.PropTypes.shape({
             category: PropTypes.string,
             date: PropTypes.string,
@@ -33,9 +33,9 @@ const propTypes = {
             title: PropTypes.string,
         }
         )),
-    actualitesArticlesContent:React.PropTypes.arrayOf(PropTypes.string),
+    articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
     fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
-    infosPratiquesStrings: React.PropTypes.shape({
+    infosPratiquesContent: React.PropTypes.shape({
         last_update: PropTypes.string,
         text1_dates: PropTypes.string,
         text2_horaires: PropTypes.string,
@@ -46,7 +46,8 @@ const propTypes = {
                 gps_addr: PropTypes.string,
             }
             )),
-    }).isRequired,
+    }).isRequired, //TODO: remove the isRequired
+    programmeContent: React.PropTypes.object.isRequired, //TODO: remove the isRequired
     actualiteArticlesIsLoading: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
 };
@@ -64,23 +65,25 @@ class MainTabView extends Component {
                 renderTabBar={() => <MainTabBar />}
                 tabBarPosition='bottom'
                 tabBarBackgroundColor={'#E8E0C5'}
-                initialPage={0}
-            >
+                initialPage={0} >
 
                 <Actualites
                     tabLabel="ios-cafe"
-                    articlesInfo={this.props.actualitesArticlesInfos}
-                    articlesContent={this.props.actualitesArticlesContent}
+                    articlesInfo={this.props.articlesInfosContent}
+                    articlesContent={this.props.articlesHtmlContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
                     loading={this.props.actualiteArticlesIsLoading}
                     goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
                 />
 
-                <ProgrammeSalon tabLabel="ios-list-box" />
+                <ProgrammeSalon
+                    tabLabel="ios-list-box"
+                    programmeContent={this.props.programmeContent}
+                />
 
                 <InformationsPratiques
                     tabLabel="ios-information-circle"
-                    textFieldsContent={this.props.infosPratiquesStrings}
+                    textFieldsContent={this.props.infosPratiquesContent}
                 />
 
             </ScrollableTabView>

@@ -24,27 +24,15 @@ const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
 const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 0;
 const LAST_CHECK_FOR_UPDATE_STORAGE_KEY = '@dateOfLastCheckForOnlineUpdate';
 
-//Other
-var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
-
 class SalonEcritureApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            testText: 'hey',
-            lastCheckForOnlineUpdate: null,
-            lastServerUpdateDate: null,
-            actualitesArticlesInfos: null,
-            actualitesArticlesContent: null,
-            infosPratiquesStrings: null,
-            actualiteArticlesIsLoading: false,
-
-
-            // New states
             deviceIsConnected: null,
             currentlyFetchingContent: false,
             dateOfLastCheckForOnlineUpdate: null,
 
+            // These are the different states of each subcomponent
             [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]: null,
             [GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
 
@@ -88,10 +76,9 @@ class SalonEcritureApp extends Component {
                 />;
             case GLOBAL.ROUTES.MainTabView:
                 return <MainTabView
-                    deviceIsConnected={this.state.deviceIsConnected}
-                    infosPratiquesStrings={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.infos_pratiques.statePrefix + STATE_CONTENT_SUFFIX]}
-                    actualitesArticlesInfos={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]}
-                    actualitesArticlesContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_html.statePrefix + STATE_CONTENT_SUFFIX]}
+                    infosPratiquesContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.infos_pratiques.statePrefix + STATE_CONTENT_SUFFIX]}
+                    articlesInfosContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_infos.statePrefix + STATE_CONTENT_SUFFIX]}
+                    articlesHtmlContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_html.statePrefix + STATE_CONTENT_SUFFIX]}
                     programmeContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_CONTENT_SUFFIX]}
                     fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
                     actualiteArticlesIsLoading={this.state.currentlyFetchingContent}
@@ -128,7 +115,7 @@ class SalonEcritureApp extends Component {
         NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
         try {
             let isConnected = await NetInfo.isConnected.fetch();
-            console.log('Network initialization: '+ isConnected);
+            console.log('Network initialization: ' + isConnected);
             this.setState({ deviceIsConnected: isConnected });
             return true;
         } catch (error) {
@@ -140,7 +127,7 @@ class SalonEcritureApp extends Component {
     _handleConnectivityChange = (isConnected) => {
         console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
         this.setState({ deviceIsConnected: isConnected });
-        if(isConnected){
+        if (isConnected) {
             console.log('Network here: will try to update if needed.');
             this.updateFromBackendIfNecessary(); //TODO: check if it works without await...
         }
@@ -149,7 +136,6 @@ class SalonEcritureApp extends Component {
 
 
     /************************  LOAD FROM DISK  ************************/
-
 
 
     /**
@@ -179,7 +165,6 @@ class SalonEcritureApp extends Component {
         });
         console.log('Finished loading data to state.');
     }
-
 
 
     /**
@@ -241,7 +226,7 @@ class SalonEcritureApp extends Component {
         }
 
         //It will execute if there is network, AND if the time has passed or if it was the first time.
-        console.log('The difference is '+diffInMin + '. Network connected: '+ this.state.deviceIsConnected);
+        console.log('The difference is ' + diffInMin + '. Network connected: ' + this.state.deviceIsConnected);
         if ((lastCheck == null || diffInMin >= MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE) && this.state.deviceIsConnected) {
             console.log('Update needed.');
             try {
@@ -372,178 +357,17 @@ class SalonEcritureApp extends Component {
      * @return {JSON} map between text keys and text content {strings}
      */
     async _fetchJsonURL(url) {
-        this.setState({ actualiteArticlesIsLoading: true });
         try {
             console.log('Fetching JSON from URL: ' + url);
             let response = await fetch(url);
             let responseJson = await response.json();
             // console.log('Fetching JSON from URL: ' + url + '\n So the response is: ' + responseJson)
-            this.setState({ actualiteArticlesIsLoading: false });
             return responseJson;
         } catch (error) {
             console.log('Error while fetching json with url: ', url);
             // console.error(error);
-            this.setState({ actualiteArticlesIsLoading: false });
             return undefined;
         }
-    }
-
-
-
-
-    /************************  OLD METHODS (fetch from web and load from db)  ************************/
-
-
-
-    // Last update URL
-    // var URL_LAST_SERVER_UPDATES = "https://salonecriture.firebaseio.com/se_v001/last_updates.json";
-
-    //Info pratiques URL
-    // var URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json';
-    // var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json';
-
-    // Articles URL
-    // var URL_ARTICLES_INFOS = 'https://salonecriture.firebaseio.com/posts_v1_1/articles_info.json';
-    // var URL_ARTICLES_CONTENT = 'https://salonecriture.firebaseio.com/posts_v1_1/articles_html.json';
-
-    //Storage keys
-    // var INFO_PRATIQUE_STORAGE_KEY = '@infoPratiqueContent';
-    // var LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY = '@infoPratiqueLastCheck';
-
-    //Basic JSON - TODO: USE IT OR REMOVE IT..!
-    // var basicTextJSONLocation = './app/json/info_pratique_texts_template.json';
-
-
-
-    /**
-     * Load information pratique from disk
-     * TODO: Load from json if failed to load from disk
-     */
-    async loadDataFromDisk() {
-        console.log('Entering initial loading...');
-        try {
-            let textContentLocalDB = await AsyncStorage.getItem(INFO_PRATIQUE_STORAGE_KEY);
-            if (textContentLocalDB !== null) {
-                let lastCheckLocalDB = await AsyncStorage.getItem(LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY);
-                console.log('Done getting infos from disk...');
-                console.log('Last check from local DB: ' + lastCheckLocalDB);
-                // console.log('Text from local DB: ' + textContentLocalDB);
-
-                let parsedTextContentLocalDB = JSON.parse(textContentLocalDB);
-                let parsedlastCheckLocalDB = JSON.parse(lastCheckLocalDB);
-                this.setState({
-                    infosPratiquesStrings: parsedTextContentLocalDB,
-                    lastCheckForOnlineUpdate: parsedlastCheckLocalDB,
-                    lastServerUpdateDate: parsedTextContentLocalDB.last_update
-                });
-                // this.forceUpdate();
-            } else {
-                console.log('Nothing on disk... Initializing basic template...');
-                // TODO: Initialize basic text content json
-                // let basicTextContentJSON = require(basicTextJSONLocation);
-                // this.setState({infosPratiquesStrings: basicTextContentJSON});
-            }
-        } catch (error) {
-            console.log('AsyncStorage error: ' + error);
-        }
-        // console.log('------------------- AFTER INSIDE STORAGE ---------------');
-        // console.log(this.state.infosPratiquesStrings)
-    };
-
-
-
-
-    /**
-     * Check if there is updated text content on the internet and fetch it to the device.
-     * Gerer les cas hors connexion!!!
-     */
-    async fetchUpdateContent() {
-        var that = this;
-        let newLastServerUpdateDate = undefined;
-        try {
-            newLastServerUpdateDate = await that._fetchJsonURL(URL_LAST_SERVER_UPDATE_INFOS_PRATIQUES);
-        } catch (error) {
-            console.log('Error while fetching date.')
-            console.error(error);
-        }
-        console.log('last online update = ' + newLastServerUpdateDate);
-        try {
-            if (newLastServerUpdateDate != undefined && newLastServerUpdateDate != that.state.lastServerUpdateDate) {
-                that.setState({ currentlyFetchingContent: true });
-                let newContent = await that._fetchJsonURL(INFO_PRATIQUE_TEXT_CONTENT_URL);
-                let now = Date.now();
-
-                //Store data in local db
-                await AsyncStorage.multiSet([
-                    [INFO_PRATIQUE_STORAGE_KEY, JSON.stringify(newContent)],
-                    [LAST_CHECK_FOR_ONLINE_UPDATE_STORAGE_KEY, JSON.stringify(now)]]);
-
-                //Update date and data
-                that.setState({
-                    lastServerUpdateDate: newLastServerUpdateDate,
-                    lastCheckForOnlineUpdate: now,
-                    infosPratiquesStrings: newContent,
-                    actualiteArticlesIsLoading: false,
-                });
-            }
-        } catch (error) {
-            console.log('Error while fetching updated content.')
-            that.setState({ currentlyFetchingContent: false })
-            console.error(error);
-        }
-    }
-
-
-
-    /**
-     * Fetch all articles from the web. Change the state with the fetched Json.
-     */
-    async fetchArticlesFromWeb() {
-        let actualitesArticlesInfos = await this._fetchJsonURL(URL_ARTICLES_INFOS);
-        let actualitesArticlesContent = await this._fetchJsonURL(URL_ARTICLES_CONTENT);
-        console.log('TESTING FETCH ALL UPDATE! :)');
-        // let testAllUpdt = await this.fetchAllToUpdateIfNeeded();
-        // console.log('lol')
-        // if (testAllUpdt) {
-        //     console.log('test?');
-        // }
-        if (actualitesArticlesInfos != undefined && actualitesArticlesContent != undefined) {
-            this.setState({
-                actualitesArticlesInfos: actualitesArticlesInfos,
-                actualitesArticlesContent: actualitesArticlesContent,
-            });
-        }
-        console.log('Array tests:');
-        aa = [['aa', 1], ['bb', 2], ['cc', 3]];
-        for (i = 0; i < aa.length; i++) {
-            console.log(aa[i][0] + ' and ' + aa[i][1]);
-        }
-        [aaa, bbb] = ['hey', [1, 2, 3]];
-        // [aaa,bbb] = undefined;
-        console.log('TESTING UNDEF');
-        console.log(aaa);
-        console.log(bbb[1]);
-        console.log('Finished fetching articles from the web. ');
-        // console.log(GLOBAL.URL_STORAGE_KEY_ADDRESS['infos_pratiques'].testURL);
-        console.log('testaa: ' + GLOBAL.URL_STORAGE_KEY_ADDRESS['dwadwad']);
-        var kkk = 'Text';
-        console.log('TESTING dynamic state:');
-        console.log(this.state['test' + kkk]);
-        this.setState({ ['test' + kkk]: 'a brand new world..!' })
-        console.log(this.state.testText);
-        console.log('TESTING database:');
-        let testNullVal = await AsyncStorage.getItem('aKeyJustToTry00');
-        console.log(testNullVal);
-        console.log(undefined == null);
-        console.log(testNullVal == undefined);
-        let qq = Date.now();
-        let q2 = Date.now() + 78 * 1000 * 60;
-        let ww = new Date('2017/02/13 12:00');
-        let dd = Math.abs((qq - q2)) / 1000 / 60 / 60;
-        console.log('d1: ' + qq + '  d2: ' + q2 + '   diff:' + dd + '   is:' + (dd > 1));
-        // this.loadDataFromDB();
-
-        // console.log(GLOBAL.URL_STORAGE_KEY_ADDRESS['dwadwad'].testURL);
     }
 }
 
