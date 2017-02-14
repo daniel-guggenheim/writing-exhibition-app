@@ -42,11 +42,7 @@ Check if internet connexion && update was not done already the same hour:
  */
 
 var GLOBAL = require('../global/GlobalVariables');
-var LAST_ONLINE_UPDATE_URL = 'https://salonecriture.firebaseio.com/infos_pratiques/last_update.json'
-var INFO_PRATIQUE_TEXT_CONTENT_URL = 'https://salonecriture.firebaseio.com/infos_pratiques.json'
-var INFO_PRATIQUE_STORAGE_KEY = '@infoPratiqueContent';
-var LAST_CHECK_STORAGE_KEY = '@infoPratiqueLastCheck';
-var basicTextJSONLocation = '../json/info_pratique_texts_template.json';
+
 var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 
 var lieux_images_sources_by_id = [
@@ -58,7 +54,6 @@ var lieux_images_sources_by_id = [
 
 const propTypes = {
   textFieldsContent: React.PropTypes.shape({
-    last_update: PropTypes.string,
     text1_dates: PropTypes.string,
     text2_horaires: PropTypes.string,
     lieux: React.PropTypes.arrayOf(

@@ -32,8 +32,8 @@ const propTypes = {
             intro: PropTypes.string,
             title: PropTypes.string,
         }
-        )).isRequired,
-    actualitesArticlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
+        )),
+    actualitesArticlesContent:React.PropTypes.arrayOf(PropTypes.string),
     fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     infosPratiquesStrings: React.PropTypes.shape({
         last_update: PropTypes.string,
@@ -52,7 +52,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-    text: 'Hello World',
 };
 
 

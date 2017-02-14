@@ -26,8 +26,8 @@ const propTypes = {
       intro: PropTypes.string,
       title: PropTypes.string,
     }
-    )).isRequired,
-  articlesContent:React.PropTypes.arrayOf(PropTypes.string).isRequired,
+    )),
+  articlesContent: React.PropTypes.arrayOf(PropTypes.string),
   fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
   loading: React.PropTypes.bool.isRequired,
   goToActualitesDetails: React.PropTypes.func.isRequired,
@@ -35,6 +35,8 @@ const propTypes = {
 
 
 const defaultProps = {
+  articlesInfo: [],
+  articlesContent: [],
 };
 
 
@@ -63,6 +65,8 @@ class Actualites extends Component {
     }
   }
 
+
+
   render() {
     let articles = this.props.articlesInfo;
     let articlesHTML = this.props.articlesContent;
@@ -80,54 +84,64 @@ class Actualites extends Component {
         </Header>
 
         <Content>
-          {this.props.loading ? <Spinner /> : <List dataArray={articles} renderRow={(article) =>
-            <ListItem button onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}>
-              <View>
-                <View style={styles.categoryAndDate}>
-                  <View style={styles.categoryWithSquare}>
-                    {/*<Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />*/}
-                    <Text style={styles.category}>{article.category}</Text>
-                  </View>
-                  <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
-                </View>
-                <View>
-                  <Text style={styles.titreArticle}>{article.title}</Text>
-                  <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
-                </View>
-              </View>
-            </ListItem>
-          } />}
+          {this.props.loading ?
+            <View style={styles.spinnerView}><Spinner /></View> :
+            this._renderArticlesList()}
         </Content>
-
-        {/*<Footer>
-          <FooterTab>
-            <Button transparent disabled>
-              <Icon name='ios-cafe' />
-              Actualités
-            </Button>
-
-            <Button transparent onPress={Actions.programmeSalon}>
-              <Icon name='ios-list-box-outline' />
-              <Text>Programme</Text>
-            </Button>
-
-            {/*<Button transparent onPress={Actions.plans}>
-              <Icon name='ios-map-outline' />
-              Plan des sites
-            </Button>/}
-
-            <Button transparent onPress={Actions.informationsPratiques}>
-              <Icon name='ios-information-circle-outline' />
-              <Text>Informations</Text>
-            </Button>
-          </FooterTab>
-        </Footer>*/}
       </Container>
     );
+  }
+
+
+
+  _renderArticlesList() {
+    let articles = this.props.articlesInfo;
+    let articlesHTML = this.props.articlesContent;
+
+    //Test if the array is defined
+    if (typeof articles != "undefined" && articles != null && articles.length > 0) {
+      // Return list of articles
+      return (
+        <List dataArray={articles} renderRow={(article) =>
+          <ListItem button onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}>
+            <View>
+              <View style={styles.categoryAndDate}>
+                <View style={styles.categoryWithSquare}>
+                  {/*<Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />*/}
+                  <Text style={styles.category}>{article.category}</Text>
+                </View>
+                <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
+              </View>
+              <View>
+                <Text style={styles.titreArticle}>{article.title}</Text>
+                <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
+              </View>
+            </View>
+          </ListItem>
+        } />
+      );
+
+    } else {
+      //A page with an empty list of articles.
+      return (
+        <View style={styles.emptyArticlesView}>
+          <Text style={styles.emptyArticlesText}>Connectez-vous à Internet pour télécharger les derniers articles.</Text>
+          <Button
+            success
+            onPress={() => this.props.fetchBackendToUpdateAll()}
+            style={styles.emptyArticlesButton}>
+              Rafraîchir la page
+          </Button>
+        </View>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  spinnerView: {
+    alignItems: 'center',
+  },
   categoryAndDate: {
     flex: 1,
     flexDirection: 'row',
@@ -160,6 +174,26 @@ const styles = StyleSheet.create({
   },
   introArticle: {
 
+  },
+
+
+  //Empty articles view:
+  emptyArticlesView: {
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // flex: 1,
+    // backgroundColor: 'orange',
+    // textAlign:'center',
+    // flexDirection: 'row',
+
+  },
+  emptyArticlesText: {
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  emptyArticlesButton: {
+    marginTop: 16,
+    alignSelf: 'center',
   },
 });
 

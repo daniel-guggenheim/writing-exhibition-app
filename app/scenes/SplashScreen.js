@@ -47,7 +47,7 @@ class SplashScreen extends Component {
             this.setState({ loadingText: "Test de connexion." })
             await that.props.setupNetworkObservation();
             this.setState({ loadingText: "Obtention des articles et mise-à-jours..." })
-            await that.props.updateFromBackendIfNecessary();
+            that.props.updateFromBackendIfNecessary();
             // Changing view
             that.props.navigator.replace({
                 index: GLOBAL.ROUTES.MainTabView, //<-- This is the View you go to
