@@ -45,6 +45,11 @@ class SalonEcritureApp extends Component {
             [GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_CONTENT_SUFFIX]: null,
             [GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_LAST_UPDATE_SUFFIX]: null,
         };
+        //Maybe useful, in case of "strict" js especially 
+        // this._loadSingleJsonInDB = this._loadSingleJsonInDB.bind(this);
+        // this.fetchBackendToUpdateAll = this.fetchBackendToUpdateAll.bind(this);
+        // this._updateContent = this._updateContent.bind(this);
+        // this._fetchJsonURL = this._fetchJsonURL.bind(this);
     }
 
     //TODO: the same for component didmount?? (enfin le contraire)
@@ -279,7 +284,7 @@ class SalonEcritureApp extends Component {
                     console.log('Trying to update with nonexistent variable: ', lastServerUpdateArr[i][0]);
                 } else {
                     //Getting last update state
-                    lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
+                    let lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
 
                     //Getting update on content if needed
                     let pairDateContent = await this._updateContent(fetchedLastUpdate, lastRegisteredUpdate, addressesHelper.url,
@@ -337,7 +342,7 @@ class SalonEcritureApp extends Component {
                         [storageKeyContent, JSON.stringify(newContent)],
                         [storageKeyLastRegisteredServerUpdate, JSON.stringify(lastServerUpdate)]]);
 
-                    return [lastRegisteredServerUpdate, newContent];
+                    return [lastServerUpdate, newContent];
 
                 } catch (error) {
                     console.log('Error while trying to store in database at address: '
