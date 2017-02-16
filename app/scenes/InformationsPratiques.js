@@ -54,6 +54,8 @@ var lieux_images_sources_by_id = [
   require("../images/lieux/echichens.jpg")
 ];
 
+var logo_icon = require("../images/logo/logo.png");
+
 
 const propTypes = {
   loadingContentUpdate: React.PropTypes.bool,
@@ -104,6 +106,9 @@ class InformationsPratiques extends Component {
     return (
       <Container theme={myTheme}>
         <Header>
+          <Button transparent disabled>
+            <Image resizeMode={"contain"} style={{ width: 32 }} source={logo_icon} />
+          </Button>
           <Title>Informations Pratiques</Title>
         </Header>
 

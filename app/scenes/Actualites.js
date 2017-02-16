@@ -4,6 +4,7 @@ import {
   AppRegistry,
   StyleSheet,
   Image,
+  RefreshControl
 } from 'react-native';
 import { Footer, FooterTab, Spinner, Text, View, Content, Container, Header, Title, Button, Icon, ListItem, List } from 'native-base';
 import myTheme from '../themes/myTheme';
@@ -46,10 +47,21 @@ class Actualites extends Component {
     super(props);
     this.state = {
       last_update: 'never',
+       refreshing: false,
     }
     moment.locale('fr');
   }
-
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.props.fetchBackendToUpdateAll()
+    .then(() => {
+      this.setState({refreshing: false});
+    })
+    .catch((error) => {
+      console.log('Error while refreshing data in articles actualites.');
+      this.setState({refreshing: false});
+    });
+  }
   getFormatedDate(strDate) {
     let momentDate = moment(strDate, "YYYY-MM-DD");
     let diffInDays = moment().diff(momentDate, 'days');
@@ -77,19 +89,19 @@ class Actualites extends Component {
       <Container theme={myTheme}>
         <Header>
           <Button transparent disabled>
-            <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
+            <Image resizeMode={"contain"} style={{ width: 32 }} source={logo_icon} />
           </Button>
           <Title>Actualités</Title>
-          <Button transparent onPress={() => this.props.fetchBackendToUpdateAll()}>
+          {/*<Button transparent onPress={() => this.props.fetchBackendToUpdateAll()}>
             <Icon name='ios-refresh' />
-          </Button>
+          </Button>*/}
         </Header>
 
-        <Content>
+        <View>
           {this.props.loading ?
             <View style={styles.spinnerView}><Spinner /></View> :
             this._renderArticlesList()}
-        </Content>
+        </View>
       </Container>
     );
   }
@@ -106,23 +118,30 @@ class Actualites extends Component {
       articles.length == articlesHTML.length) {
       // Return list of articles
       return (
-        <List dataArray={articles} renderRow={(article) =>
-          <ListItem button onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}>
-            <View>
-              <View style={styles.categoryAndDate}>
-                <View style={styles.categoryWithSquare}>
-                  {/*<Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />*/}
-                  <Text style={styles.category}>{article.category}</Text>
-                </View>
-                <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
-              </View>
+        <List dataArray={articles}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
+          renderRow={(article) =>
+            <ListItem button onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}>
               <View>
-                <Text style={styles.titreArticle}>{article.title}</Text>
-                <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
+                <View style={styles.categoryAndDate}>
+                  <View style={styles.categoryWithSquare}>
+                    {/*<Icon name='ios-square' style={[styles.categorySquare, { color: 'blue' }]} />*/}
+                    <Text style={styles.category}>{article.category}</Text>
+                  </View>
+                  <Text style={styles.date}>{this.getFormatedDate(article.date)}</Text>
+                </View>
+                <View>
+                  <Text style={styles.titreArticle}>{article.title}</Text>
+                  <Text style={styles.introArticle} numberOfLines={3}>{article.intro}</Text>
+                </View>
               </View>
-            </View>
-          </ListItem>
-        } />
+            </ListItem>
+          } />
       );
 
     } else {

@@ -19,6 +19,15 @@ var logo_icon = require("../images/logo/logo.png");
 
 
 var exampleData = {
+  titles: ['Jeudi 2 mars', 'Vendredi 3 mars', 'Samedi 4 mars', 'Expositions permanentes'],
+  expoPermanente: [
+    {
+      text: "Antenne de l'hôte d'honneur (Cameroun) : Alphabet a ka u ku du Sultan Njoya, roi des Bamoun, Institut Ebena, France",
+      location: "Echichens",
+
+    }
+
+  ],
   day1: [
     {
       schedule: '17h00',
@@ -88,28 +97,17 @@ export default class ProgrammeSalon extends Component {
 
   render() {
     programme = exampleData;
-    day1Title = 'Jeudi 2 mars';
-    day2Title = 'Vendredi 3 mars';
-    day3Title = 'Samedi 4 mars';
-
-
-
-    // programme.day1[programme.day1.length - 1]['last'] = true;
-    // programme.day2[programme.day2.length - 1]['last'] = true;
-    // programme.day3[programme.day3.length - 1]['last'] = true;
-
-    programmeArr = [{ separation: true, title: day1Title }].concat(programme.day1);
-    programmeArr = programmeArr.concat([{ separation: true, title: day2Title }]);
-    programmeArr = programmeArr.concat(programme.day2);
-    programmeArr = programmeArr.concat([{ separation: true, title: day3Title }]);
-    programmeArr = programmeArr.concat(programme.day3);
+    day1Title = programme.titles[0];
+    day2Title = programme.titles[1];
+    day3Title = programme.titles[2];
+    expoPermanenteTitle = programme.titles[3]
 
     return (
 
       <Container theme={myTheme}>
         <Header>
           <Button transparent disabled>
-            <Image resizeMode={"contain"} style={{ width: 35 }} source={logo_icon} />
+            <Image resizeMode={"contain"} style={{ width: 32 }} source={logo_icon} />
           </Button>
 
           <Title>Programme du Salon</Title>
@@ -157,6 +155,17 @@ export default class ProgrammeSalon extends Component {
             })}
           </Card>
 
+          <Card>
+            <CardItem header>
+              <H2>{expoPermanenteTitle}</H2>
+            </CardItem>
+            {(programme.day1).map((progElem, i) => {
+              let elemKey = progElem.schedule + progElem.title;
+              return (
+                <ProgrammeElement key={elemKey} progElem={progElem} />
+              );
+            })}
+          </Card>
         </Content>
       </Container>
     );
@@ -231,7 +240,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'red',
     marginLeft: 20,
     flex: 1,
-    textAlign:'right',
+    textAlign: 'right',
   },
 
 
