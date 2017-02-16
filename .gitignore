@@ -710,5 +710,7 @@ captures/
 
 
 
+######## My gitignore
 
-
+export/
+.ipynb_checkpoints/
