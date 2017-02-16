@@ -6,11 +6,12 @@ import {
   Image,
 } from 'react-native';
 import { Footer, FooterTab, Spinner, Text, View, Content, Container, Header, Title, Button, Icon, ListItem, List } from 'native-base';
-import { Actions } from 'react-native-router-flux'
 import myTheme from '../themes/myTheme';
 // import * as firebase from 'firebase';
 
-var moment = require('moment');
+import moment from 'moment';
+import 'moment/locale/fr';
+
 var GLOBAL = require('../global/GlobalVariables');
 
 const NB_OF_LAST_DAYS_WITH_HUMANIZED_DATE = 7;
@@ -46,12 +47,13 @@ class Actualites extends Component {
     this.state = {
       last_update: 'never',
     }
+    moment.locale('fr');
   }
 
   getFormatedDate(strDate) {
-    var momentDate = moment(strDate, "DD.MM.YYYY");
-    var diffInDays = moment().diff(momentDate, 'days');
-    // console.log(strDate + " ==> " + moment().diff(momentDate, 'days'));
+    let momentDate = moment(strDate, "YYYY-MM-DD");
+    let diffInDays = moment().diff(momentDate, 'days');
+
     if (diffInDays == 0) {
       return "Aujourd'hui";
     } else if (diffInDays == 1) {
@@ -61,7 +63,7 @@ class Actualites extends Component {
     } else if (diffInDays >= 7 && diffInDays < 10) {
       return "Il y a une semaine"
     } else {
-      return strDate;
+      return momentDate.format("D MMM YYYY");
     }
   }
 

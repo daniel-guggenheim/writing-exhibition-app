@@ -14,10 +14,10 @@ import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Ico
 
 import Actualites from './Actualites';
 import ProgrammeSalon from './ProgrammeSalon';
-// import Plans from 'Plans';
 import InformationsPratiques from './InformationsPratiques';
 import MainTabBar from '../components/MainTabBar';
-// import ActualitesDetails from 'ActualitesDetails';
+
+var GLOBAL = require('../global/GlobalVariables');
 
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 
@@ -63,8 +63,7 @@ class MainTabView extends Component {
                 initialPage={1}
                 renderTabBar={() => <MainTabBar />}
                 tabBarPosition='bottom'
-                tabBarBackgroundColor={'#E8E0C5'}
-                initialPage={0} >
+                tabBarBackgroundColor={GLOBAL.THEME_COLOR}>
 
                 <Actualites
                     tabLabel="ios-cafe"

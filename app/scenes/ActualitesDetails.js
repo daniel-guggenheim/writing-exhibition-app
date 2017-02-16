@@ -10,16 +10,9 @@ import {
 } from 'react-native';
 import { Spinner, Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import myTheme from '../themes/myTheme';
-var HTMLView = require('react-native-htmlview')
 
 var GLOBAL = require('../global/GlobalVariables');
 const TITLE_MAX_CHAR_LIMIT = 40;
-
-
-/*
-Charger la page et enlever le dessus => marche pas, la page devrait etre chargee en entier dabord
-charger lapage deja coupée dans le json et la lire
-*/
 
 
 const propTypes = {
@@ -34,10 +27,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-    // text: 'Hello World',
 };
-
-
 
 class ActualitesDetails extends Component {
     constructor(props) {
@@ -71,22 +61,10 @@ class ActualitesDetails extends Component {
         }
     }
 
-    NONONONONOrenderSourceIfExists(article) {
-        if (article.source != "") {
-            return (
-                <View>
-                    <View style={styles.separator} />
-                    <Text style={styles.text}>Sources:</Text>
-                    <HTMLView value={article.source} stylesheet={styles} />
-                </View>
-            );
-        }
-    }
-
     render() {
         let article = this.props.article_infos;
         let article_html = this.props.article_html;
-        console.log('---- ArRTICLE: ', article);
+        console.log('Article: ', article.title);
 
         return (
 
@@ -102,15 +80,15 @@ class ActualitesDetails extends Component {
                     {this.state.start ? <Spinner /> :
                         <WebView
                             source={{ html: article_html }}
-                            // source={ require('../static/html/actualites-test2.html')}
                             style={{ borderWidth: 1, flex: 1 }}
-                            // scalesPageToFit={true}                     
+                            //scalesPageToFit={true}
                             renderError={() => (
                                 <View style={styles.pageError}>
                                     <Text style={styles.textPageError}>
                                         Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
-                                </Text>
-                                </View>)}
+                                    </Text>
+                                </View>)
+                            }
                         />
                     }
                 </View>
@@ -124,8 +102,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     main: {
-        // margin: 10,
-        // marginTop: 12,
         marginBottom: 3,
         flex: 1,
     },

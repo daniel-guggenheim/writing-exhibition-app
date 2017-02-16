@@ -1,5 +1,5 @@
 
-const firebaseURL = 'https://salonecriture.firebaseio.com/se_v001/';
+const firebaseURL = 'https://salonecriture.firebaseio.com/se_v002/';
 
 
 module.exports = {
