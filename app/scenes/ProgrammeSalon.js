@@ -20,12 +20,18 @@ var logo_icon = require("../images/logo/logo.png");
 
 var exampleData = {
   titles: ['Jeudi 2 mars', 'Vendredi 3 mars', 'Samedi 4 mars', 'Expositions permanentes'],
-  expoPermanente: [
+  expos_permanentes: [
     {
-      text: "Antenne de l'hôte d'honneur (Cameroun) : Alphabet a ka u ku du Sultan Njoya, roi des Bamoun, Institut Ebena, France",
+      organizer: "Institut Ebena, France",
+      title: "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun, hote d'honneur ",
       location: "Echichens",
 
-    }
+    },
+    {
+      organizer: "Fondation Bodmer, Genève",
+      title: "De la correspondance au sms",
+      location: "Colombier",
+    },
 
   ],
   day1: [
@@ -159,10 +165,21 @@ export default class ProgrammeSalon extends Component {
             <CardItem header>
               <H2>{expoPermanenteTitle}</H2>
             </CardItem>
-            {(programme.day1).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
+            {(programme.expos_permanentes).map((progElem, i) => {
+              let elemKey = progElem.title;
               return (
-                <ProgrammeElement key={elemKey} progElem={progElem} />
+                <CardItem key={elemKey}>
+                  <View>
+                    <Text style={styles.titleText}>{progElem.title}</Text>
+                    <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
+                    <View style={styles.expoPermaLocationView}>
+                      {progElem.location == 'Echichens' ?
+                        <Text style={[styles.locationText, { color: '#27ae60' }]}>{progElem.location}</Text> :
+                        <Text style={styles.locationText}>{progElem.location}</Text>
+                      }
+                    </View>
+                  </View>
+                </CardItem>
               );
             })}
           </Card>
@@ -188,8 +205,12 @@ class ProgrammeElement extends Component {
           <View style={styles.infosView}>
             <Text style={styles.titleText}>{progElem.title}</Text>
             <View style={styles.typeLocationView}>
+              {progElem.location == 'Echichens' ?
+                <Text style={[styles.locationText, { color: '#27ae60' }]}>{progElem.location}</Text> :
+                <Text style={styles.locationText}>{progElem.location}</Text>
+              }
               <Text style={styles.typeText}>{progElem.type}</Text>
-              <Text style={styles.locationText}>{progElem.location}</Text>
+
             </View>
           </View>
         </View>
@@ -211,13 +232,14 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   scheduleText: {
-    fontWeight: 'bold',
     fontSize: 16,
+    fontWeight: 'bold',
   },
   titleText: {
+    // color:'darkblue',
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 16,
+    fontSize: 17,
   },
   infosView: {
     flex: 1,
@@ -227,20 +249,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 8,
+    marginTop: 12,
   },
   typeText: {
-    // flexWrap: 'wrap',
-    // color: 'green',
     flex: 1,
+    // flexWrap: 'wrap',
+    fontStyle: 'italic',
+    // color: 'green',
     // backgroundColor:'blue',
+    marginLeft: 20,
+    textAlign: 'right',
 
   },
   locationText: {
-    // backgroundColor:'red',
-    marginLeft: 20,
     flex: 1,
-    textAlign: 'right',
+    color: '#3498db',
+    // backgroundColor:'red',
   },
 
 
@@ -253,6 +277,14 @@ const styles = StyleSheet.create({
   },
 
 
+  //Expo permanente
+  expoPermaLocationView: {
+    marginTop: 8,
+  },
+expoPermaOrganizerText: {
+  fontSize:15,
+  marginTop:4,
+},
 
 
 
