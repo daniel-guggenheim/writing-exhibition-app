@@ -102,7 +102,8 @@ class ProgrammeSalon extends Component {
 
           <Card>
             <CardItem header>
-              <H2>{day1Title}</H2>
+              <Icon name="ios-calendar-outline" style={{ color: '#E4F1FE', fontSize: 40, marginRight: 8, }} />
+              <H2 style={{ color: '#E4F1FE'}}>{day1Title}</H2>
             </CardItem>
             {(programme.day1).map((progElem, i) => {
               let elemKey = progElem.schedule + progElem.title;
@@ -117,8 +118,9 @@ class ProgrammeSalon extends Component {
 
 
           <Card>
-            <CardItem header>
-              <H2>{day2Title}</H2>
+            <CardItem header >
+             <Icon name="ios-calendar-outline" style={{ color: '#59ABE3', fontSize: 40, marginRight: 8, }} />
+              <H2 style={{ color: '#59ABE3'}}>{day2Title}</H2>
             </CardItem>
 
             {(programme.day2).map((progElem, i) => {
@@ -134,7 +136,8 @@ class ProgrammeSalon extends Component {
 
           <Card>
             <CardItem header>
-              <H2>{day3Title}</H2>
+            <Icon name="ios-calendar-outline" style={{ color: '#446CB3', fontSize: 40, marginRight: 8, }} />
+              <H2  style={{ color: '#446CB3'}}>{day3Title}</H2>
             </CardItem>
 
             {(programme.day3).map((progElem, i) => {
