@@ -81,4 +81,11 @@ module.exports = {
             return 0;
         }
     },
+    SEND_EMAIL_URI_REPORT_BUG: 'mailto:app.salonecriture@gmail.com?subject=Probl%C3%A8me%20avec%20l%27application'+
+    '%20%22Salon%20de%20l%27Ecriture%22&body=Description%20du%20probl%C3%A8me%20(en%20quelques%20phrases)'+
+    '%20%3A%0A%0AT%C3%A9l%C3%A9phone%20utilis%C3%A9%20(par%20exemple%3A%20IPhone%205S%2C%20Samsung%20Galaxy'+
+    '%20S7%2C%20etc..)%20%3A%0A%0AVersion%20d%27IOS%20ou%20d%27Android%20(si%20vous%20en%20avez%20connaissance'+
+    '%2C%20par%20exemple%3A%20IOS%2010.2.1%20ou%20Android%206.0.1)%20%3A%20',
+    SEND_EMAIL_URI_SALON_ECRITURE: 'mailto:info@salonecriture.org',
+
 };

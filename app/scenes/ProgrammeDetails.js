@@ -95,7 +95,7 @@ class ProgrammeDetails extends Component {
                         <View style={styles.infoElemView}>
                             <Icon name="ios-time" style={[styles.icon, { color: '#f1c40f' }]} />
                             <Text style={[styles.infoElemText, styles.schedule]}>{progElement.schedule}</Text>
-                            {progElement.duration && <Text style={styles.duration}>- ({progElement.duration})</Text>}
+                            {progElement.duration && <Text style={styles.duration}>- (Durée: {progElement.duration})</Text>}
 
                         </View>
                         <View style={styles.infoElemView}>
@@ -105,7 +105,7 @@ class ProgrammeDetails extends Component {
                         </View>
                         <View style={styles.infoElemView}>
                             <Icon name='ios-pin' style={[styles.icon, styles.iconPin]} />
-                            <Text style={[styles.infoElemText, { color: GLOBAL.PLACES_COLOR(progElement.location) }]}>{progElement.location}</Text>
+                            <Text style={[styles.infoElemText,]}>{progElement.location}</Text>
                         </View>
                     </View>
                     {/*<Image style={styles.lieuImage} source={lieux_images_sources_by_id[GLOBAL.PLACES_ID[progElement.location]]} />*/}

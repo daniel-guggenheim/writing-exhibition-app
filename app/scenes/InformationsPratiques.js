@@ -4,7 +4,7 @@ import {
   View,
   ActivityIndicator,
   Linking,
-  Image
+  Image,
 } from 'react-native';
 import {
   Container, Header, Title, Content, Button, Spinner,
@@ -202,7 +202,7 @@ class InformationsPratiques extends Component {
                 </Text>
                 <Text selectable={true}>
                   <Text style={styles.accesTitle}>Email : </Text>
-                  <Text>
+                  <Text style={styles.url} onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_SALON_ECRITURE)}>
                     info@salonecriture.org
                 </Text>
                 </Text>
@@ -213,15 +213,29 @@ class InformationsPratiques extends Component {
                   <Text style={styles.accesTitle}>Présidente du Salon : </Text>
                   <Text selectable={true}>Sylvie Guggenheim</Text>
                 </View>
-                <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
-                <Text selectable={true}>Michel Ackermann</Text>
+                <View style={{ marginBottom: 8, }}>
+                  <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
+                  <Text selectable={true}>Michel Ackermann</Text>
+                </View>
+                <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
+                <Text>Association SylMa</Text>
+              </CardItem>
+
+
+              <CardItem>
+                <Text style={styles.accesTitle}>Créateur de l'application mobile : </Text>
+                <Text>Daniel Guggenheim</Text>
               </CardItem>
 
               <CardItem>
-                <Text selectable={true}>
-                  <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
-                  <Text>Association SylMa</Text>
-                </Text>
+                <Text>Si vous découvrez un bug en utilisant cette application, merci de le signaler en cliquant ici : </Text>
+                <View style={{ marginTop: 8, flexDirection: 'row', justifyContent: 'center' }}>
+                  <Button warning bordered
+                    onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_REPORT_BUG)}>
+                    <Icon name='ios-mail' />
+                    <Text>Signaler un bug</Text>
+                  </Button>
+                </View>
               </CardItem>
 
             </Card>
