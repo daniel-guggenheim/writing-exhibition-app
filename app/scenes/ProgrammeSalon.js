@@ -1,110 +1,23 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
-  WebView
 } from 'react-native';
-import {
-  Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon,
-  List, ListItem, Separator, Card, CardItem, H2, Row, Col, Grid
-} from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, } from 'native-base';
+
+import ExceptionalInfos from '../components/ExceptionalInfos';
 
 import myTheme from '../themes/myTheme';
-import ExceptionalInfos from '../components/ExceptionalInfos';
-import jsonDefaultContent from '../json/programme_default.json';
-
-
 var GLOBAL = require('../global/GlobalVariables');
+
+import jsonDefaultContent from '../json/programme_default.json';
 var logo_icon = require("../images/logo/logo.png");
 
 const ECHICHENS_COLOR = '#67809F';
 const OTHER_PLACES_COLOR = '#1F3A93';
-
-var exampleData = {
-  titles: ['Jeudi 2 mars', 'Vendredi 3 mars', 'Samedi 4 mars', 'Expositions permanentes'],
-  expos_permanentes: [
-    {
-      organizer: "Institut Ebena, France",
-      title: "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun, hote d'honneur ",
-      location: "Echichens",
-
-    },
-    {
-      organizer: "Fondation Bodmer, Genève",
-      title: "De la correspondance au sms",
-      location: "Colombier",
-    },
-
-  ],
-  day1: [
-    {
-      schedule: '17h00',
-      title: "Accueil des invités",
-      speaker: "",
-      type: "Accueil",
-      location: 'Echichens'
-    },
-    {
-      schedule: '18h00',
-      title: "Inauguration du salon",
-      speaker: "Sylvie Guggenheim",
-      type: "Conférence",
-      location: 'Echichens'
-    },
-    {
-      schedule: '11h30',
-      title: "Place et rôle de l'écriture dans le développement économique, social et culturel du Cameroun",
-      speaker: "Professeur Clément Dili Palaï",
-      type: "Conférence",
-      location: 'Echichens'
-    },
-    {
-      schedule: '11h30',
-      title: "L'écriture dans tous ses états",
-      speaker: "Carole Jobin",
-      type: "Conférence",
-      location: 'Colombier, salle 1'
-    },
-  ],
-  day2: [
-    {
-      schedule: '10h00',
-      title: "Je me souviens, atelier d'écriture autobiographique",
-      speaker: "Emmanuelle Ryser",
-      type: "Atelier d'Ecriture pour pratiquer",
-      location: 'Colombier, salle 2'
-    },
-    {
-      schedule: '11h30',
-      title: "L'écriture dans tous ses états",
-      speaker: "Carole Jobin",
-      type: "Conférence",
-      location: 'Colombier, salle 1'
-    },
-  ],
-  day3: [
-    {
-      schedule: '11h30',
-      title: "Place et rôle de l'écriture dans le développement économique, social et culturel du Cameroun",
-      speaker: "Professeur Clément Dili Palaï",
-      type: "Conférence",
-      location: 'Echichens'
-    },
-    {
-      schedule: '11h30',
-      title: "L'écriture dans tous ses états",
-      speaker: "Carole Jobin",
-      type: "Conférence",
-      location: 'Colombier, salle 1 (ou peutetre la 2)'
-    },
-  ],
-
-}
-
 
 const propTypes = {
   programmeContent: React.PropTypes.shape({
@@ -150,11 +63,9 @@ const propTypes = {
   }),
 };
 
+
 const defaultProps = {
 };
-
-
-
 
 class ProgrammeSalon extends Component {
 
@@ -264,7 +175,6 @@ class ProgrammeSalon extends Component {
 
 class ProgrammeElement extends Component {
 
-
   render() {
     progElem = this.props.progElem;
 
@@ -299,13 +209,20 @@ class ProgrammeElement extends Component {
 }
 
 const styles = StyleSheet.create({
-  //Card item
+  /* --- Main view --- */
+  content: {
+    marginTop: 8,
+    marginBottom: 8,
+    paddingRight: 8,
+    paddingLeft: 8,
+  },
+  
+
+  /* --- ProgrammeElement (cardviews) and part of expo permanente --- */
   cardItem: {
-    // backgroundColor:'green',
   },
   progElemView: {
     flexDirection: 'row',
-    // backgroundColor:'green',
   },
   scheduleView: {
     marginRight: 8,
@@ -316,7 +233,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   titleText: {
-    // color:'darkblue',
     flex: 1,
     flexWrap: 'wrap',
     fontSize: 17,
@@ -325,8 +241,8 @@ const styles = StyleSheet.create({
   speakerText: {
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 15,
     marginTop: 5,
+    fontSize: 15,
   },
   infosView: {
     flex: 1,
@@ -341,31 +257,19 @@ const styles = StyleSheet.create({
   },
   typeText: {
     flex: 1,
+    textAlign: 'right',
+    marginLeft: 20,
     // flexWrap: 'wrap',
     fontStyle: 'italic',
-    // color: 'green',
-    // backgroundColor:'blue',
-    marginLeft: 20,
-    textAlign: 'right',
 
   },
   locationText: {
     flex: 1,
     color: OTHER_PLACES_COLOR,
-    // backgroundColor:'red',
   },
 
 
-  //Other
-  content: {
-    marginTop: 8,
-    marginBottom: 8,
-    paddingRight: 8,
-    paddingLeft: 8,
-  },
-
-
-  //Expo permanente
+  /* --- Expo permanente --- */
   expoPermaLocationView: {
     marginTop: 8,
   },
@@ -375,9 +279,6 @@ const styles = StyleSheet.create({
   },
 
 });
-
-
-
 
 
 ProgrammeSalon.propTypes = propTypes;
