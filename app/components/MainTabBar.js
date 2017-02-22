@@ -8,6 +8,8 @@ import {
 // import {Icon} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+var GLOBAL = require('../global/GlobalVariables');
+
 
 const ACTIVE_COLOR = [0, 34, 102];
 const PASSIVE_COLOR = [189, 195, 199];
@@ -16,6 +18,7 @@ const rgb_color = (colArray) => `rgb(${colArray[0]}, ${colArray[1]}, ${colArray[
 
 const MainTabBar = React.createClass({
     tabIcons: [],
+    tabText: [],
 
     propTypes: {
         goToPage: React.PropTypes.func,
@@ -31,6 +34,11 @@ const MainTabBar = React.createClass({
         this.tabIcons.forEach((icon, i) => {
             const progress = Math.min(1, Math.abs(value - i))
             icon.setNativeProps({
+                style: {
+                    color: this.iconColor(progress),
+                },
+            });
+            this.tabText[i].setNativeProps({
                 style: {
                     color: this.iconColor(progress),
                 },
@@ -52,11 +60,17 @@ const MainTabBar = React.createClass({
                 return (
                     <TouchableOpacity key={tab} style={styles.tab} onPress={() => this.props.goToPage(i)}>
                         <Icon
-                            name={tab}
-                            size={30}
+                            name={GLOBAL.MAIN_TAB_BAR.tabPictures[tab]}
+                            size={28}
                             color={this.props.activeTab === i ? rgb_color(ACTIVE_COLOR) : rgb_color(PASSIVE_COLOR)}
                             ref={(icon) => { this.tabIcons[i] = icon; }}
                         />
+                        <Text
+                            style={styles.subtitles}
+                            ref={(txt) => { this.tabText[i] = txt; }}
+                        >
+                            {GLOBAL.MAIN_TAB_BAR.tabNames[tab]}
+                        </Text>
                         {/*<Icon name={tab} active={this.props.activeTab === i ? false: false} style={{color: rgb_color(ACTIVE_COLOR)}} />*/}
                     </TouchableOpacity>
                 );
@@ -70,10 +84,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingBottom: 10,
+        paddingBottom: 5,
     },
     tabs: {
-        height: 45,
+        height: 55,
         flexDirection: 'row',
         backgroundColor: '#E8E0C5',
         paddingTop: 5,
@@ -84,6 +98,10 @@ const styles = StyleSheet.create({
         borderTopColor: 'rgba(0,0,0,0.05)',
 
     },
+    subtitles: {
+        // color: 'black',
+        fontSize: 13,
+    }
 });
 
 export default MainTabBar;

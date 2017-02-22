@@ -360,7 +360,6 @@ const styles = StyleSheet.create({
 });
 
 
-
 InformationsPratiques.propTypes = propTypes;
 InformationsPratiques.defaultProps = defaultProps;
 

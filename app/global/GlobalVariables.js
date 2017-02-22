@@ -1,6 +1,4 @@
-
 const firebaseURL = 'https://salonecriture.firebaseio.com/se_v002/';
-
 
 module.exports = {
     ACTUALITES_CATEGORY: {
@@ -55,4 +53,17 @@ module.exports = {
     THEME_COLOR: '#E8E0C5',
     TEXT_THEME_COLOR: '#002266',
     NORMAL_TEXT_COLOR: 'black',
+
+    MAIN_TAB_BAR: {
+        tabPictures: {
+            'Actualites': 'ios-cafe',
+            'ProgrammeSalon': 'ios-list-box',
+            'InformationsPratiques': 'ios-information-circle',
+        },
+        tabNames: {
+            "Actualites": "Actualités",
+            "ProgrammeSalon": "Programme",
+            "InformationsPratiques": "Informations",
+        }
+    }
 };

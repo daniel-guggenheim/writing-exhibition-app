@@ -66,7 +66,7 @@ class MainTabView extends Component {
                 tabBarBackgroundColor={GLOBAL.THEME_COLOR}>
 
                 <Actualites
-                    tabLabel="ios-cafe"
+                    tabLabel="Actualites"
                     articlesInfo={this.props.articlesInfosContent}
                     articlesContent={this.props.articlesHtmlContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
@@ -75,12 +75,12 @@ class MainTabView extends Component {
                 />
 
                 <ProgrammeSalon
-                    tabLabel="ios-list-box"
+                    tabLabel="ProgrammeSalon"
                     programmeContent={this.props.programmeContent}
                 />
 
                 <InformationsPratiques
-                    tabLabel="ios-information-circle"
+                    tabLabel="InformationsPratiques"
                     textFieldsContent={this.props.infosPratiquesContent}
                     currentlyFetchingContent={this.props.currentlyFetchingContent}
                 />
