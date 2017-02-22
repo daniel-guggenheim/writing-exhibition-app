@@ -221,6 +221,8 @@ const styles = StyleSheet.create({
   },
   scheduleView: {
     marginRight: 8,
+    // justifyContent: 'center',
+    alignItems:'center',
   },
   scheduleText: {
     fontSize: 16,

@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import {Icon, H2, Text, Card, CardItem, } from 'native-base';
+import { Icon, H3, Text, Card, CardItem, } from 'native-base';
 
 var GLOBAL = require('../global/GlobalVariables');
 
@@ -31,7 +31,7 @@ class ExceptionalInfos extends Component {
                 <Card>
                     <CardItem header style={styles.titleCard}>
                         <Icon name="ios-information-circle" style={styles.icon} />
-                        <H2 style={styles.titleText}>{title}</H2>
+                        <H3 style={styles.titleText}>{title}</H3>
                     </CardItem>
                     <CardItem>
                         <Text>{text}</Text>
@@ -50,11 +50,14 @@ const styles = StyleSheet.create({
     },
     titleText: {
         textAlign: 'left',
+        paddingBottom: 4,
+        // backgroundColor: 'green',
+        // paddingTop:3,
     },
     icon: {
         color: 'green',
-        fontSize: 40,
-        marginRight: 16,
+        fontSize: 30,
+        marginRight: 8,
     },
 });
 

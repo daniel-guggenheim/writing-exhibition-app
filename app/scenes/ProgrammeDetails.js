@@ -26,7 +26,7 @@ const propTypes = {
 const defaultProps = {
 };
 
-class ActualitesDetails extends Component {
+class ProgrammeDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
 });
 
-ActualitesDetails.propTypes = propTypes;
-ActualitesDetails.defaultProps = defaultProps;
+ProgrammeDetails.propTypes = propTypes;
+ProgrammeDetails.defaultProps = defaultProps;
 
-export default ActualitesDetails;
+export default ProgrammeDetails;
