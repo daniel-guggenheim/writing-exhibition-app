@@ -60,7 +60,7 @@ class MainTabView extends Component {
         return (
             <ScrollableTabView
                 style={{}}
-                initialPage={1}
+                initialPage={0}
                 renderTabBar={() => <MainTabBar />}
                 tabBarPosition='bottom'
                 tabBarBackgroundColor={GLOBAL.THEME_COLOR}>

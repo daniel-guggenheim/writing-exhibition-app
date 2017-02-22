@@ -1,6 +1,30 @@
 /**
  * @flow
+ * 
+*/
+/**
+This part contains the navigator and all the different methods to load the data
+from the backend server and from the local database.
+The aim of this app was to have the capabilities to be used offline, while getting online
+updates.
+GLOBAL.URL_STORAGE_KEY_ADDRESS contains all the information about each screen. It contains
+the url, the storage information, but also the name of the state (variable "statePrefix")
+
+----- The following "algorithm" was used here: -----
+1. First, try to load data from local DB.
+     - If there is NO data, set each state to "null". Each component will (at render) load default data
+       that are stored in local json files.
+     - If there exist data, each state will be set with the data from the local DB
+2. Check if internet connexion && update was not done already in the same time period (MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE):
+    - If yes, download all the last udpates dates.
+        Foreach date, if the "update date"" is more recent that the one stored in the local DB:
+            > Download data, store it in local DB, update the states.
+            > Get the new "update date" from online, store it in local DB and update state.
+        Otherwise (if "update date" is not more recent): do nothing
+    - If not, do nothing.
+----- End -----
  */
+
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -54,9 +78,10 @@ class SalonEcritureApp extends Component {
         // this._fetchJsonURL = this._fetchJsonURL.bind(this);
     }
 
-    //TODO: the same for component didmount?? (enfin le contraire)
     componentWillUnmount() {
-        //Remove network change listener
+        // Remove network change listener if component componentWillUnmount.
+        // It is not useful to do the same if the component mount, because when it happens,
+        // the splash screen will always load.
         NetInfo.isConnected.removeEventListener('change', this._handleConnectivityChange);
     }
 

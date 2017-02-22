@@ -16,8 +16,11 @@ var GLOBAL = require('../global/GlobalVariables');
 import jsonDefaultContent from '../json/programme_default.json';
 var logo_icon = require("../images/logo/logo.png");
 
-const ECHICHENS_COLOR = '#67809F';
-const OTHER_PLACES_COLOR = '#1F3A93';
+const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
+const ECHICHENS_COLOR = '#90C695';
+const OTHER_PLACES_COLOR = '#EB974E';
+// const ECHICHENS_COLOR = '#67809F';
+// const OTHER_PLACES_COLOR = '#1F3A93';
 
 const propTypes = {
   programmeContent: React.PropTypes.shape({
@@ -149,17 +152,10 @@ class ProgrammeSalon extends Component {
                     <Text style={styles.titleText}>{progElem.title}</Text>
                     <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
                     <View style={styles.expoPermaLocationView}>
-                      {progElem.location == 'Echichens' ?
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                          <Icon name='ios-pin' style={{ fontSize: 16, color: ECHICHENS_COLOR, marginRight: 5, }} />
-                          <Text style={[styles.locationText, { color: ECHICHENS_COLOR }]}>{progElem.location}</Text>
-                        </View>
-                        :
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                          <Icon name='ios-pin' style={{ fontSize: 16, color: OTHER_PLACES_COLOR, marginRight: 5, }} />
-                          <Text style={styles.locationText}>{progElem.location}</Text>
-                        </View>
-                      }
+                      <View style={styles.locationView}>
+                        <Icon name='ios-pin' style={[styles.locationIcon, { color: COLLEGE_COLOMBIER_COLOR, }]} />
+                        <Text style={[styles.locationText, { color: COLLEGE_COLOMBIER_COLOR }]}>{progElem.location}</Text>
+                      </View>
                     </View>
                   </View>
                 </CardItem>
@@ -188,13 +184,13 @@ class ProgrammeElement extends Component {
             <Text style={styles.titleText}>{progElem.title}</Text>
             <View style={styles.typeLocationView}>
               {progElem.location == 'Echichens' ?
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                  <Icon name='ios-pin' style={{ fontSize: 16, color: ECHICHENS_COLOR, marginRight: 5, }} />
+                <View style={styles.locationView}>
+                  <Icon name='ios-pin' style={[styles.locationIcon, { color: ECHICHENS_COLOR, }]} />
                   <Text style={[styles.locationText, { color: ECHICHENS_COLOR }]}>{progElem.location}</Text>
                 </View>
                 :
-                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                  <Icon name='ios-pin' style={{ fontSize: 16, color: OTHER_PLACES_COLOR, marginRight: 5, }} />
+                <View style={styles.locationView}>
+                  <Icon name='ios-pin' style={styles.locationIcon} />
                   <Text style={styles.locationText}>{progElem.location}</Text>
                 </View>
               }
@@ -216,7 +212,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 8,
   },
-  
+
 
   /* --- ProgrammeElement (cardviews) and part of expo permanente --- */
   cardItem: {
@@ -255,17 +251,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
   },
+  locationView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+  },
+  locationIcon: {
+    fontSize: 16,
+    color: OTHER_PLACES_COLOR,
+    marginRight: 5,
+  },
+  locationText: {
+    flex: 1,
+    color: OTHER_PLACES_COLOR,
+  },
   typeText: {
     flex: 1,
     textAlign: 'right',
     marginLeft: 20,
     // flexWrap: 'wrap',
     fontStyle: 'italic',
-
-  },
-  locationText: {
-    flex: 1,
-    color: OTHER_PLACES_COLOR,
   },
 
 

@@ -1,63 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   View,
-  NetInfo,
-  AsyncStorage,
   ActivityIndicator,
   Linking,
   Image
 } from 'react-native';
 import {
-  Container, Header, Tabs, Title,
-  Content, Footer, FooterTab, Button, Spinner,
-  Thumbnail, Icon, H1, H2, H3, Text, Card,
-  CardItem, Grid, Row, Col
+  Container, Header, Title, Content, Button, Spinner,
+  Icon, H2, Text, Card, CardItem, Grid, Row, Col
 } from 'native-base';
-import myTheme from '../themes/myTheme';
-import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
-import MaterialDesignTheme from '../themes/MaterialDesignTheme';
-
-import jsonDefaultContent from '../json/infos_pratiques_default.json';
-
-
-/**
-This part is about having practical information about the salon.
-The challenge was to make it work online AND offline, and to update offline information
-if there is a connexion.
-
----
-- The following "algorithm" was used here: -
-First, try to load data from local DB.
-  If there is data, set state with data from local DB
-  If no data, set state with default data (from json file).
-Check if internet connexion && update was not done already the same hour:
-  If yes, download last udpate date.
-    If the date is more recent that our date
-      Download data.
-      Put data in local DB
-      Update last update date
-      Update state with new data.
-    If not more recent, do nothing
-  If no connexion, do nothing.
-
- */
-
-var GLOBAL = require('../global/GlobalVariables');
 
 import ExceptionalInfos from '../components/ExceptionalInfos';
 
-var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
+import myTheme from '../themes/myTheme';
+import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
+import MaterialDesignTheme from '../themes/MaterialDesignTheme';
+var GLOBAL = require('../global/GlobalVariables');
 
+// Loading data
+import jsonDefaultContent from '../json/infos_pratiques_default.json';
 var lieux_images_sources_by_id = [
   require("../images/lieux/colombier_centre.jpg"),
   require("../images/lieux/college_colombier.jpg"),
   require("../images/lieux/echichens.jpg")
 ];
-
 var logo_icon = require("../images/logo/logo.png");
-
+var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 
 const propTypes = {
   currentlyFetchingContent: React.PropTypes.bool,
@@ -389,8 +358,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
 });
-
-
 
 
 
