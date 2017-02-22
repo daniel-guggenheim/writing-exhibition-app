@@ -88,7 +88,7 @@ class SalonEcritureApp extends Component {
                     articlesHtmlContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.articles_html.statePrefix + STATE_CONTENT_SUFFIX]}
                     programmeContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_CONTENT_SUFFIX]}
                     fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
-                    actualiteArticlesIsLoading={this.state.currentlyFetchingContent}
+                    currentlyFetchingContent={this.state.currentlyFetchingContent}
                     goToActualitesDetails={(to_article_info, to_article_html) => this.goToActualitesDetails(navigator, to_article_info, to_article_html)}
                 />;
             case GLOBAL.ROUTES.ActualitesDetails:

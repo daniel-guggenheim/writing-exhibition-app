@@ -5,6 +5,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
+// import {Icon} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -56,6 +57,7 @@ const MainTabBar = React.createClass({
                             color={this.props.activeTab === i ? rgb_color(ACTIVE_COLOR) : rgb_color(PASSIVE_COLOR)}
                             ref={(icon) => { this.tabIcons[i] = icon; }}
                         />
+                        {/*<Icon name={tab} active={this.props.activeTab === i ? false: false} style={{color: rgb_color(ACTIVE_COLOR)}} />*/}
                     </TouchableOpacity>
                 );
             })}

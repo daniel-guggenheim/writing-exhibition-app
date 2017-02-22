@@ -1,0 +1,59 @@
+{
+  "day1" : [ {
+    "location" : "Echichens",
+    "schedule" : "17h00",
+    "speaker" : "",
+    "title" : "Accueil des invités",
+    "type" : "Accueil"
+  }, {
+    "location" : "Echichens",
+    "schedule" : "18h00",
+    "speaker" : "Sylvie Guggenheim",
+    "title" : "Inauguration du salon",
+    "type" : "Conférence"
+  } ],
+  "day2" : [ {
+    "location" : "Echichens",
+    "schedule" : "17h00",
+    "speaker" : "",
+    "title" : "Accueil des invités",
+    "type" : "Accueil"
+  }, {
+    "location" : "Echichens",
+    "schedule" : "18h00",
+    "speaker" : "Sylvie Guggenheim",
+    "title" : "Inauguration du salon",
+    "type" : "Conférence"
+  } ],
+  "day3" : [ {
+    "location" : "Echichens",
+    "schedule" : "17h00",
+    "speaker" : "",
+    "title" : "Accueil des invités",
+    "type" : "Accueil"
+  }, {
+    "location" : "Echichens",
+    "schedule" : "18h00",
+    "speaker" : "Sylvie Guggenheim",
+    "title" : "Inauguration du salon",
+    "type" : "Conférence"
+  } ],
+  "exceptional_infos" : {
+    "text" : "Le spectacle 1 se trouvera dans la salle 2",
+    "title" : "Changements de salle"
+  },
+  "expos_permanentes" : [ {
+    "location" : "Colombier",
+    "organizer" : "Institut Ebena, France",
+    "title" : "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun (Hôte d'honneur, Cameroun)"
+  }, {
+    "location" : "Colombier",
+    "organizer" : "Fondation Bodmer, Genève",
+    "title" : "De la correspondance au sms"
+  }, {
+    "location" : "Colombier",
+    "organizer" : "Association SylMa",
+    "title" : "Les métiers de l'écriture"
+  } ],
+  "titles" : [ "Jeudi 2 mars", "Vendredi 3 mars", "Samedi 4 mars", "Expositions permanentes" ]
+}

@@ -19,7 +19,7 @@ import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 import MaterialDesignTheme from '../themes/MaterialDesignTheme';
 
-import jsonDefaultContent from '../json/infos_pratiques_default_test.json';
+import jsonDefaultContent from '../json/infos_pratiques_default.json';
 
 
 /**
@@ -46,6 +46,8 @@ Check if internet connexion && update was not done already the same hour:
 
 var GLOBAL = require('../global/GlobalVariables');
 
+import ExceptionalInfos from '../components/ExceptionalInfos';
+
 var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 
 var lieux_images_sources_by_id = [
@@ -58,8 +60,12 @@ var logo_icon = require("../images/logo/logo.png");
 
 
 const propTypes = {
-  loadingContentUpdate: React.PropTypes.bool,
+  currentlyFetchingContent: React.PropTypes.bool,
   textFieldsContent: React.PropTypes.shape({
+    exeptionnal_info: React.PropTypes.shape({
+      title: PropTypes.string,
+      text: PropTypes
+    }),
     text1_dates: PropTypes.string,
     text2_horaires: PropTypes.string,
     lieux: React.PropTypes.arrayOf(
@@ -73,9 +79,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  loadingContentUpdate: false,
 };
-
 
 
 class InformationsPratiques extends Component {
@@ -97,11 +101,13 @@ class InformationsPratiques extends Component {
 
     let textContent = this.props.textFieldsContent;
     if (textContent == null) {
+      console.log('Infos pratiques: No data from internet, loading default content.');
       textContent = jsonDefaultContent;
     }
 
-    let loadingContentUpdate = this.props.loadingContentUpdate;
+    let loadingContentUpdate = this.props.currentlyFetchingContent;
     let lieux = textContent.lieux;
+    let exceptionalInfo = textContent.exceptional_infos;
 
     return (
       <Container theme={myTheme}>
@@ -109,7 +115,7 @@ class InformationsPratiques extends Component {
           <Button transparent disabled>
             <Image resizeMode={"contain"} style={{ width: 32 }} source={logo_icon} />
           </Button>
-          <Title>Informations Pratiques</Title>
+          <Title>Informations pratiques</Title>
         </Header>
 
         <Content style={styles.content}>
@@ -121,7 +127,7 @@ class InformationsPratiques extends Component {
             : null
           }
 
-
+          <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
 
           <View style={styles.mainContentView}>
 
@@ -133,9 +139,8 @@ class InformationsPratiques extends Component {
               </CardItem>
 
               <CardItem>
-                <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> Inauguration du salon</Text>
-                <Text><Text style={styles.horairesDate}>À partir de 17h</Text> (sur invitation)</Text>
-                <Text><Text style={styles.horairesDate}>À partir de 20h30</Text> (tout public)</Text>
+                <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> 20h00</Text>
+                <Text style={styles.horairesDate}>Conférence inaugurale</Text>
                 <Text note>(Salle polyvalente d’Echichens)</Text>
               </CardItem>
 
@@ -145,7 +150,7 @@ class InformationsPratiques extends Component {
               </CardItem>
 
               <CardItem>
-                <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
+                <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 17h00</Text></Text>
                 <Text note>(Sur les trois sites)</Text>
               </CardItem>
             </Card>

@@ -46,8 +46,8 @@ const propTypes = {
             }
             )),
     }),
-    programmeContent: React.PropTypes.object.isRequired, //TODO: remove the isRequired
-    actualiteArticlesIsLoading: React.PropTypes.bool.isRequired,
+    programmeContent: React.PropTypes.object, //TODO: remove the isRequired
+    currentlyFetchingContent: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
 };
 
@@ -70,7 +70,7 @@ class MainTabView extends Component {
                     articlesInfo={this.props.articlesInfosContent}
                     articlesContent={this.props.articlesHtmlContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
-                    loading={this.props.actualiteArticlesIsLoading}
+                    loading={this.props.currentlyFetchingContent}
                     goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
                 />
 
@@ -82,6 +82,7 @@ class MainTabView extends Component {
                 <InformationsPratiques
                     tabLabel="ios-information-circle"
                     textFieldsContent={this.props.infosPratiquesContent}
+                    currentlyFetchingContent={this.props.currentlyFetchingContent}
                 />
 
             </ScrollableTabView>

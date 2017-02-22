@@ -42,11 +42,14 @@ class SplashScreen extends Component {
     async _executeStartSetup() {
         let that = this;
         try {
-            this.setState({ loadingText: "Chargement des données." })
+            this.setState({ loadingText: "Chargement des données." });
             await that.props.loadDataFromDB();
-            this.setState({ loadingText: "Test de connexion." })
+            this.setState({ loadingText: "Test de connexion." });
             await that.props.setupNetworkObservation();
-            this.setState({ loadingText: "Obtention des articles et mise-à-jours..." })
+            this.setState({ loadingText: "Obtention des articles et mises-à-jour..." });
+            // The problem in not awaiting this is that the client can get stuck if the server data is bad at some point.
+            // (because the "bad" data will be saved to the memory, and therefore the client will load it each time and
+            // crash without having the possibility to update it.) The only way around would be to uninstall and reinstall the app.
             that.props.updateFromBackendIfNecessary();
             // Changing view
             that.props.navigator.replace({

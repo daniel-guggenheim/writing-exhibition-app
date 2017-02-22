@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -12,11 +12,17 @@ import {
   Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon,
   List, ListItem, Separator, Card, CardItem, H2, Row, Col, Grid
 } from 'native-base';
+
 import myTheme from '../themes/myTheme';
+import ExceptionalInfos from '../components/ExceptionalInfos';
+import jsonDefaultContent from '../json/programme_default.json';
+
 
 var GLOBAL = require('../global/GlobalVariables');
 var logo_icon = require("../images/logo/logo.png");
 
+const ECHICHENS_COLOR = '#67809F';
+const OTHER_PLACES_COLOR = '#1F3A93';
 
 var exampleData = {
   titles: ['Jeudi 2 mars', 'Vendredi 3 mars', 'Samedi 4 mars', 'Expositions permanentes'],
@@ -99,14 +105,71 @@ var exampleData = {
 
 }
 
-export default class ProgrammeSalon extends Component {
+
+const propTypes = {
+  programmeContent: React.PropTypes.shape({
+    exceptional_infos: React.PropTypes.shape({
+      title: PropTypes.string,
+      text: PropTypes.string,
+    }),
+    day1: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        location: PropTypes.string,
+        schedule: PropTypes.string,
+        speaker: PropTypes.string,
+        title: PropTypes.string,
+        type: PropTypes.string,
+      },
+      )),
+    day2: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        location: PropTypes.string,
+        schedule: PropTypes.string,
+        speaker: PropTypes.string,
+        title: PropTypes.string,
+        type: PropTypes.string,
+      },
+      )),
+    day3: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        location: PropTypes.string,
+        schedule: PropTypes.string,
+        speaker: PropTypes.string,
+        title: PropTypes.string,
+        type: PropTypes.string,
+      },
+      )),
+    expos_permanentes: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        location: PropTypes.string,
+        organizer: PropTypes.string,
+        title: PropTypes.string,
+      },
+      )),
+    titles: React.PropTypes.arrayOf(PropTypes.string),
+  }),
+};
+
+const defaultProps = {
+};
+
+
+
+
+class ProgrammeSalon extends Component {
 
   render() {
-    programme = exampleData;
+    let programme = this.props.programmeContent;
+    if (programme == null) {
+      console.log('Programme: No data from internet, loading default content.');
+      programme = jsonDefaultContent;
+    }
+
     day1Title = programme.titles[0];
     day2Title = programme.titles[1];
     day3Title = programme.titles[2];
-    expoPermanenteTitle = programme.titles[3]
+    expoPermanenteTitle = programme.titles[3];
+    exceptionalInfo = programme.exceptional_infos;
 
     return (
 
@@ -121,6 +184,8 @@ export default class ProgrammeSalon extends Component {
         </Header>
 
         <Content style={styles.content}>
+
+          <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
 
           <Card>
             <CardItem header>
@@ -174,8 +239,15 @@ export default class ProgrammeSalon extends Component {
                     <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
                     <View style={styles.expoPermaLocationView}>
                       {progElem.location == 'Echichens' ?
-                        <Text style={[styles.locationText, { color: '#27ae60' }]}>{progElem.location}</Text> :
-                        <Text style={styles.locationText}>{progElem.location}</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                          <Icon name='ios-pin' style={{ fontSize: 16, color: ECHICHENS_COLOR, marginRight: 5, }} />
+                          <Text style={[styles.locationText, { color: ECHICHENS_COLOR }]}>{progElem.location}</Text>
+                        </View>
+                        :
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                          <Icon name='ios-pin' style={{ fontSize: 16, color: OTHER_PLACES_COLOR, marginRight: 5, }} />
+                          <Text style={styles.locationText}>{progElem.location}</Text>
+                        </View>
                       }
                     </View>
                   </View>
@@ -206,8 +278,15 @@ class ProgrammeElement extends Component {
             <Text style={styles.titleText}>{progElem.title}</Text>
             <View style={styles.typeLocationView}>
               {progElem.location == 'Echichens' ?
-                <Text style={[styles.locationText, { color: '#27ae60' }]}>{progElem.location}</Text> :
-                <Text style={styles.locationText}>{progElem.location}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                  <Icon name='ios-pin' style={{ fontSize: 16, color: ECHICHENS_COLOR, marginRight: 5, }} />
+                  <Text style={[styles.locationText, { color: ECHICHENS_COLOR }]}>{progElem.location}</Text>
+                </View>
+                :
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                  <Icon name='ios-pin' style={{ fontSize: 16, color: OTHER_PLACES_COLOR, marginRight: 5, }} />
+                  <Text style={styles.locationText}>{progElem.location}</Text>
+                </View>
               }
               <Text style={styles.typeText}>{progElem.type}</Text>
 
@@ -234,12 +313,20 @@ const styles = StyleSheet.create({
   scheduleText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
   },
   titleText: {
     // color:'darkblue',
     flex: 1,
     flexWrap: 'wrap',
     fontSize: 17,
+    color: 'black',
+  },
+  speakerText: {
+    flex: 1,
+    flexWrap: 'wrap',
+    fontSize: 15,
+    marginTop: 5,
   },
   infosView: {
     flex: 1,
@@ -249,6 +336,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 12,
   },
   typeText: {
@@ -263,7 +351,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     flex: 1,
-    color: '#3498db',
+    color: OTHER_PLACES_COLOR,
     // backgroundColor:'red',
   },
 
@@ -281,27 +369,18 @@ const styles = StyleSheet.create({
   expoPermaLocationView: {
     marginTop: 8,
   },
-expoPermaOrganizerText: {
-  fontSize:15,
-  marginTop:4,
-},
-
-
-
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  expoPermaOrganizerText: {
+    fontSize: 15,
+    marginTop: 4,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+
 });
+
+
+
+
+
+ProgrammeSalon.propTypes = propTypes;
+ProgrammeSalon.defaultProps = defaultProps;
+
+export default ProgrammeSalon;
