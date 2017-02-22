@@ -66,5 +66,19 @@ module.exports = {
             "ProgrammeSalon": "Programme",
             "InformationsPratiques": "Informations",
         }
-    }
+    },
+    PLACES_COLOR: (placeStr) => {
+        if (placeStr == 'Echichens') {
+            return '#90C695';
+        } else {
+            return '#EB974E';
+        }
+    },
+    PLACES_ID: (placeStr) => {
+        if (placeStr == 'Echichens') {
+            return 1;
+        } else {
+            return 0;
+        }
+    },
 };

@@ -5,7 +5,8 @@ import {
     Text,
     View,
     WebView,
-    BackAndroid
+    BackAndroid,
+    Image,
 } from 'react-native';
 import {
     Spinner, Container, Header, Title, Content, Button, Icon, Card, CardItem, H3,
@@ -14,6 +15,11 @@ import {
 import myTheme from '../themes/myTheme';
 
 var GLOBAL = require('../global/GlobalVariables');
+
+var lieux_images_sources_by_id = [
+    require("../images/lieux/colombier_centre.jpg"),
+    require("../images/lieux/echichens.jpg")
+];
 
 const propTypes = {
     article_infos: React.PropTypes.shape({
@@ -72,6 +78,7 @@ class ProgrammeDetails extends Component {
         let progElement = this.props.programmeElement;
         // let progElement = progElemTest;
         // console.log(progElement);
+        let locationId = GLOBAL.PLACES_ID(progElement.location);
         return (
             <Container theme={myTheme}>
                 <Header>
@@ -86,20 +93,24 @@ class ProgrammeDetails extends Component {
                     {progElement.duration && <Text style={styles.speaker}>{progElement.speaker}</Text>}
                     <View style={styles.infoBlocView}>
                         <View style={styles.infoElemView}>
-                            <Icon name="ios-time-outline" style={styles.icon} />
+                            <Icon name="ios-time" style={[styles.icon, { color: '#f1c40f' }]} />
                             <Text style={[styles.infoElemText, styles.schedule]}>{progElement.schedule}</Text>
-                            {progElement.duration && <Text style={styles.duration}>(Durée approximative: {progElement.duration})</Text>}
+                            {progElement.duration && <Text style={styles.duration}>- ({progElement.duration})</Text>}
 
                         </View>
                         <View style={styles.infoElemView}>
-                            <Icon name='ios-pin-outline' style={styles.icon} />
-                            <Text style={styles.infoElemText}>{progElement.location}</Text>
-                        </View>
-                        <View style={styles.infoElemView}>
                             {/* ios-albums ios-book ios-folder  ios-pricetag ios-pricetags ios-bookmark-outline*/}
-                            <Icon name='ios-pricetag-outline' style={styles.icon} />
+                            <Icon name='ios-pricetag' style={[styles.icon, { color: '#27ae60' }]} />
                             <Text style={styles.infoElemText}>{progElement.type}</Text>
                         </View>
+                        <View style={styles.infoElemView}>
+                            <Icon name='ios-pin' style={[styles.icon, styles.iconPin]} />
+                            <Text style={[styles.infoElemText, { color: GLOBAL.PLACES_COLOR(progElement.location) }]}>{progElement.location}</Text>
+                        </View>
+                    </View>
+                    {/*<Image style={styles.lieuImage} source={lieux_images_sources_by_id[GLOBAL.PLACES_ID[progElement.location]]} />*/}
+                    <View style={styles.imageContainer}>
+                        <Image resizeMode="contain" style={styles.placeImage} source={lieux_images_sources_by_id[locationId]} />
                     </View>
                 </Content>
             </Container>
@@ -114,17 +125,18 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         paddingRight: 16,
         paddingLeft: 16,
+        // backgroundColor:'white',
     },
 
 
     title: {
-        fontSize: 22,
+        fontSize: 20,
         color: 'black',
         fontWeight: 'bold',
     },
     speaker: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 18,
         marginTop: 8,
     },
     infoBlocView: {
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
     },
     infoElemText: {
         color: 'black',
-        fontSize: 20,
+        fontSize: 18,
     },
     schedule: {
         marginRight: 8,
@@ -148,11 +160,29 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     icon: {
-        marginRight: 12,
+        marginRight: 16,
         fontSize: 25,
         height: 25,
-        width: 25,
+        width: 28,
         textAlign: 'center',
+        // backgroundColor:'orange'
+    },
+    iconPin: {
+        fontSize: 28,
+        height: 28,
+        width: 28,
+        color: '#c0392b',
+    },
+    imageContainer: {
+        flex: 1,
+        // backgroundColor:'blue',
+        // flexDirection:'row',
+        // alignItems: 'stretch',
+    },
+    placeImage: {
+        flex: 1,
+        width: null,
+        height: 140,
     },
 });
 
