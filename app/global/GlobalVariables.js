@@ -17,6 +17,7 @@ module.exports = {
         'SplashScreen': 0,
         'MainTabView': 1,
         'ActualitesDetails': 2,
+        'ProgrammeDetails': 3,
     },
     URL_STORAGE_KEY_ADDRESS: {
         articles_infos: {

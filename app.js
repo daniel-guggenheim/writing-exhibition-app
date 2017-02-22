@@ -37,6 +37,7 @@ import {
 import SplashScreen from './app/scenes/SplashScreen';
 import MainTabView from './app/scenes/MainTabView';
 import ActualitesDetails from './app/scenes/ActualitesDetails'
+import ProgrammeDetails from './app/scenes/ProgrammeDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');
 
@@ -115,11 +116,17 @@ class SalonEcritureApp extends Component {
                     fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
                     currentlyFetchingContent={this.state.currentlyFetchingContent}
                     goToActualitesDetails={(to_article_info, to_article_html) => this.goToActualitesDetails(navigator, to_article_info, to_article_html)}
+                    goToProgrammeDetails={(programmeElement) => this.goToProgrammeDetails(navigator, programmeElement)}
                 />;
             case GLOBAL.ROUTES.ActualitesDetails:
                 return <ActualitesDetails
                     article_infos={route.article_infos}
                     article_html={route.article_html}
+                    goBackOneScene={() => this.goBackOneScene(navigator)}
+                />;
+            case GLOBAL.ROUTES.ProgrammeDetails:
+                return <ProgrammeDetails
+                    programmeElement={route.programmeElement}
                     goBackOneScene={() => this.goBackOneScene(navigator)}
                 />;
             default:
@@ -136,6 +143,10 @@ class SalonEcritureApp extends Component {
         navigator.push({ index: GLOBAL.ROUTES.ActualitesDetails, article_infos: to_article_info, article_html: to_article_html });
     }
 
+    goToProgrammeDetails(navigator, programmeElement) {
+        console.log('Goto programme detail : ' + programmeElement.title);
+        navigator.push({ index: GLOBAL.ROUTES.ProgrammeDetails, programmeElement: programmeElement });
+    }
 
 
     /**************************  NETWORK  **************************/

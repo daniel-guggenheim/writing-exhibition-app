@@ -60,7 +60,7 @@ class MainTabView extends Component {
         return (
             <ScrollableTabView
                 style={{}}
-                initialPage={0}
+                initialPage={1}
                 renderTabBar={() => <MainTabBar />}
                 tabBarPosition='bottom'
                 tabBarBackgroundColor={GLOBAL.THEME_COLOR}>
@@ -77,6 +77,7 @@ class MainTabView extends Component {
                 <ProgrammeSalon
                     tabLabel="ProgrammeSalon"
                     programmeContent={this.props.programmeContent}
+                    goToProgrammeDetails={(programmeElement) => this.props.goToProgrammeDetails(programmeElement)}
                 />
 
                 <InformationsPratiques

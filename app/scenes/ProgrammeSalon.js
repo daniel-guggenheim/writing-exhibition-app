@@ -107,7 +107,10 @@ class ProgrammeSalon extends Component {
             {(programme.day1).map((progElem, i) => {
               let elemKey = progElem.schedule + progElem.title;
               return (
-                <ProgrammeElement key={elemKey} progElem={progElem} />
+                <ProgrammeElement
+                  key={elemKey}
+                  progElem={progElem}
+                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
               );
             })}
           </Card>
@@ -121,7 +124,10 @@ class ProgrammeSalon extends Component {
             {(programme.day2).map((progElem, i) => {
               let elemKey = progElem.schedule + progElem.title;
               return (
-                <ProgrammeElement key={elemKey} progElem={progElem} />
+                <ProgrammeElement
+                  key={elemKey}
+                  progElem={progElem}
+                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
               );
             })}
           </Card>
@@ -134,7 +140,10 @@ class ProgrammeSalon extends Component {
             {(programme.day3).map((progElem, i) => {
               let elemKey = progElem.schedule + progElem.title;
               return (
-                <ProgrammeElement key={elemKey} progElem={progElem} />
+                <ProgrammeElement
+                  key={elemKey}
+                  progElem={progElem}
+                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
               );
             })}
           </Card>
@@ -174,7 +183,7 @@ class ProgrammeElement extends Component {
     progElem = this.props.progElem;
 
     return (
-      <CardItem style={styles.cardItem}>
+      <CardItem style={styles.cardItem} button onPress={() => this.props.goToProgrammeDetails()} >
         <View style={styles.progElemView}>
           <View style={styles.scheduleView}>
             <Text style={styles.scheduleText}>{progElem.schedule}</Text>
@@ -222,7 +231,7 @@ const styles = StyleSheet.create({
   scheduleView: {
     marginRight: 8,
     // justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
   },
   scheduleText: {
     fontSize: 16,
