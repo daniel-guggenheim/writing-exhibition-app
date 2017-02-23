@@ -35,15 +35,7 @@ const propTypes = {
         )),
     articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
     fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
-    infosPratiquesContent: React.PropTypes.shape({
-        lieux: React.PropTypes.arrayOf(
-            React.PropTypes.shape({
-                addr1: PropTypes.string,
-                name: PropTypes.string,
-                gps_addr: PropTypes.string,
-            }
-            )),
-    }),
+    infosPratiquesContent: React.PropTypes.object,
     programmeContent: React.PropTypes.object,
     currentlyFetchingContent: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
