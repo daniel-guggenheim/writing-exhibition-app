@@ -101,80 +101,77 @@ class ProgrammeSalon extends Component {
           <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
 
           <Card>
-            <CardItem header>
-              <Icon name="ios-calendar-outline" style={{ color: '#E4F1FE', fontSize: 40, marginRight: 8, }} />
-              <H2 style={{ color: '#E4F1FE'}}>{day1Title}</H2>
+            <CardItem header style={[styles.cardTitle,{borderLeftColor: '#E4F1FE',}]}>
+              <H2 >{day1Title}</H2>
             </CardItem>
-            {(programme.day1).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
+          {(programme.day1).map((progElem, i) => {
+            let elemKey = progElem.schedule + progElem.title;
+            return (
+              <ProgrammeElement
+                key={elemKey}
+                progElem={progElem}
+                goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+            );
+          })}
           </Card>
 
 
-          <Card>
-            <CardItem header >
-             <Icon name="ios-calendar-outline" style={{ color: '#59ABE3', fontSize: 40, marginRight: 8, }} />
-              <H2 style={{ color: '#59ABE3'}}>{day2Title}</H2>
-            </CardItem>
+        <Card>
+          <CardItem header style={[styles.cardTitle,{borderLeftColor: '#59ABE3',}]}>
+            <H2>{day2Title}</H2>
+          </CardItem>
 
-            {(programme.day2).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
-          </Card>
+          {(programme.day2).map((progElem, i) => {
+            let elemKey = progElem.schedule + progElem.title;
+            return (
+              <ProgrammeElement
+                key={elemKey}
+                progElem={progElem}
+                goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+            );
+          })}
+        </Card>
 
-          <Card>
-            <CardItem header>
-            <Icon name="ios-calendar-outline" style={{ color: '#446CB3', fontSize: 40, marginRight: 8, }} />
-              <H2  style={{ color: '#446CB3'}}>{day3Title}</H2>
-            </CardItem>
+        <Card>
+          <CardItem header style={[styles.cardTitle,{borderLeftColor: '#446CB3',}]}>
+            <H2>{day3Title}</H2>
+          </CardItem>
 
-            {(programme.day3).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
-          </Card>
+          {(programme.day3).map((progElem, i) => {
+            let elemKey = progElem.schedule + progElem.title;
+            return (
+              <ProgrammeElement
+                key={elemKey}
+                progElem={progElem}
+                goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+            );
+          })}
+        </Card>
 
-          <Card>
-            <CardItem header>
-              <H2>{expoPermanenteTitle}</H2>
-            </CardItem>
-            {(programme.expos_permanentes).map((progElem, i) => {
-              let elemKey = progElem.title;
-              return (
-                <CardItem key={elemKey}>
-                  <View>
-                    <Text style={styles.titleText}>{progElem.title}</Text>
-                    <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
-                    <View style={styles.expoPermaLocationView}>
-                      <View style={styles.locationView}>
-                        <Icon name='ios-pin' style={[styles.locationIcon, { color: COLLEGE_COLOMBIER_COLOR, }]} />
-                        <Text style={[styles.locationText, { color: COLLEGE_COLOMBIER_COLOR }]}>{progElem.location}</Text>
-                      </View>
+        <Card>
+          <CardItem header>
+            <H2>{expoPermanenteTitle}</H2>
+          </CardItem>
+          {(programme.expos_permanentes).map((progElem, i) => {
+            let elemKey = progElem.title;
+            return (
+              <CardItem key={elemKey}>
+                <View>
+                  <Text style={styles.titleText}>{progElem.title}</Text>
+                  <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
+                  <View style={styles.expoPermaLocationView}>
+                    <View style={styles.locationView}>
+                      <Icon name='ios-pin' style={[styles.locationIcon, { color: COLLEGE_COLOMBIER_COLOR, }]} />
+                      <Text style={[styles.locationText, { color: COLLEGE_COLOMBIER_COLOR }]}>{progElem.location}</Text>
                     </View>
                   </View>
-                </CardItem>
-              );
-            })}
-          </Card>
+                </View>
+              </CardItem>
+            );
+          })}
+        </Card>
         </Content>
-      </Container>
+      </Container >
     );
   }
 }
@@ -222,6 +219,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingRight: 8,
     paddingLeft: 8,
+  },
+  cardTitle: {
+    borderLeftWidth: 16,
+    borderStyle: 'solid',
+    paddingLeft: 16,
+    paddingBottom: 14,
+    paddingTop: 14,
+    // marginTop: 8,
   },
 
 
