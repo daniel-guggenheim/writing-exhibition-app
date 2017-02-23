@@ -22,30 +22,15 @@ var lieux_images_sources_by_id = [
 ];
 
 const propTypes = {
-    article_infos: React.PropTypes.shape({
-        category: PropTypes.string,
-        date: PropTypes.string,
-        id: PropTypes.number,
-        intro: PropTypes.string,
+    programmeElement: React.PropTypes.shape({
+        duration: PropTypes.string,
+        location: PropTypes.number,
+        schedule: PropTypes.string,
+        speaker: PropTypes.string,
         title: PropTypes.string,
+        type: PropTypes.string,
     }),
-    article_html: PropTypes.string,
 };
-
-const progElemTest = {
-    location: 'Colombier, C1',
-    schedule: '10h00',
-    speaker: "Emmanuelle Ryser, Ecrivain public, Collectif D.I.R.E.",
-    title: "Je me souviens, atelier d'écriture autobiographique",
-    type: 'Atelier',
-    duration: '1h',
-}
-
-const expoTest = {
-    location: "Collège de Colombier",
-    organizer: "Fondation Bodmer, Genève",
-    title: "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun (Hôte d'honneur, Cameroun)",
-}
 
 const defaultProps = {
 };

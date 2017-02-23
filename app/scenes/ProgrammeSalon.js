@@ -16,9 +16,10 @@ import jsonDefaultContent from '../json/programme_default.json';
 var logo_icon = require("../images/logo/logo.png");
 
 const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
-const ECHICHENS_COLOR = '#90C695';
-const OTHER_PLACES_COLOR = '#EB974E';
 const TITLES_COLOR = ['#C0DDFA','#59ABE3', '#446CB3', '#10375C'];
+
+// const ECHICHENS_COLOR = '#90C695';
+// const OTHER_PLACES_COLOR = '#EB974E';
 // const ECHICHENS_COLOR = '#67809F';
 // const OTHER_PLACES_COLOR = '#1F3A93';
 

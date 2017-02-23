@@ -1,59 +1,185 @@
 {
   "day1" : [ {
     "location" : "Echichens",
-    "schedule" : "17h00",
+    "schedule" : "17h30",
     "speaker" : "",
     "title" : "Accueil des invités",
-    "type" : "Accueil"
+    "type" : "Inauguration"
   }, {
     "location" : "Echichens",
     "schedule" : "18h00",
     "speaker" : "Sylvie Guggenheim",
     "title" : "Inauguration du salon",
+    "type" : "Conférence"
+  }, {
+    "location" : "Echichens",
+    "schedule" : "19h00",
+    "speaker" : "Sylvie Guggenheim",
+    "title" : "Cocktail d'ouverture du Salon",
+    "type" : "Inauguration"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "20h00",
+    "speaker" : "Maître Marc Bonnant",
+    "title" : "Conférence inaugurale de Maître Marc Bonnant, De la lecture, point coronal de l'écriture",
     "type" : "Conférence"
   } ],
   "day2" : [ {
-    "location" : "Echichens",
-    "schedule" : "17h00",
-    "speaker" : "",
-    "title" : "Accueil des invités",
-    "type" : "Accueil"
+    "duration" : "1h",
+    "location" : "Colombier, A2",
+    "schedule" : "10h00",
+    "speaker" : "Emmanuelle Ryser, Ecrivain public, Collectif D.I.R.E.",
+    "title" : "Je me souviens, atelier d'écriture autobiographique",
+    "type" : "Atelier"
   }, {
-    "location" : "Echichens",
-    "schedule" : "18h00",
-    "speaker" : "Sylvie Guggenheim",
-    "title" : "Inauguration du salon",
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "11h30",
+    "speaker" : "Carole Jobin, écrivain public, rédactrice, animatrice en atelier d'écriture",
+    "title" : "L'écriture dans tous ses états",
     "type" : "Conférence"
+  }, {
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "13h30",
+    "speaker" : "Association française des secrétaires et assistantes indépendantes",
+    "title" : "Conférence",
+    "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "14h00",
+    "speaker" : "Michelle Bergadaà, professeur de management et de communication à l'Université de Genève",
+    "title" : "Le plagiat et les jeunes: une liaison de coeur ou de raison ?",
+    "type" : "Conférence interactive"
+  }, {
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "14h30",
+    "speaker" : "Sylvie Blanchon et Hélène Cassignol  (Collectif DIRE)",
+    "title" : "Le récit de vie: mode ou quête de sens?",
+    "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "15h30",
+    "speaker" : "Gaston Kelman, écrivain et spécialiste du royaume Bamoun. Organisation: Institut Ebena, France",
+    "title" : "Sultan Ibrahim NJOYA, inventeur d'une écriture, d'une civilisation et père des renaissances africaines (Conférence de l'hôte d'honneur, Cameroun)",
+    "type" : "Conférence"
+  }, {
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "16h30",
+    "speaker" : "Christiane Turk (Tellitweb), rédaction, rédaction spécialisée et web",
+    "title" : "L'écriture en ligne: au-delà des mots",
+    "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "17h30",
+    "speaker" : "Invitée et conférencière Danièle Manesse, professeure émérite de sciences du langage à Paris, auteur du livre \\\"L'orthographe en question\\\". Ouverture de la séance Didier Berberat, président de l'Association Défense du Français et conseiller aux Etats.",
+    "title" : "L'orthographe en question",
+    "type" : "Café francophone"
+  }, {
+    "duration" : "1h",
+    "location" : "Colombier, A2",
+    "schedule" : "17h30",
+    "speaker" : "Alain Maillard, journaliste et conseiller en écriture.",
+    "title" : " L'atelier du désir d'écrire",
+    "type" : "Atelier"
   } ],
   "day3" : [ {
-    "location" : "Echichens",
-    "schedule" : "17h00",
-    "speaker" : "",
-    "title" : "Accueil des invités",
-    "type" : "Accueil"
+    "duration" : "1h",
+    "location" : "Colombier, A2",
+    "schedule" : "9h30",
+    "speaker" : "Sylvie Blanchon (Collectif D.I.R.E)",
+    "title" : "Les rencontres de ma vie, atelier biographique",
+    "type" : "Atelier"
   }, {
+    "duration" : "1h",
     "location" : "Echichens",
-    "schedule" : "18h00",
-    "speaker" : "Sylvie Guggenheim",
-    "title" : "Inauguration du salon",
+    "schedule" : "10h00",
+    "speaker" : "Sylvie Lehmann et Louise Dubois, scénaristes professionnels, Paris et Bruxelles",
+    "title" : "Du papier au grand écran",
     "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Colombier, A2",
+    "schedule" : "11h00",
+    "speaker" : "Société Romande de Graphologie (graphothérapie)",
+    "title" : "Rééducation de l'écriture pour tous",
+    "type" : "Atelier"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "11h30",
+    "speaker" : "Professeur Clément Dili Palaï, doyen de la Faculté des Lettres de Maroua (Nord-Cameroun), conférence de l'hôte d'honneur (Cameroun) organisée par l'Institut Ebena, France",
+    "title" : "Place et rôle de l'écriture dans le développement économique, social et culturel du Cameroun",
+    "type" : "Conférence"
+  }, {
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "13h00",
+    "speaker" : "Florence Hugi et Marie-Josèphe Varin (Collectif D.I.R.E.)",
+    "title" : "Nous, recueilleuses de récits de vie",
+    "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Colombier, A2",
+    "schedule" : "14h00",
+    "speaker" : "Centre de formation Créavie",
+    "title" : "Ecriture et animation",
+    "type" : "Atelier"
+  }, {
+    "duration" : "30 min",
+    "location" : "Echichens",
+    "schedule" : "14h00",
+    "speaker" : "Michel Dumoulin",
+    "title" : "Vers la professionnalisation du métier d’écrivains publics, du bénévolat à l’exercice d'une profession",
+    "type" : "Conférence"
+  }, {
+    "duration" : "30 min",
+    "location" : "Colombier, C1",
+    "schedule" : "14h30",
+    "speaker" : "Anne-Marie Nauer, présidente de la Société Suisse de Graphologie",
+    "title" : "Recherche au sein de la Société Suisse de Graphologie",
+    "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Colombier, C1",
+    "schedule" : "15h30",
+    "speaker" : "Sylvie Lehmann et Louise Dubois",
+    "title" : "Découverte des outils scénaristiques à travers l'analyse d'un film",
+    "type" : "Atelier"
+  }, {
+    "duration" : "1h",
+    "location" : "Echichens",
+    "schedule" : "15h30",
+    "speaker" : "Animé par Edgar Bloch, président de la section vaudoise d'Impressum",
+    "title" : "Débat sur le ghostwriting ou prête-plume",
+    "type" : "Débat"
   } ],
   "exceptional_infos" : {
-    "text" : "Le spectacle 1 se trouvera dans la salle 2",
-    "title" : "Changements de salle"
+    "text" : "",
+    "title" : ""
   },
   "expos_permanentes" : [ {
-    "location" : "Colombier",
-    "organizer" : "Institut Ebena, France",
-    "title" : "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun (Hôte d'honneur, Cameroun)"
+    "location" : "Collège de Colombier",
+    "organizer" : "Institut Ebena pour l'hôte d'honneur (Cameroun), France",
+    "title" : "Alphabet a ka u ku du Sultan Njoya, roi des Bamoun (exposition)"
   }, {
-    "location" : "Colombier",
+    "location" : "Collège de Colombier",
     "organizer" : "Fondation Bodmer, Genève",
-    "title" : "De la correspondance au sms"
+    "title" : "De la correspondance au sms (exposition)"
   }, {
-    "location" : "Colombier",
+    "location" : "Collège de Colombier",
     "organizer" : "Association SylMa",
-    "title" : "Les métiers de l'écriture"
+    "title" : "Les métiers de l'écriture (exposition)"
+  }, {
+    "location" : "Collège de Colombier",
+    "organizer" : "Meghdad Asadilari",
+    "title" : "Simorgh (court-métrage)"
   } ],
   "titles" : [ "Jeudi 2 mars", "Vendredi 3 mars", "Samedi 4 mars", "Expositions permanentes" ]
 }

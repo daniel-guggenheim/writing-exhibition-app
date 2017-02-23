@@ -1,7 +1,7 @@
 {
   "exceptional_infos" : {
     "text" : "",
-    "title" : "Informations de dernière minute..."
+    "title" : ""
   },
   "lieux" : [ {
     "addr1" : "Centre de formation Créavie, Place du Village 2, 1114 Colombier VD",
@@ -18,18 +18,5 @@
     "gps_addr" : "http://maps.apple.com/?daddr=46.528728,6.496988&dirflg=d",
     "id" : 2,
     "name" : "Echichens"
-  } ],
-  "text1_dates" : "2, 3 et 4 mars 2017",
-  "text1_horaires" : {
-    "jeudi" : {
-      "cause" : "Inauguration et ouverture officielle du salon",
-      "day" : "Jeudi 2 mars",
-      "hour" : "17h00",
-      "place" : "Salle polyvalente d’Echichens"
-    },
-    "vendredi" : {
-      "day" : "Vendredi 3 mars"
-    }
-  },
-  "text2_horaires" : "Jeudi 2 mars: 17h00, inauguration et ouverture officielle du salon, salle polyvalente d’Echichens \nVendredi 3 mars: 09h00 à 21h00 sur les trois sites \nSamedi 4 mars: 09h00 à 17h00 sur les trois sites"
+  } ]
 }

@@ -31,12 +31,10 @@ var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
 const propTypes = {
   currentlyFetchingContent: React.PropTypes.bool,
   textFieldsContent: React.PropTypes.shape({
-    exeptionnal_info: React.PropTypes.shape({
+    exceptional_infos: React.PropTypes.shape({
       title: PropTypes.string,
       text: PropTypes
     }),
-    text1_dates: PropTypes.string,
-    text2_horaires: PropTypes.string,
     lieux: React.PropTypes.arrayOf(
       React.PropTypes.shape({
         addr1: PropTypes.string,

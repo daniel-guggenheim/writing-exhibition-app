@@ -36,8 +36,6 @@ const propTypes = {
     articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
     fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     infosPratiquesContent: React.PropTypes.shape({
-        text1_dates: PropTypes.string,
-        text2_horaires: PropTypes.string,
         lieux: React.PropTypes.arrayOf(
             React.PropTypes.shape({
                 addr1: PropTypes.string,
@@ -46,9 +44,10 @@ const propTypes = {
             }
             )),
     }),
-    programmeContent: React.PropTypes.object, //TODO: remove the isRequired
+    programmeContent: React.PropTypes.object,
     currentlyFetchingContent: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
+    goToProgrammeDetails: React.PropTypes.func.isRequired,
 };
 
 const defaultProps = {
