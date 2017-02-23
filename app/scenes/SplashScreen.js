@@ -44,8 +44,7 @@ class SplashScreen extends Component {
         try {
             this.setState({ loadingText: "Chargement des données." });
             await that.props.loadDataFromDB();
-            // this.setState({ loadingText: "Vérification de la connexion." });
-            this.setState({ loadingText: "Obtention des articles et mises-à-jour..." });
+            this.setState({ loadingText: "Vérification de la connexion internet." });
             await that.props.setupNetworkObservation();
             this.setState({ loadingText: "Obtention des articles et mises-à-jour..." });
             // The problem in not awaiting this is that the client can get stuck if the server data is bad at some point.

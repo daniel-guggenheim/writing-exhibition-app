@@ -41,13 +41,15 @@ import ProgrammeDetails from './app/scenes/ProgrammeDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');
 
-// States name
+// State names
 const STATE_CONTENT_SUFFIX = 'Content';
 const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
 
 // Last check storage key
-const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 0;
 const LAST_CHECK_FOR_UPDATE_STORAGE_KEY = '@dateOfLastCheckForOnlineUpdate';
+
+// Time before update
+const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 10;
 
 class SalonEcritureApp extends Component {
     constructor(props) {
