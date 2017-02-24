@@ -1,3 +1,10 @@
 {
-"presets": ["react-native"]
+	"presets": ["react-native"],
+  "env": {
+	"dev": {
+	},
+    "production": {
+      "plugins": ["transform-remove-console"]
+    }
+  }
 }

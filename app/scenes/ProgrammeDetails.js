@@ -24,7 +24,7 @@ var lieux_images_sources_by_id = [
 const propTypes = {
     programmeElement: React.PropTypes.shape({
         duration: PropTypes.string,
-        location: PropTypes.number,
+        location: PropTypes.string,
         schedule: PropTypes.string,
         speaker: PropTypes.string,
         title: PropTypes.string,
