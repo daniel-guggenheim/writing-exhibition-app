@@ -5,7 +5,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import { Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, } from 'native-base';
+import { Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, Spinner } from 'native-base';
 
 import ExceptionalInfos from '../components/ExceptionalInfos';
 
@@ -16,7 +16,7 @@ import jsonDefaultContent from '../json/programme_default.json';
 var logo_icon = require("../images/logo/logo.png");
 
 const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
-const TITLES_COLOR = ['#C0DDFA','#59ABE3', '#446CB3', '#10375C'];
+const TITLES_COLOR = ['#C0DDFA', '#59ABE3', '#446CB3', '#10375C'];
 
 // const ECHICHENS_COLOR = '#90C695';
 // const OTHER_PLACES_COLOR = '#EB974E';
@@ -73,7 +73,30 @@ const defaultProps = {
 
 class ProgrammeSalon extends Component {
 
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainComponentIsRendering: true,
+    }
+  }
+
+  componentDidMount() {
+    //This will allow to render only a spinner at the beginning, and when the component
+    // has loaded, to render it immediately. 
+    setTimeout(() => {
+      this.setState({ mainComponentIsRendering: false });
+    }, 0);
+  }
+
   render() {
+    if (this.state.mainComponentIsRendering) {
+      console.log('Programme salon : mainComponentIsRendering');
+    } else {
+      console.log('Programme salon : mainComponentIsRendering is FALSE.');
+    }
+
+
     let programme = this.props.programmeContent;
     if (programme == null) {
       console.log('Programme: No data from internet, loading default content.');
@@ -98,81 +121,89 @@ class ProgrammeSalon extends Component {
 
         </Header>
 
-        <Content style={styles.content}>
 
-          <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
+        {this.state.mainComponentIsRendering ?
+          <View style={styles.spinnerView}><Spinner /></View>
 
-          <Card>
-            <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[0], }]}>
-              <H2 >{day1Title}</H2>
-            </CardItem>
-            {(programme.day1).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
-          </Card>
+          :
 
 
-          <Card>
-            <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[1], }]}>
-              <H2>{day2Title}</H2>
-            </CardItem>
+          <Content style={styles.content}>
 
-            {(programme.day2).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
-          </Card>
+            <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
 
-          <Card>
-            <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[2], }]}>
-              <H2>{day3Title}</H2>
-            </CardItem>
+            <Card>
+              <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[0], }]}>
+                <H2 >{day1Title}</H2>
+              </CardItem>
+              {(programme.day1).map((progElem, i) => {
+                let elemKey = progElem.schedule + progElem.title;
+                return (
+                  <ProgrammeElement
+                    key={elemKey}
+                    progElem={progElem}
+                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                );
+              })}
+            </Card>
 
-            {(programme.day3).map((progElem, i) => {
-              let elemKey = progElem.schedule + progElem.title;
-              return (
-                <ProgrammeElement
-                  key={elemKey}
-                  progElem={progElem}
-                  goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
-              );
-            })}
-          </Card>
 
-          <Card>
-            <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[3], }]}>
-              <H2>{expoPermanenteTitle}</H2>
-            </CardItem>
-            {(programme.expos_permanentes).map((progElem, i) => {
-              let elemKey = progElem.title;
-              return (
-                <CardItem key={elemKey}>
-                  <View>
-                    <Text style={styles.titleText}>{progElem.title}</Text>
-                    <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
-                    <View style={styles.expoPermaLocationView}>
-                      <View style={styles.locationView}>
-                        <Icon name='ios-pin-outline' style={[styles.locationIcon, { color: COLLEGE_COLOMBIER_COLOR, }]} />
-                        <Text style={[styles.locationText, { color: COLLEGE_COLOMBIER_COLOR }]}>{progElem.location}</Text>
+            <Card>
+              <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[1], }]}>
+                <H2>{day2Title}</H2>
+              </CardItem>
+
+              {(programme.day2).map((progElem, i) => {
+                let elemKey = progElem.schedule + progElem.title;
+                return (
+                  <ProgrammeElement
+                    key={elemKey}
+                    progElem={progElem}
+                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                );
+              })}
+            </Card>
+
+            <Card>
+              <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[2], }]}>
+                <H2>{day3Title}</H2>
+              </CardItem>
+
+              {(programme.day3).map((progElem, i) => {
+                let elemKey = progElem.schedule + progElem.title;
+                return (
+                  <ProgrammeElement
+                    key={elemKey}
+                    progElem={progElem}
+                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                );
+              })}
+            </Card>
+
+            <Card>
+              <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[3], }]}>
+                <H2>{expoPermanenteTitle}</H2>
+              </CardItem>
+              {(programme.expos_permanentes).map((progElem, i) => {
+                let elemKey = progElem.title;
+                return (
+                  <CardItem key={elemKey}>
+                    <View>
+                      <Text style={styles.titleText}>{progElem.title}</Text>
+                      <Text style={styles.expoPermaOrganizerText}>{progElem.organizer}</Text>
+                      <View style={styles.expoPermaLocationView}>
+                        <View style={styles.locationView}>
+                          <Icon name='ios-pin-outline' style={[styles.locationIcon, { color: COLLEGE_COLOMBIER_COLOR, }]} />
+                          <Text style={[styles.locationText, { color: COLLEGE_COLOMBIER_COLOR }]}>{progElem.location}</Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </CardItem>
-              );
-            })}
-          </Card>
-        </Content>
+                  </CardItem>
+                );
+              })}
+            </Card>
+          </Content>
+        }
       </Container >
     );
   }
@@ -223,6 +254,9 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     paddingTop: 14,
     // marginTop: 8,
+  },
+  spinnerView: {
+    alignItems: 'center',
   },
 
 

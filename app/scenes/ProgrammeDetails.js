@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     icon: {
-        marginRight: 16,
+        marginRight: 12,
         fontSize: 25,
         height: 25,
         width: 28,

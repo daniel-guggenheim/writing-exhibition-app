@@ -33,7 +33,7 @@ const propTypes = {
   textFieldsContent: React.PropTypes.shape({
     exceptional_infos: React.PropTypes.shape({
       title: PropTypes.string,
-      text: PropTypes
+      text: PropTypes.string,
     }),
     lieux: React.PropTypes.arrayOf(
       React.PropTypes.shape({
@@ -50,6 +50,23 @@ const defaultProps = {
 
 
 class InformationsPratiques extends Component {
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainComponentIsRendering: true,
+    }
+  }
+
+  componentDidMount() {
+    //This will allow to render only a spinner at the beginning, and when the component
+    // has loaded, to render it immediately. 
+    setTimeout(() => {
+      this.setState({ mainComponentIsRendering: false });
+    }, 0);
+  }
+
 
   _clickUrl(url) {
     Linking.canOpenURL(url).then(supported => {
@@ -85,163 +102,167 @@ class InformationsPratiques extends Component {
           <Title>Informations pratiques</Title>
         </Header>
 
-        <Content style={styles.content}>
-          {loadingContentUpdate ?
-            <View style={styles.loadingContent}>
-              <Text>Mise-à-jour</Text>
-              <ActivityIndicator style={styles.spinner} />
-            </View>
-            : null
-          }
+        {this.state.mainComponentIsRendering ?
+          <View style={styles.spinnerView}><Spinner /></View>
 
-          <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
+          :
 
-          <View style={styles.mainContentView}>
+          <Content style={styles.content}>
+            {loadingContentUpdate ?
+              <View style={styles.loadingContent}>
+                <Text>Mise-à-jour</Text>
+                <ActivityIndicator style={styles.spinner} />
+              </View>
+              : null
+            }
 
-            {/* -------------- Horaires -------------- */}
-            <Card>
-              <CardItem header>
-                <Icon name="ios-clock" style={{ fontSize: 30, marginRight: 8, }} />
-                <H2>Horaires</H2>
-              </CardItem>
+            <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
 
-              <CardItem>
-                <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> 20h00</Text>
-                <Text style={styles.horairesDate}>Conférence inaugurale</Text>
-                <Text note>(Salle polyvalente d’Echichens)</Text>
-              </CardItem>
+            <View style={styles.mainContentView}>
 
-              <CardItem>
-                <Text><Text style={styles.horairesHeure}>Vendredi 3 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
-                <Text note>(Sur les trois sites)</Text>
-              </CardItem>
+              {/* -------------- Horaires -------------- */}
+              <Card>
+                <CardItem header>
+                  <Icon name="ios-clock" style={{ fontSize: 30, marginRight: 8, }} />
+                  <H2>Horaires</H2>
+                </CardItem>
 
-              <CardItem>
-                <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 17h00</Text></Text>
-                <Text note>(Sur les trois sites)</Text>
-              </CardItem>
-            </Card>
+                <CardItem>
+                  <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> 20h00</Text>
+                  <Text style={styles.horairesDate}>Conférence inaugurale</Text>
+                  <Text note>(Salle polyvalente d’Echichens)</Text>
+                </CardItem>
+
+                <CardItem>
+                  <Text><Text style={styles.horairesHeure}>Vendredi 3 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
+                  <Text note>(Sur les trois sites)</Text>
+                </CardItem>
+
+                <CardItem>
+                  <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 17h00</Text></Text>
+                  <Text note>(Sur les trois sites)</Text>
+                </CardItem>
+              </Card>
 
 
 
-            {/* -------------- Lieux -------------- */}
-            <Card>
-              <CardItem header>
-                <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{ fontSize: 30, marginRight: 8, }} />
-                <H2>Lieux</H2>
-              </CardItem>
+              {/* -------------- Lieux -------------- */}
+              <Card>
+                <CardItem header>
+                  <Icon theme={FontAwesomeIconTheme} name="map-signs" style={{ fontSize: 30, marginRight: 8, }} />
+                  <H2>Lieux</H2>
+                </CardItem>
 
-              {(lieux).map((lieu, i) => {
-                return (
-                  <CardItem key={i}>
-                    <Grid selectable={true}>
-                      <Row>
-                        <Image style={styles.lieuImage} source={lieux_images_sources_by_id[i]} />
-                      </Row>
-                      <Row>
-                        <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
-                        </Col>
-                        <View style={styles.lieuItineraryView}>
-                          <Button success iconRight onPress={() => this._clickUrl(lieu.gps_addr)}>
-                            Itinéraire
+                {(lieux).map((lieu, i) => {
+                  return (
+                    <CardItem key={i}>
+                      <Grid selectable={true}>
+                        <Row>
+                          <Image style={styles.lieuImage} source={lieux_images_sources_by_id[i]} />
+                        </Row>
+                        <Row>
+                          <Text selectable={true} style={styles.lieuName}>{lieu.name}</Text>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <Text selectable={true} style={styles.lieuAddr}>{lieu.addr1}</Text>
+                          </Col>
+                          <View style={styles.lieuItineraryView}>
+                            <Button success iconRight onPress={() => this._clickUrl(lieu.gps_addr)}>
+                              Itinéraire
                            <Icon theme={MaterialDesignTheme} name="directions" />
-                          </Button>
-                        </View>
-                      </Row>
-                    </Grid>
-                  </CardItem>
-                );
-              })}
-            </Card>
+                            </Button>
+                          </View>
+                        </Row>
+                      </Grid>
+                    </CardItem>
+                  );
+                })}
+              </Card>
 
 
-            {/* -------------- Accès au Salon -------------- */}
-            <Card>
-              <CardItem header>
-                <Icon name="md-car" style={{ fontSize: 30, marginRight: 8, }} />
-                <H2>Accès au Salon</H2>
-              </CardItem>
+              {/* -------------- Accès au Salon -------------- */}
+              <Card>
+                <CardItem header>
+                  <Icon name="md-car" style={{ fontSize: 30, marginRight: 8, }} />
+                  <H2>Accès au Salon</H2>
+                </CardItem>
 
-              <CardItem>
-                <Text style={styles.accesTitle}>En voiture :</Text>
-                <Text selectable={true} selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
-              </CardItem>
+                <CardItem>
+                  <Text style={styles.accesTitle}>En voiture :</Text>
+                  <Text selectable={true} selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
+                </CardItem>
 
-              <CardItem>
-                <Text style={styles.accesTitle}>En transports publics :</Text>
-                <Text selectable={true} selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
-              </CardItem>
+                <CardItem>
+                  <Text style={styles.accesTitle}>En transports publics :</Text>
+                  <Text selectable={true} selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
+                </CardItem>
 
-              <CardItem style={styles.cardItem}>
-                <Icon name="ios-information-circle" style={{ color: 'green', fontSize: 30, marginRight: 8, }} />
-                <Text selectable={true} style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
-              </CardItem>
-            </Card>
+                <CardItem style={styles.cardItem}>
+                  <Icon name="ios-information-circle" style={{ color: 'green', fontSize: 30, marginRight: 8, }} />
+                  <Text selectable={true} style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
+                </CardItem>
+              </Card>
 
 
 
-            {/* -------------- Contacts -------------- */}
-            <Card>
-              <CardItem header>
-                <Icon name="md-people" style={{ fontSize: 30, marginRight: 8, }} />
-                <H2>Contacts</H2>
-              </CardItem>
+              {/* -------------- Contacts -------------- */}
+              <Card>
+                <CardItem header>
+                  <Icon name="md-people" style={{ fontSize: 30, marginRight: 8, }} />
+                  <H2>Contacts</H2>
+                </CardItem>
 
-              <CardItem>
-                <Text selectable={true}>
-                  <Text style={styles.accesTitle}>Site Internet : </Text>
-                  <Text style={styles.url} onPress={() => this._clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
-                    www.salonecriture.org
+                <CardItem>
+                  <Text selectable={true}>
+                    <Text style={styles.accesTitle}>Site Internet : </Text>
+                    <Text style={styles.url} onPress={() => this._clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
+                      www.salonecriture.org
                 </Text>
+                  </Text>
+                  <Text selectable={true}>
+                    <Text style={styles.accesTitle}>Email : </Text>
+                    <Text style={styles.url} onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_SALON_ECRITURE)}>
+                      info@salonecriture.org
                 </Text>
-                <Text selectable={true}>
-                  <Text style={styles.accesTitle}>Email : </Text>
-                  <Text style={styles.url} onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_SALON_ECRITURE)}>
-                    info@salonecriture.org
-                </Text>
-                </Text>
-              </CardItem>
+                  </Text>
+                </CardItem>
 
-              <CardItem>
-                <View style={{ marginBottom: 8, }}>
-                  <Text style={styles.accesTitle}>Présidente du Salon : </Text>
-                  <Text selectable={true}>Sylvie Guggenheim</Text>
-                </View>
-                <View style={{ marginBottom: 8, }}>
-                  <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
-                  <Text selectable={true}>Michel Ackermann</Text>
-                </View>
-                <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
-                <Text>Association SylMa</Text>
-              </CardItem>
+                <CardItem>
+                  <View style={{ marginBottom: 8, }}>
+                    <Text style={styles.accesTitle}>Présidente du Salon : </Text>
+                    <Text selectable={true}>Sylvie Guggenheim</Text>
+                  </View>
+                  <View style={{ marginBottom: 8, }}>
+                    <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
+                    <Text selectable={true}>Michel Ackermann</Text>
+                  </View>
+                  <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
+                  <Text>Association SylMa</Text>
+                </CardItem>
 
 
-              <CardItem>
-                <Text style={styles.accesTitle}>Créateur de l'application mobile : </Text>
-                <Text>Daniel Guggenheim</Text>
-              </CardItem>
+                <CardItem>
+                  <Text style={styles.accesTitle}>Créateur de l'application mobile : </Text>
+                  <Text>Daniel Guggenheim</Text>
+                </CardItem>
 
-              <CardItem>
-                <Text>Si vous découvrez un bug en utilisant cette application, merci de le signaler en cliquant ici : </Text>
-                <View style={{ marginTop: 8, flexDirection: 'row', justifyContent: 'center' }}>
-                  <Button warning bordered
-                    onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_REPORT_BUG)}>
-                    <Icon name='ios-mail' />
-                    <Text>Signaler un bug</Text>
-                  </Button>
-                </View>
-              </CardItem>
+                <CardItem>
+                  <Text>Si vous découvrez un bug en utilisant cette application, merci de le signaler en cliquant ici : </Text>
+                  <View style={{ marginTop: 8, flexDirection: 'row', justifyContent: 'center' }}>
+                    <Button warning bordered
+                      onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_REPORT_BUG)}>
+                      <Icon name='ios-mail' />
+                      <Text>Signaler un bug</Text>
+                    </Button>
+                  </View>
+                </CardItem>
 
-            </Card>
-          </View>
-        </Content>
+              </Card>
+            </View>
+          </Content>
+        }
       </Container >
-
-
 
     );
   }
@@ -257,6 +278,9 @@ const styles = StyleSheet.create({
   },
   mainContentView: {
     marginTop: 10,
+  },
+  spinnerView: {
+    alignItems: 'center',
   },
   titleThumbnail: {
     marginRight: -15,
