@@ -73,7 +73,7 @@ class ActualitesDetails extends Component {
                             renderError={() => (
                                 <View style={styles.pageError}>
                                     <Text style={styles.textPageError}>
-                                        Il semble qu'une erreur a eu lieu au chargement de l'article...
+                                        Il semble qu'une erreur s'est produite au chargement de l'article...
                                     </Text>
                                 </View>)
                             }

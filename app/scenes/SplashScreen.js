@@ -46,7 +46,7 @@ class SplashScreen extends Component {
             await that.props.loadDataFromDB();
             this.setState({ loadingText: "Vérification de la connexion internet." });
             await that.props.setupNetworkObservation();
-            this.setState({ loadingText: "Obtention des articles et mises-à-jour..." });
+            this.setState({ loadingText: "Téléchargement des articles et des mises-à-jour..." });
             // The problem in not awaiting this is that the client can get stuck if the server data is bad at some point.
             // (because the "bad" data will be saved to the memory, and therefore the client will load it each time and
             // crash without having the possibility to update it.) The only way around would be to uninstall and reinstall the app.

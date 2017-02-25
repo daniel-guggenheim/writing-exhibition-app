@@ -195,12 +195,18 @@ class InformationsPratiques extends Component {
 
                 <CardItem>
                   <Text style={styles.accesTitle}>En transports publics :</Text>
-                  <Text selectable={true} selectable={true}>Arrêt à la gare de Morges. Puis navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).</Text>
+                  <Text>Arrêt à la gare de Morges. Par la suite, à choix:</Text>
+                  <Text>- Centre d'Echichens: bus de ligne 701.</Text>
+                  <Text>- Colombier: bus de ligne 730.</Text>
+                  <Text>- Navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).
+                    Le vendredi toutes les heures, le samedi toutes les 30 minutes.</Text>
                 </CardItem>
 
                 <CardItem style={styles.cardItem}>
                   <Icon name="ios-information-circle" style={{ color: 'green', fontSize: 30, marginRight: 8, }} />
-                  <Text selectable={true} style={styles.infoSupp}>Un bus fera la navette depuis la gare de Morges entre les différents sites du Salon.</Text>
+                  <Text selectable={true} style={styles.infoSupp}>Les horaires sont disponibles sur le site internet à l'adresse suivante: <Text style={styles.url} onPress={() => this._clickUrl('https://www.salonecriture.org/salon/infos-pratiques/')}>
+                    https://www.salonecriture.org/salon/infos-pratiques/
+                </Text></Text>
                 </CardItem>
               </Card>
 
@@ -215,7 +221,7 @@ class InformationsPratiques extends Component {
 
                 <CardItem>
                   <Text selectable={true}>
-                    <Text style={styles.accesTitle}>Site Internet : </Text>
+                    <Text style={styles.accesTitle}>Site internet : </Text>
                     <Text style={styles.url} onPress={() => this._clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
                       www.salonecriture.org
                 </Text>

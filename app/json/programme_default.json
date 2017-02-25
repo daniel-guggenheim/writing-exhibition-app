@@ -1,28 +1,16 @@
 {
   "day1" : [ {
     "location" : "Echichens",
-    "schedule" : "17h30",
-    "speaker" : "",
-    "title" : "Accueil des invités",
-    "type" : "Inauguration"
-  }, {
-    "location" : "Echichens",
     "schedule" : "18h00",
     "speaker" : "Sylvie Guggenheim",
-    "title" : "Inauguration du salon",
-    "type" : "Conférence"
-  }, {
-    "location" : "Echichens",
-    "schedule" : "19h00",
-    "speaker" : "Sylvie Guggenheim",
-    "title" : "Cocktail d'ouverture du Salon",
-    "type" : "Inauguration"
+    "title" : "Inauguration du salon (sur invitation)",
+    "type" : "Interventions officielles"
   }, {
     "duration" : "1h",
     "location" : "Echichens",
     "schedule" : "20h00",
     "speaker" : "Maître Marc Bonnant",
-    "title" : "Conférence inaugurale de Maître Marc Bonnant, De la lecture, point coronal de l'écriture",
+    "title" : "Conférence inaugurale de Maître Marc Bonnant ouverte au public (réservation conseillée): \"De la lecture, point coronal de l'écriture\"",
     "type" : "Conférence"
   } ],
   "day2" : [ {
@@ -44,8 +32,15 @@
     "location" : "Colombier, C1",
     "schedule" : "13h30",
     "speaker" : "Association française des secrétaires et assistantes indépendantes",
-    "title" : "Conférence",
+    "title" : "Présentation de l’Association française des secrétaires et assistantes indépendantes",
     "type" : "Conférence"
+  }, {
+    "duration" : "1h",
+    "location" : "Colombier A2",
+    "schedule" : "14h00",
+    "speaker" : "Société romande de Graphologie",
+    "title" : "Définition et champs d'utilisation de la graphologie",
+    "type" : "Atelier"
   }, {
     "duration" : "1h",
     "location" : "Echichens",
@@ -78,7 +73,7 @@
     "duration" : "1h",
     "location" : "Echichens",
     "schedule" : "17h30",
-    "speaker" : "Invitée et conférencière Danièle Manesse, professeure émérite de sciences du langage à Paris, auteur du livre \\\"L'orthographe en question\\\". Ouverture de la séance Didier Berberat, président de l'Association Défense du Français et conseiller aux Etats.",
+    "speaker" : "Invitée et conférencière Danièle Manesse, professeure émérite de sciences du langage à Paris, auteur du livre \"L'orthographe en question\". Ouverture de la séance Didier Berberat, président de l'Association Défense du Français et conseiller aux Etats.",
     "title" : "L'orthographe en question",
     "type" : "Café francophone"
   }, {
@@ -136,7 +131,7 @@
     "location" : "Echichens",
     "schedule" : "14h00",
     "speaker" : "Michel Dumoulin",
-    "title" : "Vers la professionnalisation du métier d’écrivains publics, du bénévolat à l’exercice d'une profession",
+    "title" : "Vers la professionnalisation du métier d’écrivain public, du bénévolat à l’exercice d'une profession",
     "type" : "Conférence"
   }, {
     "duration" : "30 min",
@@ -178,7 +173,7 @@
     "title" : "Les métiers de l'écriture (exposition)"
   }, {
     "location" : "Collège de Colombier",
-    "organizer" : "Meghdad Asadilari",
+    "organizer" : "Meghdad Asadi",
     "title" : "Simorgh (court-métrage)"
   } ],
   "titles" : [ "Jeudi 2 mars", "Vendredi 3 mars", "Samedi 4 mars", "Expositions permanentes" ]

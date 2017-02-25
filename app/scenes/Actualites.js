@@ -46,7 +46,6 @@ class Actualites extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      last_update: 'never',
        refreshing: false,
     }
     moment.locale('fr');
