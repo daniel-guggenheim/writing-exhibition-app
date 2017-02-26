@@ -714,3 +714,5 @@ captures/
 
 export/
 .ipynb_checkpoints/
+android/app/salon-ecriture-release-key.keystore
+android/gradle.properties
