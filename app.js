@@ -25,6 +25,13 @@ the url, the storage information, but also the name of the state (variable "stat
 ----- End -----
  */
 
+//Remove logs when in production
+if(!__DEV__) {
+    console = {};
+    console.log = () => {};
+    console.error = () => {};
+}
+
 import React, { Component } from 'react';
 import {
     AppRegistry,
