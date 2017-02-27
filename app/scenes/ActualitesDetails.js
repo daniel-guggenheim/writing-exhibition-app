@@ -59,7 +59,7 @@ class ActualitesDetails extends Component {
             <Container theme={myTheme}>
                 <Header>
                     <Button transparent onPress={() => this.props.goBackOneScene()}>
-                        <Icon name='ios-arrow-back' />
+                        <Icon name='ios-arrow-back' style={{color:GLOBAL.TEXT_THEME_COLOR}} />
                     </Button>
                     <Title>Actualités</Title>
                 </Header>

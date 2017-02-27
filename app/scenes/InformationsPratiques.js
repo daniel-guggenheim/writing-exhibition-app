@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {
+  Platform,
   StyleSheet,
   View,
   ActivityIndicator,
@@ -130,17 +131,17 @@ class InformationsPratiques extends Component {
                 <CardItem>
                   <Text style={styles.horairesDate}><Text style={styles.horairesHeure}>Jeudi 2 mars :</Text> 20h00</Text>
                   <Text style={styles.horairesDate}>Conférence inaugurale</Text>
-                  <Text note>(Salle polyvalente d’Echichens)</Text>
+                  <Text note style={styles.horairesLieu}>(Salle polyvalente d’Echichens)</Text>
                 </CardItem>
 
                 <CardItem>
                   <Text><Text style={styles.horairesHeure}>Vendredi 3 mars : </Text><Text style={styles.horairesDate}>09h00 à 21h00</Text></Text>
-                  <Text note>(Sur les trois sites)</Text>
+                  <Text note style={styles.horairesLieu}>(Sur les trois sites)</Text>
                 </CardItem>
 
                 <CardItem>
                   <Text><Text style={styles.horairesHeure}>Samedi 4 mars : </Text><Text style={styles.horairesDate}>09h00 à 17h00</Text></Text>
-                  <Text note>(Sur les trois sites)</Text>
+                  <Text note style={styles.horairesLieu}>(Sur les trois sites)</Text>
                 </CardItem>
               </Card>
 
@@ -263,11 +264,11 @@ class InformationsPratiques extends Component {
                     </Button>
                   </View>
                 </CardItem>
-
               </Card>
             </View>
           </Content>
         }
+
       </Container >
 
     );
@@ -277,13 +278,13 @@ class InformationsPratiques extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    marginTop: 2,
-    marginBottom: 8,
+    marginTop: (Platform.OS === 'ios') ? 0 : 2,
+    marginBottom:  (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
   mainContentView: {
-    marginTop: 10,
+    marginTop: (Platform.OS === 'ios') ? 5 : 10,
   },
   spinnerView: {
     alignItems: 'center',
@@ -330,12 +331,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: -5,
   },
-  horairesLieu: {
+  horairesLieu: (Platform.OS === 'ios') ? {
     fontSize: 14,
-    marginTop: -5,
-    marginBottom: 10,
-  },
-
+    fontWeight:'normal',
+    marginTop: 3,
+    marginBottom: 5,
+  }
+  :
+  {},
   lieuInfo: {
     marginBottom: 5,
   },
@@ -343,8 +346,10 @@ const styles = StyleSheet.create({
   lieuName: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginTop: (Platform.OS === 'ios') ? 5 : 0,
   },
   lieuAddr: {
+    marginTop: (Platform.OS === 'ios') ? 2 : 0,    
     // marginLeft: 8,
     // marginTop: -4,
     // fontSize: 14,

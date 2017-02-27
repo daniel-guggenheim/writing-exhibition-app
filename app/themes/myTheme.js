@@ -106,11 +106,11 @@ export default {
 
     // Footer
     footerHeight: 55,
-    footerDefaultBg: (Platform.OS === 'ios' ) ? '#F8F8F8' : GLOBAL.THEME_COLOR,
+    footerDefaultBg: (Platform.OS === 'ios' ) ? GLOBAL.THEME_COLOR : GLOBAL.THEME_COLOR,
 
 
     //FooterTab
-    tabBarTextColor: (Platform.OS === 'ios' ) ? '#6b6b6b' : GLOBAL.TEXT_THEME_COLOR,
+    tabBarTextColor: (Platform.OS === 'ios' ) ? GLOBAL.THEME_COLOR : GLOBAL.TEXT_THEME_COLOR,
     tabBarActiveTextColor: (Platform.OS === 'ios' ) ? '#007aff' : '#fff',
     tabActiveBgColor: (Platform.OS=='ios') ? '#cde1f9' : undefined,
 
@@ -124,12 +124,12 @@ export default {
 
     // Header
     iosToolbarBtnColor: '#007aff',
-    toolbarDefaultBg: (Platform.OS === 'ios' ) ? '#F8F8F8' : GLOBAL.THEME_COLOR,
+    toolbarDefaultBg: (Platform.OS === 'ios' ) ? GLOBAL.THEME_COLOR : GLOBAL.THEME_COLOR,
     toolbarHeight: (Platform.OS === 'ios' ) ? 64 : 56,
     toolbarIconSize: (Platform.OS === 'ios' ) ? 20 : 22,
     toolbarInputColor: '#CECDD2',
     toolbarInverseBg: '#222',
-    toolbarTextColor: (Platform.OS==='ios') ? '#000' : GLOBAL.TEXT_THEME_COLOR,
+    toolbarTextColor: (Platform.OS==='ios') ? GLOBAL.TEXT_THEME_COLOR : GLOBAL.TEXT_THEME_COLOR,
     get statusBarColor() {
         return Color(this.toolbarDefaultBg).darken(0.2).hexString();
     },
@@ -212,7 +212,7 @@ export default {
 
 
     // Title
-    titleFontSize: (Platform.OS === 'ios' ) ? 17 : 19,
+    titleFontSize: (Platform.OS === 'ios' ) ? 19 : 19,
     subTitleFontSize: (Platform.OS === 'ios' ) ? 12 : 14,
     subtitleColor: '#8e8e93',
 
