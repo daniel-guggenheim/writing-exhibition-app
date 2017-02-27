@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Platform,
     StyleSheet,
     Text,
     View,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     tabs: {
-        height: 55,
+        height: (Platform.OS === 'ios' ) ? 60 : 55,
         flexDirection: 'row',
         backgroundColor: '#E8E0C5',
         paddingTop: 5,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     },
     subtitles: {
         // color: 'black',
-        fontSize: 13,
+        fontSize: (Platform.OS === 'ios' ) ? 12 : 13,
     }
 });
 

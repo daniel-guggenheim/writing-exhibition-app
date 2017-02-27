@@ -191,15 +191,15 @@ class InformationsPratiques extends Component {
 
                 <CardItem>
                   <Text style={styles.accesTitle}>En voiture :</Text>
-                  <Text selectable={true} selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
+                  <Text style={styles.accesText} selectable={true}>Sortie d’autoroute à Morges. Depuis là, 5 minutes de trajet jusqu’à Echichens et 5 minutes de plus pour Colombier VD.</Text>
                 </CardItem>
 
                 <CardItem>
                   <Text style={styles.accesTitle}>En transports publics :</Text>
-                  <Text>Arrêt à la gare de Morges. Par la suite, à choix:</Text>
-                  <Text>- Centre d'Echichens: bus de ligne 701.</Text>
-                  <Text>- Colombier: bus de ligne 730.</Text>
-                  <Text>- Navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).
+                  <Text style={styles.accesText}>Arrêt à la gare de Morges. Par la suite, à choix:</Text>
+                  <Text style={styles.accesText}>- Centre d'Echichens: bus de ligne 701.</Text>
+                  <Text style={styles.accesText}>- Colombier: bus de ligne 730.</Text>
+                  <Text style={styles.accesText}>- Navette du salon jusqu'à Echichens (1er arrêt) et Colombier VD (2ème et 3ème arrêts).
                     Le vendredi toutes les heures, le samedi toutes les 30 minutes.</Text>
                 </CardItem>
 
@@ -222,13 +222,13 @@ class InformationsPratiques extends Component {
 
                 <CardItem>
                   <Text selectable={true}>
-                    <Text style={styles.accesTitle}>Site internet : </Text>
+                    <Text style={styles.contactTitle}>Site internet : </Text>
                     <Text style={styles.url} onPress={() => this._clickUrl(SALON_ECRITURE_WEBSITE_ADDR)}>
                       www.salonecriture.org
                 </Text>
                   </Text>
                   <Text selectable={true}>
-                    <Text style={styles.accesTitle}>Email : </Text>
+                    <Text style={styles.contactTitle}>Email : </Text>
                     <Text style={styles.url} onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_SALON_ECRITURE)}>
                       info@salonecriture.org
                 </Text>
@@ -237,25 +237,29 @@ class InformationsPratiques extends Component {
 
                 <CardItem>
                   <View style={{ marginBottom: 8, }}>
-                    <Text style={styles.accesTitle}>Présidente du Salon : </Text>
+                    <Text style={styles.contactTitle}>Présidente du Salon : </Text>
                     <Text selectable={true}>Sylvie Guggenheim</Text>
                   </View>
                   <View style={{ marginBottom: 8, }}>
-                    <Text style={styles.accesTitle}>Vice-président du Salon : </Text>
+                    <Text style={styles.contactTitle}>Vice-président du Salon : </Text>
                     <Text selectable={true}>Michel Ackermann</Text>
                   </View>
-                  <Text style={styles.accesTitle}>Organisateur du Salon : </Text>
-                  <Text>Association SylMa</Text>
+                  <View>
+                    <Text style={styles.contactTitle}>Organisateur du Salon : </Text>
+                    <Text selectable={true}>Association SylMa</Text>
+                  </View>
                 </CardItem>
 
 
                 <CardItem>
-                  <Text style={styles.accesTitle}>Créateur de l'application mobile : </Text>
-                  <Text>Daniel Guggenheim</Text>
+                  <View>
+                    <Text style={styles.contactTitle}>Créateur de l'application mobile : </Text>
+                    <Text>Daniel Guggenheim</Text>
+                  </View>
                 </CardItem>
 
                 <CardItem>
-                  <Text>Si vous découvrez un bug en utilisant cette application, merci de le signaler en cliquant ici : </Text>
+                  <Text style={styles.bugText}>Si vous découvrez un bug en utilisant cette application, merci de le signaler en cliquant ici : </Text>
                   <View style={{ marginTop: 8, flexDirection: 'row', justifyContent: 'center' }}>
                     <Button warning bordered
                       onPress={() => this._clickUrl(GLOBAL.SEND_EMAIL_URI_REPORT_BUG)}>
@@ -278,7 +282,7 @@ class InformationsPratiques extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    marginTop: (Platform.OS === 'ios') ? 0 : 2,
+    paddingTop: (Platform.OS === 'ios') ? 0 : 2,
     marginBottom:  (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
@@ -319,16 +323,16 @@ const styles = StyleSheet.create({
   },
 
   horairesDate: {
-    fontSize: 16,
+    fontSize: (Platform.OS === 'ios') ? 14 :  16,
     // backgroundColor:'blue',
   },
   horairesHeure: {
-    fontSize: 16,
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
     margin: 0, padding: 0,
   },
   horairesCause: {
-    fontSize: 16,
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
     marginTop: -5,
   },
   horairesLieu: (Platform.OS === 'ios') ? {
@@ -344,12 +348,12 @@ const styles = StyleSheet.create({
   },
 
   lieuName: {
-    fontSize: 16,
+    fontSize:  (Platform.OS === 'ios') ? 15 : 16,
     fontWeight: 'bold',
     marginTop: (Platform.OS === 'ios') ? 5 : 0,
   },
   lieuAddr: {
-    marginTop: (Platform.OS === 'ios') ? 2 : 0,    
+    marginTop: (Platform.OS === 'ios') ? 1 : 0,    
     // marginLeft: 8,
     // marginTop: -4,
     // fontSize: 14,
@@ -369,21 +373,31 @@ const styles = StyleSheet.create({
 
 
   accesTitle: {
-    fontSize: 16,
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
   },
+  accesText: (Platform.OS === 'ios') ? {
+    fontSize: 14,
+  }: {},
   infoSupp: {
-    fontSize: 16,
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
     fontStyle: 'italic',
     // textAlign: 'center',
   },
-
+  contactTitle: {
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontWeight: 'bold',
+  },
 
 
   url: {
     textDecorationLine: 'underline',
     color: '#0000EE',
   },
+  
+  bugText: (Platform.OS === 'ios') ?{
+    fontSize: 14,
+  }:{},
 
 
 

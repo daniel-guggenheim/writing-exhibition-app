@@ -91,7 +91,7 @@ export default {
 
     // Font
     fontFamily: (Platform.OS === 'ios' ) ? 'HelveticaNeue' : 'Roboto',
-    fontSizeBase: 15,
+    fontSizeBase: (Platform.OS === 'ios' ) ? 13 : 15,
 
     get fontSizeH1 () {
         return this.fontSizeBase*1.8;
@@ -212,7 +212,7 @@ export default {
 
 
     // Title
-    titleFontSize: (Platform.OS === 'ios' ) ? 19 : 19,
+    titleFontSize: (Platform.OS === 'ios' ) ? 17 : 19,
     subTitleFontSize: (Platform.OS === 'ios' ) ? 12 : 14,
     subtitleColor: '#8e8e93',
 
@@ -220,7 +220,7 @@ export default {
     // Other
     borderRadiusBase: (Platform.OS === 'ios' ) ? 5 : 2,
     borderWidth: 1,
-    contentPadding: 10,
+    contentPadding: 0,
 
     get darkenHeader() {
         return Color(this.tabBgColor).darken(0.03).hexString();

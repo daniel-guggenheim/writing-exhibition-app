@@ -243,8 +243,8 @@ class ProgrammeElement extends Component {
 const styles = StyleSheet.create({
   /* --- Main view --- */
   content: {
-    marginTop: (Platform.OS === 'ios') ? 5 : 8,
-    marginBottom:  (Platform.OS === 'ios') ? -40 : 8,
+    paddingTop: (Platform.OS === 'ios') ? 5 : 8,
+    paddingBottom:  (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
@@ -269,26 +269,26 @@ const styles = StyleSheet.create({
     marginBottom: (Platform.OS === 'ios') ? 7 : 0,
   },
   scheduleView: {
-    marginRight: 8,
+    marginRight: (Platform.OS === 'ios') ?  12  :  8,
     // justifyContent: 'center',
     alignItems: 'center',
   },
   scheduleText: {
-    fontSize: 16,
+    fontSize: (Platform.OS === 'ios') ?  14  : 16,
     fontWeight: 'bold',
     color: 'black',
   },
   titleText: {
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 17,
+    fontSize: (Platform.OS === 'ios') ? 15 : 17,
     color: 'black',
   },
   speakerText: {
     flex: 1,
     flexWrap: 'wrap',
     marginTop: 5,
-    fontSize: 15,
+    fontSize: (Platform.OS === 'ios') ? 15  : 15,
   },
   infosView: {
     flex: 1,
@@ -308,12 +308,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   locationIcon: {
-    fontSize: 16,
+    fontSize: (Platform.OS === 'ios') ? 16 : 16,
     marginRight: 5,
   },
   locationText: (Platform.OS === 'ios') ? {
     flex: 1,
     color: "rgba(86,86,86,1)",
+    fontSize: 12,
   }
   :
   {
@@ -326,6 +327,7 @@ const styles = StyleSheet.create({
     // flexWrap: 'wrap',
     fontStyle: 'italic',
     color: "rgba(86,86,86,1)",
+    fontSize: 12,
   }
   :
   {
@@ -343,7 +345,7 @@ const styles = StyleSheet.create({
   },
   expoPermaOrganizerText: (Platform.OS === 'ios') ? {
     color:  "rgba(86,86,86,1)",
-    fontSize: 15,
+    fontSize: (Platform.OS === 'ios') ? 13  : 15,
     marginTop: 4,
   }
   :

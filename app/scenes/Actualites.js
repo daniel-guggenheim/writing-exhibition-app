@@ -1,6 +1,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
+  Platform,
   AppRegistry,
   StyleSheet,
   Image,
@@ -183,19 +184,20 @@ const styles = StyleSheet.create({
   category: {
     // fontStyle: 'italic',
     color: '#5A5D5E',
-    fontSize: 14,
+    fontSize:  (Platform.OS === 'ios') ? 13 : 14,
     // backgroundColor:'orange',
   },
   date: {
-    fontSize: 14,
+    fontSize: (Platform.OS === 'ios') ? 13 : 14,
   },
   titreArticle: {
-    marginTop: 7,
-    fontSize: 17,
+    marginTop: (Platform.OS === 'ios') ? 4 : 7,
+    fontSize: (Platform.OS === 'ios') ? 15 : 17,
     fontWeight: 'bold',
   },
   introArticle: {
-
+    marginTop: (Platform.OS === 'ios') ? 2 : 0,
+    marginBottom: (Platform.OS === 'ios') ? 5 : 0,
   },
 
 

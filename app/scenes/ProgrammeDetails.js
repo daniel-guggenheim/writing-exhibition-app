@@ -1,6 +1,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
+    Platform,
     StyleSheet,
     Text,
     View,
@@ -115,13 +116,13 @@ const styles = StyleSheet.create({
 
 
     title: {
-        fontSize: 20,
+        fontSize: (Platform.OS === 'ios') ? 17 : 20,
         color: 'black',
         fontWeight: 'bold',
     },
     speaker: {
         color: 'black',
-        fontSize: 18,
+        fontSize:  (Platform.OS === 'ios') ? 15 : 18,
         marginTop: 8,
     },
     infoBlocView: {
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     },
     infoElemText: {
         color: 'black',
-        fontSize: 18,
+        fontSize: (Platform.OS === 'ios') ? 15 : 18,
     },
     schedule: {
         marginRight: 8,
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     duration: {
         color: 'black',
         fontStyle: 'italic',
-        fontSize: 18,
+        fontSize: (Platform.OS === 'ios') ? 15 : 18,
     },
     icon: {
         marginRight: 12,
