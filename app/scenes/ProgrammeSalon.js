@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -242,8 +243,8 @@ class ProgrammeElement extends Component {
 const styles = StyleSheet.create({
   /* --- Main view --- */
   content: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: (Platform.OS === 'ios') ? 5 : 8,
+    marginBottom:  (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
@@ -265,6 +266,7 @@ const styles = StyleSheet.create({
   },
   progElemView: {
     flexDirection: 'row',
+    marginBottom: (Platform.OS === 'ios') ? 7 : 0,
   },
   scheduleView: {
     marginRight: 8,
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: (Platform.OS === 'ios') ? 12 : 12,
   },
   locationView: {
     flexDirection: 'row',
@@ -309,10 +311,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 5,
   },
-  locationText: {
+  locationText: (Platform.OS === 'ios') ? {
+    flex: 1,
+    color: "rgba(86,86,86,1)",
+  }
+  :
+  {
     flex: 1,
   },
-  typeText: {
+  typeText: (Platform.OS === 'ios') ? {
+    flex: 1,
+    textAlign: 'right',
+    marginLeft: 20,
+    // flexWrap: 'wrap',
+    fontStyle: 'italic',
+    color: "rgba(86,86,86,1)",
+  }
+  :
+  {
     flex: 1,
     textAlign: 'right',
     marginLeft: 20,
@@ -323,12 +339,19 @@ const styles = StyleSheet.create({
 
   /* --- Expo permanente --- */
   expoPermaLocationView: {
-    marginTop: 8,
+    marginTop: (Platform.OS === 'ios') ? 10 :  8,
   },
-  expoPermaOrganizerText: {
+  expoPermaOrganizerText: (Platform.OS === 'ios') ? {
+    color:  "rgba(86,86,86,1)",
     fontSize: 15,
     marginTop: 4,
-  },
+  }
+  :
+  {
+    fontSize: 15,
+    marginTop: 4,
+  }
+  ,
 
 });
 
