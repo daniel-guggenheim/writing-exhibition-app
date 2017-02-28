@@ -70,12 +70,17 @@ class InformationsPratiques extends Component {
 
 
   _clickUrl(url) {
-    Linking.canOpenURL(url).then(supported => {
+    Linking.canOpenURL(url)
+      .then(supported => {
       if (supported) {
         Linking.openURL(url);
       } else {
         console.log('Don\'t know how to open URI: ' + url);
       }
+    })
+    .catch(error =>
+          {
+          console.log('Error while trying to open link: '+url);
     });
   }
 
@@ -348,7 +353,7 @@ const styles = StyleSheet.create({
   },
 
   lieuName: {
-    fontSize:  (Platform.OS === 'ios') ? 15 : 16,
+    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
     marginTop: (Platform.OS === 'ios') ? 5 : 0,
   },
