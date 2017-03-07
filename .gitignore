@@ -710,5 +710,9 @@ captures/
 
 
 
+######## My gitignore
 
-
+export/
+.ipynb_checkpoints/
+android/app/salon-ecriture-release-key.keystore
+.vscode/settings.json

@@ -1,177 +1,105 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View,
-    WebView
+    WebView,
+    BackAndroid
 } from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
-import { Actions } from 'react-native-router-flux'
+import { Spinner, Container, Header, Title, Content, Button, Icon } from 'native-base';
 import myTheme from '../themes/myTheme';
-var HTMLView = require('react-native-htmlview')
 
 var GLOBAL = require('../global/GlobalVariables');
-const TITLE_MAX_CHAR_LIMIT = 40;
 
-export default class Actualites extends Component {
+const propTypes = {
+    article_infos: React.PropTypes.shape({
+        category: PropTypes.string,
+        date: PropTypes.string,
+        id: PropTypes.number,
+        intro: PropTypes.string,
+        title: PropTypes.string,
+    }).isRequired,
+    article_html: PropTypes.string.isRequired,
+};
+
+const defaultProps = {
+};
+
+class ActualitesDetails extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            start: true,
+        };
     }
 
-    get_title_string() {
-        var title = this.props.article.title;
-        if (title.length > TITLE_MAX_CHAR_LIMIT) {
-            return ((title.substring(0, TITLE_MAX_CHAR_LIMIT - 3)) + '...');
-        } else {
-            return title;
-        }
+    componentDidMount() {
+        //Add android back button listener
+        BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        this.setState({ start: false });
     }
 
-    renderSourceIfExists(article) {
-        if (article.source != "") {
-            return (
-                <View>
-                    <View style={styles.separator} />
-                    <Text style={styles.text}>Sources:</Text>
-                    <HTMLView value={article.source} stylesheet={styles} />
-                </View>
-            );
-        }
+    componentWillUnmount() {
+        //Remove android back button listener
+        BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+    }
+
+    _handleAndroidBackButton = () => {
+        this.props.goBackOneScene();
+        return true;
     }
 
     render() {
-        var article = this.props.article;
+        let article = this.props.article_infos;
+        let article_html = this.props.article_html;
+        console.log('Article: ', article.title);
 
         return (
-
             <Container theme={myTheme}>
                 <Header>
-                    <Button transparent onPress={() => Actions.pop()}>
-                        <Icon name='ios-arrow-back' />
+                    <Button transparent onPress={() => this.props.goBackOneScene()}>
+                        <Icon name='ios-arrow-back' style={{color:GLOBAL.TEXT_THEME_COLOR}} />
                     </Button>
-                    <Title><Text style={styles.headerTitle}>{this.get_title_string()}</Text></Title>
+                    <Title>Actualités</Title>
                 </Header>
 
                 <View style={styles.main}>
-
-                    <WebView
-                        source={{ uri: article.article_url }}
-                        style={{ borderWidth: 1, flex: 1 }}
-                        // scalesPageToFit={true}
-                        renderError={() => (
-                            <View  style={styles.pageError}>
-                                <Text style={styles.textPageError}>
-                                    Toutes nos excuses, il semble qu'une erreur a eu lieu au chargement de l'article...
-                                </Text>
-                            </View>)}
-                        startInLoadingState={true}
+                    {this.state.start ? <Spinner /> :
+                        <WebView
+                            source={{ html: article_html }}
+                            style={{ borderWidth: 1, flex: 1 }}
+                            //scalesPageToFit={true}
+                            renderError={() => (
+                                <View style={styles.pageError}>
+                                    <Text style={styles.textPageError}>
+                                        Il semble qu'une erreur s'est produite au chargement de l'article...
+                                    </Text>
+                                </View>)
+                            }
                         />
-
+                    }
                 </View>
-
-
-
             </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    headerTitle: {
-        fontSize: 15,
-    },
     main: {
-        // margin: 10,
-        // marginTop: 12,
         marginBottom: 3,
         flex: 1,
     },
     pageError: {
-        margin:10,
+        margin: 10,
     },
     textPageError: {
         color: 'red',
         fontSize: 16,
     },
-    text: {
-        color: 'black'
-    },
-    categoryAndDate: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    categoryWithSquare: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        // backgroundColor:'yellow',
-    },
-    categorySquare: {
-        // color:'red',
-        fontSize: 7,
-        marginRight: 5,
-        marginTop: 0,
-    },
-    category: {
-        // fontStyle: 'italic',
-        color: 'black',
-        fontSize: 14,
-        // backgroundColor:'orange',
-    },
-    date: {
-        fontSize: 15,
-        color: 'black'
-    },
-    titreArticle: {
-        marginTop: 12,
-        marginBottom: 12,
-        fontSize: 19,
-        fontWeight: 'bold',
-        color: 'black',
-        // textAlign:'center',
-    },
-    introArticle: {
-        marginBottom: 5,
-        color: 'black',
-    },
-    author: {
-        textAlign: 'right',
-        color: 'black',
-        fontStyle: 'italic',
-        marginTop: 10,
-    },
-    separator: {
-        marginTop: 15,
-        marginBottom: 8,
-        height: 1,
-        backgroundColor: 'black',
-        marginLeft: 30,
-        marginRight: 30,
-    },
-    h2: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: 'black',
-        marginTop: 5,
-    },
-    ul: {
-        marginBottom: 10,
-        color: 'black',
-    },
-    p: {
-        color: 'black',
-    },
-    li: {
-        color: 'black',
-    },
-    b: {
-        color: 'black',
-        fontWeight: 'bold',
-    },
-    em: {
-        color: 'black',
-        fontStyle: 'italic',
-    },
 });
+
+ActualitesDetails.propTypes = propTypes;
+ActualitesDetails.defaultProps = defaultProps;
+
+export default ActualitesDetails;

@@ -1,0 +1,22 @@
+{
+  "exceptional_infos" : {
+    "text" : "",
+    "title" : ""
+  },
+  "lieux" : [ {
+    "addr1" : "Centre de formation Créavie, Place du Village 2, 1114 Colombier VD",
+    "gps_addr" : "http://maps.apple.com/?daddr=46.556556,6.472778&dirflg=d",
+    "id" : 0,
+    "name" : "Centre de Colombier VD"
+  }, {
+    "addr1" : "Collège En Pontet, Rte de Vullierens 6, 1114 Colombier VD",
+    "gps_addr" : "http://maps.apple.com/?daddr=46.554132,6.476423&dirflg=d",
+    "id" : 1,
+    "name" : "Collège de Colombier VD"
+  }, {
+    "addr1" : "Salle Polyvalente d'Echichens, Rte de St-Fiacre, 1112 Echichens",
+    "gps_addr" : "http://maps.apple.com/?daddr=46.528728,6.496988&dirflg=d",
+    "id" : 2,
+    "name" : "Echichens"
+  } ]
+}
