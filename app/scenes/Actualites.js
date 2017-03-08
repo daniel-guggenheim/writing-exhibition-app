@@ -3,8 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Image, Platform, RefreshControl, StyleSheet, } from 'react-native';
 import {
-  Spinner, Text, View, Container, Header, Title, Button,
-  List, ListItem,
+  Spinner, Text, View, Container, Header, Title, Button, List, ListItem,
 } from 'native-base';
 
 import moment from 'moment';
