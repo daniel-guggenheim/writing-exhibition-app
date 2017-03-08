@@ -4,7 +4,7 @@
 const firebaseURL = 'https://salonecriture.firebaseio.com/se_v002/';
 
 module.exports = {
-    
+
     // The scenes of the app
     ROUTES: {
         SplashScreen: 0,
@@ -17,9 +17,10 @@ module.exports = {
         @param {String} string : the component name
         @param {String} url : the url where to fetch the component
         @param {String} storageKeyContent : the component reference in the internal database
-        @param {String} storageKeyLastRegisteredUpdate : the reference in the internal database of the last
-        for the component from the backend service
-        @param {String} statePrefix : The state prefix name of the component (used to have general states)
+        @param {String} storageKeyLastRegisteredUpdate : the reference in the internal database of 
+        the last for the component from the backend service
+        @param {String} statePrefix : The state prefix name of the component (used to have general 
+        states)
     */
     URL_STORAGE_KEY_ADDRESS: {
         articles_infos: {
@@ -90,7 +91,7 @@ module.exports = {
             return 0;
         }
     },
-    
+
     // Email addresses
     SEND_EMAIL_URI_REPORT_BUG: 'mailto:app.salonecriture@gmail.com?subject=Probl%C3%A8me%20avec%20l%27application' +
     '%20%22Salon%20de%20l%27Ecriture%22&body=Description%20du%20probl%C3%A8me%20(en%20quelques%20phrases)' +
@@ -98,5 +99,4 @@ module.exports = {
     '%20S7%2C%20etc..)%20%3A%0A%0AVersion%20d%27IOS%20ou%20d%27Android%20(si%20vous%20en%20avez%20connaissance' +
     '%2C%20par%20exemple%3A%20IOS%2010.2.1%20ou%20Android%206.0.1)%20%3A%20',
     SEND_EMAIL_URI_SALON_ECRITURE: 'mailto:info@salonecriture.org',
-
 };

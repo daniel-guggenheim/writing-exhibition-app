@@ -46,13 +46,18 @@ class MainTabView extends Component {
                     articlesContent={this.props.articlesHtmlContent}
                     articlesInfo={this.props.articlesInfosContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
-                    goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
+                    goToActualitesDetails={
+                        (article_info, article_html) =>
+                            this.props.goToActualitesDetails(article_info, article_html)
+                    }
                     loading={this.props.currentlyFetchingContent}
                 />
 
                 <ProgrammeSalon
                     tabLabel="ProgrammeSalon"
-                    goToProgrammeDetails={(programmeElement) => this.props.goToProgrammeDetails(programmeElement)}
+                    goToProgrammeDetails={
+                        (programmeElement) => this.props.goToProgrammeDetails(programmeElement)
+                    }
                     programmeContent={this.props.programmeContent}
                 />
 
