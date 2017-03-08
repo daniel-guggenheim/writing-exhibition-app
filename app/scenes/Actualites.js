@@ -10,17 +10,16 @@ import moment from 'moment';
 import 'moment/locale/fr';
 
 import myTheme from '../themes/myTheme';
-
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 const NB_OF_LAST_DAYS_WITH_HUMANIZED_DATE = 7;
 const INTRO_MAX_NB_OF_LINE = 3;
-var logo_icon = require("../images/logo/logo.png");
+const logo_icon = require("../images/logo/logo.png");
 
 const propTypes = {
   // Articles data loaded from the backend
-  articlesContent: React.PropTypes.arrayOf(PropTypes.string),
-  articlesInfo: React.PropTypes.arrayOf(
+  articlesContent: PropTypes.arrayOf(PropTypes.string),
+  articlesInfo: PropTypes.arrayOf(
     React.PropTypes.shape({
       category: PropTypes.string,
       date: PropTypes.string,
@@ -31,9 +30,9 @@ const propTypes = {
     )),
 
   // Other props
-  fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
-  goToActualitesDetails: React.PropTypes.func.isRequired,
-  loading: React.PropTypes.bool.isRequired,
+  fetchBackendToUpdateAll: PropTypes.func.isRequired,
+  goToActualitesDetails: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {

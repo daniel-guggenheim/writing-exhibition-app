@@ -1,14 +1,14 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Text, View, WebView, BackAndroid } from 'react-native';
+import { BackAndroid, Platform, StyleSheet, Text, View, WebView, } from 'react-native';
 import { Spinner, Container, Header, Title, Content, Button, Icon } from 'native-base';
-import myTheme from '../themes/myTheme';
 
-var GLOBAL = require('../global/GlobalVariables');
+import myTheme from '../themes/myTheme';
+import GLOBAL from '../global/GlobalVariables';
 
 const propTypes = {
-    article_infos: React.PropTypes.shape({
+    article_infos: PropTypes.shape({
         category: PropTypes.string,
         date: PropTypes.string,
         id: PropTypes.number,

@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Image, Navigator, StyleSheet, Text, View, } from 'react-native';
 import { Spinner } from 'native-base';
 
@@ -10,10 +10,10 @@ var GLOBAL = require('../global/GlobalVariables');
 const loadingImage = require('../images/logo/logo@4x.png');
 
 const propTypes = {
-    loadDataFromDB: React.PropTypes.func.isRequired,
-    setupNetworkObservation: React.PropTypes.func.isRequired,
-    updateFromBackendIfNecessary: React.PropTypes.func.isRequired,
-    navigator: React.PropTypes.object.isRequired,
+    loadDataFromDB: PropTypes.func.isRequired,
+    setupNetworkObservation: PropTypes.func.isRequired,
+    updateFromBackendIfNecessary: PropTypes.func.isRequired,
+    navigator: PropTypes.object.isRequired,
 };
 
 

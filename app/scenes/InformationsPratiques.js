@@ -1,43 +1,47 @@
+'use strict';
+
 import React, { Component, PropTypes } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Linking,
-  Image,
-} from 'react-native';
+import { ActivityIndicator, Image, Linking, Platform, StyleSheet, View, } from 'react-native';
 import {
   Container, Header, Title, Content, Button, Spinner,
   Icon, H2, Text, Card, CardItem, Grid, Row, Col
 } from 'native-base';
 
+// Components
 import ExceptionalInfos from '../components/ExceptionalInfos';
 
+// Global variables
+import GLOBAL from '../global/GlobalVariables';
+
+// Themes
 import myTheme from '../themes/myTheme';
 import FontAwesomeIconTheme from '../themes/FontAwesomeIconTheme';
 import MaterialDesignTheme from '../themes/MaterialDesignTheme';
-var GLOBAL = require('../global/GlobalVariables');
 
-// Loading data
-import jsonDefaultContent from '../json/infos_pratiques_default.json';
-var lieux_images_sources_by_id = [
+// Images
+const lieux_images_sources_by_id = [
   require("../images/lieux/colombier_centre.jpg"),
   require("../images/lieux/college_colombier.jpg"),
   require("../images/lieux/echichens.jpg")
 ];
-var logo_icon = require("../images/logo/logo.png");
-var SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
+const logo_icon = require("../images/logo/logo.png");
+
+// Default data data
+import jsonDefaultContent from '../json/infos_pratiques_default.json';
+
+// Local variables
+const SALON_ECRITURE_WEBSITE_ADDR = 'http://www.salonecriture.org';
+
 
 const propTypes = {
-  currentlyFetchingContent: React.PropTypes.bool,
-  textFieldsContent: React.PropTypes.shape({
-    exceptional_infos: React.PropTypes.shape({
+  currentlyFetchingContent: PropTypes.bool,
+  textFieldsContent: PropTypes.shape({
+    exceptional_infos: PropTypes.shape({
       title: PropTypes.string,
       text: PropTypes.string,
     }),
-    lieux: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
+    lieux: PropTypes.arrayOf(
+      PropTypes.shape({
         addr1: PropTypes.string,
         name: PropTypes.string,
         gps_addr: PropTypes.string,
@@ -47,11 +51,13 @@ const propTypes = {
 };
 
 const defaultProps = {
+  currentlyFetchingContent: false,
 };
 
-
+/**
+ * This scene contains all the useful information about the event.
+ */
 class InformationsPratiques extends Component {
-
 
   constructor(props) {
     super(props);
@@ -61,27 +67,31 @@ class InformationsPratiques extends Component {
   }
 
   componentDidMount() {
-    //This will allow to render only a spinner at the beginning, and when the component
-    // has loaded, to render it immediately. 
+    /*
+      The component takes time to render entirely. The following will allow to quickly render the
+      page with a loading spinner, and when the component is ready, to display it immediately.
+    */
     setTimeout(() => {
       this.setState({ mainComponentIsRendering: false });
     }, 0);
   }
 
-
+  /**
+   * Check if the url is supported and open it in an external app if it is the case.
+   * @param {String} url : The url to open in an external app. 
+   */
   _clickUrl(url) {
     Linking.canOpenURL(url)
       .then(supported => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.log('Don\'t know how to open URI: ' + url);
-      }
-    })
-    .catch(error =>
-          {
-          console.log('Error while trying to open link: '+url);
-    });
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          console.log('Don\'t know how to open URI: ' + url);
+        }
+      })
+      .catch(error => {
+        console.log('Error while trying to open link: ' + url);
+      });
   }
 
 
@@ -288,7 +298,7 @@ class InformationsPratiques extends Component {
 const styles = StyleSheet.create({
   content: {
     paddingTop: (Platform.OS === 'ios') ? 0 : 2,
-    marginBottom:  (Platform.OS === 'ios') ? -40 : 8,
+    marginBottom: (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
@@ -328,37 +338,37 @@ const styles = StyleSheet.create({
   },
 
   horairesDate: {
-    fontSize: (Platform.OS === 'ios') ? 14 :  16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     // backgroundColor:'blue',
   },
   horairesHeure: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
     margin: 0, padding: 0,
   },
   horairesCause: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     marginTop: -5,
   },
   horairesLieu: (Platform.OS === 'ios') ? {
     fontSize: 14,
-    fontWeight:'normal',
+    fontWeight: 'normal',
     marginTop: 3,
     marginBottom: 5,
   }
-  :
-  {},
+    :
+    {},
   lieuInfo: {
     marginBottom: 5,
   },
 
   lieuName: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
     marginTop: (Platform.OS === 'ios') ? 5 : 0,
   },
   lieuAddr: {
-    marginTop: (Platform.OS === 'ios') ? 1 : 0,    
+    marginTop: (Platform.OS === 'ios') ? 1 : 0,
     // marginLeft: 8,
     // marginTop: -4,
     // fontSize: 14,
@@ -378,19 +388,19 @@ const styles = StyleSheet.create({
 
 
   accesTitle: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
   },
   accesText: (Platform.OS === 'ios') ? {
     fontSize: 14,
-  }: {},
+  } : {},
   infoSupp: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontStyle: 'italic',
     // textAlign: 'center',
   },
   contactTitle: {
-    fontSize:  (Platform.OS === 'ios') ? 14 : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
   },
 
@@ -399,10 +409,10 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     color: '#0000EE',
   },
-  
-  bugText: (Platform.OS === 'ios') ?{
+
+  bugText: (Platform.OS === 'ios') ? {
     fontSize: 14,
-  }:{},
+  } : {},
 
 
 

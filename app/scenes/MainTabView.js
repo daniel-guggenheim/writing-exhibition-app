@@ -9,21 +9,21 @@ import InformationsPratiques from './InformationsPratiques';
 import MainTabBar from '../components/MainTabBar';
 import ProgrammeSalon from './ProgrammeSalon';
 
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 
 const propTypes = {
     //Backend data
     articlesInfosContent: PropTypes.arrayOf(PropTypes.object),
-    articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
-    infosPratiquesContent: React.PropTypes.object,
-    programmeContent: React.PropTypes.object,
+    articlesHtmlContent: PropTypes.arrayOf(PropTypes.string),
+    infosPratiquesContent: PropTypes.object,
+    programmeContent: PropTypes.object,
 
     //Required
-    fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
-    currentlyFetchingContent: React.PropTypes.bool.isRequired,
-    goToActualitesDetails: React.PropTypes.func.isRequired,
-    goToProgrammeDetails: React.PropTypes.func.isRequired,
+    fetchBackendToUpdateAll: PropTypes.func.isRequired,
+    currentlyFetchingContent: PropTypes.bool.isRequired,
+    goToActualitesDetails: PropTypes.func.isRequired,
+    goToProgrammeDetails: PropTypes.func.isRequired,
 };
 
 
