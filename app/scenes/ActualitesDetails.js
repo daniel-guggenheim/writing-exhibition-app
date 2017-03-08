@@ -1,12 +1,7 @@
+'use strict';
 
 import React, { Component, PropTypes } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    WebView,
-    BackAndroid
-} from 'react-native';
+import { StyleSheet, Text, View, WebView, BackAndroid } from 'react-native';
 import { Spinner, Container, Header, Title, Content, Button, Icon } from 'native-base';
 import myTheme from '../themes/myTheme';
 
@@ -23,10 +18,12 @@ const propTypes = {
     article_html: PropTypes.string.isRequired,
 };
 
-const defaultProps = {
-};
-
+/**
+ * Webview showing an article. It will take the html given in props and show it 
+ * in the webview.
+ */
 class ActualitesDetails extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,49 +33,51 @@ class ActualitesDetails extends Component {
 
     componentDidMount() {
         //Add android back button listener
-        BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
-        this.setState({ start: false });
+        if (Platform.OS === 'android') {
+            BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        }
     }
 
     componentWillUnmount() {
         //Remove android back button listener
-        BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        if (Platform.OS === 'android') {
+            BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        }
     }
 
+    /**
+     * Activate the back button on android
+     */
     _handleAndroidBackButton = () => {
         this.props.goBackOneScene();
         return true;
     }
 
     render() {
-        let article = this.props.article_infos;
         let article_html = this.props.article_html;
-        console.log('Article: ', article.title);
 
         return (
             <Container theme={myTheme}>
                 <Header>
                     <Button transparent onPress={() => this.props.goBackOneScene()}>
-                        <Icon name='ios-arrow-back' style={{color:GLOBAL.TEXT_THEME_COLOR}} />
+                        <Icon name='ios-arrow-back' style={{ color: GLOBAL.TEXT_THEME_COLOR }} />
                     </Button>
                     <Title>Actualités</Title>
                 </Header>
 
                 <View style={styles.main}>
-                    {this.state.start ? <Spinner /> :
-                        <WebView
-                            source={{ html: article_html }}
-                            style={{ borderWidth: 1, flex: 1 }}
-                            //scalesPageToFit={true}
-                            renderError={() => (
-                                <View style={styles.pageError}>
-                                    <Text style={styles.textPageError}>
-                                        Il semble qu'une erreur s'est produite au chargement de l'article...
-                                    </Text>
-                                </View>)
-                            }
-                        />
-                    }
+                    <WebView
+                        source={{ html: article_html }}
+                        style={{ borderWidth: 1, flex: 1 }}
+                        renderError={() => (
+                            <View style={styles.pageError}>
+                                <Text style={styles.textPageError}>
+                                    Il semble qu'une erreur s'est produite au
+                                    chargement de l'article...
+                                </Text>
+                            </View>)
+                        }
+                    />
                 </View>
             </Container>
         );
@@ -100,6 +99,5 @@ const styles = StyleSheet.create({
 });
 
 ActualitesDetails.propTypes = propTypes;
-ActualitesDetails.defaultProps = defaultProps;
 
 export default ActualitesDetails;
