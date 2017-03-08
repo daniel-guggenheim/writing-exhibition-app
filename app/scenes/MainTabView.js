@@ -1,80 +1,65 @@
-import React, { Component, PropTypes } from 'react';
-import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    NetInfo,
-    Navigator,
-    TouchableHighlight,
-    ScrollView,
-    Image,
-} from 'react-native';
-import { Container, Header, Tabs, Title, Content, Footer, FooterTab, Button, Icon, Spinner } from 'native-base';
+'use strict';
 
+import React, { Component, PropTypes } from 'react';
+import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
+
+// Local components
 import Actualites from './Actualites';
-import ProgrammeSalon from './ProgrammeSalon';
 import InformationsPratiques from './InformationsPratiques';
 import MainTabBar from '../components/MainTabBar';
+import ProgrammeSalon from './ProgrammeSalon';
 
 var GLOBAL = require('../global/GlobalVariables');
 
-import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
-
-
 
 const propTypes = {
-    articlesInfosContent: React.PropTypes.arrayOf(
-        React.PropTypes.shape({
-            category: PropTypes.string,
-            date: PropTypes.string,
-            id: PropTypes.number,
-            intro: PropTypes.string,
-            title: PropTypes.string,
-        }
-        )),
+    //Backend data
+    articlesInfosContent: PropTypes.arrayOf(PropTypes.object),
     articlesHtmlContent: React.PropTypes.arrayOf(PropTypes.string),
-    fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     infosPratiquesContent: React.PropTypes.object,
     programmeContent: React.PropTypes.object,
+
+    //Required
+    fetchBackendToUpdateAll: React.PropTypes.func.isRequired,
     currentlyFetchingContent: React.PropTypes.bool.isRequired,
     goToActualitesDetails: React.PropTypes.func.isRequired,
     goToProgrammeDetails: React.PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-};
 
-
+/**
+ * This component consists of the tab view. It renders the tab bar, and each
+ * element of it: Actualites, ProgrammeSalon and InformationsPratiques.
+ */
 class MainTabView extends Component {
     render() {
         return (
             <ScrollableTabView
-                style={{}}
                 initialPage={0}
                 renderTabBar={() => <MainTabBar />}
+                tabBarBackgroundColor={GLOBAL.THEME_COLOR}
                 tabBarPosition='bottom'
-                tabBarBackgroundColor={GLOBAL.THEME_COLOR}>
+            >
 
                 <Actualites
                     tabLabel="Actualites"
-                    articlesInfo={this.props.articlesInfosContent}
                     articlesContent={this.props.articlesHtmlContent}
+                    articlesInfo={this.props.articlesInfosContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
-                    loading={this.props.currentlyFetchingContent}
                     goToActualitesDetails={(article_info, article_html) => this.props.goToActualitesDetails(article_info, article_html)}
+                    loading={this.props.currentlyFetchingContent}
                 />
 
                 <ProgrammeSalon
                     tabLabel="ProgrammeSalon"
-                    programmeContent={this.props.programmeContent}
                     goToProgrammeDetails={(programmeElement) => this.props.goToProgrammeDetails(programmeElement)}
+                    programmeContent={this.props.programmeContent}
                 />
 
                 <InformationsPratiques
                     tabLabel="InformationsPratiques"
-                    textFieldsContent={this.props.infosPratiquesContent}
                     currentlyFetchingContent={this.props.currentlyFetchingContent}
+                    textFieldsContent={this.props.infosPratiquesContent}
                 />
 
             </ScrollableTabView>
@@ -83,9 +68,6 @@ class MainTabView extends Component {
 }
 
 
-
-
 MainTabView.propTypes = propTypes;
-MainTabView.defaultProps = defaultProps;
 
 export default MainTabView;
