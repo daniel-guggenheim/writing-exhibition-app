@@ -1,3 +1,7 @@
+/**
+ * All the variables that must be accessed globaly.
+ */
+
 "use strict";
 
 // The base url of the backend service
