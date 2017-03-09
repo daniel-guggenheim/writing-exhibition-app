@@ -1,6 +1,13 @@
+'use strict';
 
+import React, { Component, PropTypes } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Text } from 'native-base';
 
-//require native base etc //default prop etc etc
+const propTypes = {
+    loading: PropTypes.bool.isRequired,
+};
+
 
 class UpdateSpinner extends Component {
 
@@ -17,16 +24,18 @@ class UpdateSpinner extends Component {
             </View>
         );
     }
-
-
-
 }
-
-
 
 const styles = StyleSheet.create({
     loadingContent: {
         alignItems: 'center',
         marginBottom: 8,
     },
+    spinner: {
+        marginTop: 6,
+    },
 });
+
+UpdateSpinner.propTypes = propTypes;
+
+export default UpdateSpinner;
