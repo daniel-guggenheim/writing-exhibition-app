@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-import {
-    StyleSheet,
-    View,
-} from 'react-native';
-import { Icon, H3, Text, Card, CardItem, } from 'native-base';
+'use strict';
 
-var GLOBAL = require('../global/GlobalVariables');
+import React, { Component, PropTypes } from 'react';
+import { StyleSheet, View, } from 'react-native';
+import { Card, CardItem, Icon, H3, Text, } from 'native-base';
+
+import GLOBAL from '../global/GlobalVariables';
 
 const propTypes = {
     title: React.PropTypes.string,
@@ -51,8 +50,6 @@ const styles = StyleSheet.create({
     titleText: {
         textAlign: 'left',
         paddingBottom: 4,
-        // backgroundColor: 'green',
-        // paddingTop:3,
     },
     icon: {
         color: 'green',
