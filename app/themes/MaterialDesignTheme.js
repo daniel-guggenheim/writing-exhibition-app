@@ -2,7 +2,7 @@ import Color from 'color';
 
 import {Platform} from 'react-native';
 
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 export default {
 

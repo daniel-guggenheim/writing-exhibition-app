@@ -11,10 +11,10 @@ import { Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, Sp
 import ExceptionalInfos from '../components/ExceptionalInfos';
 
 import myTheme from '../themes/myTheme';
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 import jsonDefaultContent from '../json/programme_default.json';
-var logo_icon = require("../images/logo/logo.png");
+const logo_icon = require("../images/logo/logo.png");
 
 const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
 const TITLES_COLOR = ['#C0DDFA', '#59ABE3', '#446CB3', '#10375C'];

@@ -9,7 +9,7 @@ import {
 // import {Icon} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 
 const ACTIVE_COLOR = [0, 34, 102];
@@ -48,7 +48,7 @@ const MainTabBar = React.createClass({
     },
 
     iconColor(progress) {
-        var exportColor = [0, 0, 0]
+        let exportColor = [0, 0, 0]
         for (i = 0; i < 3; i++) {
             exportColor[i] = ACTIVE_COLOR[i] + (PASSIVE_COLOR[i] - ACTIVE_COLOR[i]) * progress
         }

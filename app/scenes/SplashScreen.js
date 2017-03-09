@@ -5,7 +5,7 @@ import { Image, Navigator, StyleSheet, Text, View, } from 'react-native';
 import { Spinner } from 'native-base';
 
 
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
 const loadingImage = require('../images/logo/logo@4x.png');
 

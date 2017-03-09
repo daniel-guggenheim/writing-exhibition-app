@@ -15,9 +15,9 @@ import {
 } from 'native-base';
 import myTheme from '../themes/myTheme';
 
-var GLOBAL = require('../global/GlobalVariables');
+import GLOBAL from '../global/GlobalVariables';
 
-var lieux_images_sources_by_id = [
+const PLACES_IMG_SRC_BY_ID = [
     require("../images/lieux/colombier_centre.jpg"),
     require("../images/lieux/echichens.jpg")
 ];
@@ -94,9 +94,9 @@ class ProgrammeDetails extends Component {
                             <Text style={[styles.infoElemText,]}>{progElement.location}</Text>
                         </View>
                     </View>
-                    {/*<Image style={styles.lieuImage} source={lieux_images_sources_by_id[GLOBAL.PLACES_ID[progElement.location]]} />*/}
+                    {/*<Image style={styles.lieuImage} source={PLACES_IMG_SRC_BY_ID[GLOBAL.PLACES_ID[progElement.location]]} />*/}
                     <View style={styles.imageContainer}>
-                        <Image resizeMode="contain" style={styles.placeImage} source={lieux_images_sources_by_id[locationId]} />
+                        <Image resizeMode="contain" style={styles.placeImage} source={PLACES_IMG_SRC_BY_ID[locationId]} />
                     </View>
                 </Content>
             </Container>
