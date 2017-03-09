@@ -65,12 +65,12 @@ module.exports = {
         tabPictures: {
             'Actualites': 'ios-cafe',
             'ProgrammeSalon': 'ios-list-box',
-            'InformationsPratiques': 'ios-information-circle',
+            'InfoMainScene': 'ios-information-circle',
         },
         tabNames: {
             "Actualites": "Actualités",
             "ProgrammeSalon": "Programme",
-            "InformationsPratiques": "Informations",
+            "InfoMainScene": "Informations",
         }
     },
 

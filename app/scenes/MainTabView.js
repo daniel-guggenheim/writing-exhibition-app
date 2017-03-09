@@ -5,7 +5,7 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 
 // Local components
 import Actualites from './Actualites';
-import InformationsPratiques from './InformationsPratiques';
+import InfoMainScene from './information/InfoMainScene';
 import MainTabBar from '../components/MainTabBar';
 import ProgrammeSalon from './ProgrammeSalon';
 
@@ -29,7 +29,7 @@ const propTypes = {
 
 /**
  * This component consists of the tab view. It renders the tab bar, and each
- * element of it: Actualites, ProgrammeSalon and InformationsPratiques.
+ * element of it: Actualites, ProgrammeSalon and InfoMainScene.
  */
 class MainTabView extends Component {
     render() {
@@ -61,8 +61,8 @@ class MainTabView extends Component {
                     programmeContent={this.props.programmeContent}
                 />
 
-                <InformationsPratiques
-                    tabLabel="InformationsPratiques"
+                <InfoMainScene
+                    tabLabel="InfoMainScene"
                     currentlyFetchingContent={this.props.currentlyFetchingContent}
                     textFieldsContent={this.props.infosPratiquesContent}
                 />
