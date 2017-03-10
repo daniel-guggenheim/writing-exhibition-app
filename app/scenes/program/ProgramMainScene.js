@@ -66,7 +66,17 @@ const propTypes = {
  * Scene containing the programme of the event. There are 3 different days one after another
  * and the "permanent exhibition" section at the end.
  * The component for a single day is the ProgramSingleDayView, which takes a list of 
- * events/activities that happened during the day and display them in a "cardview". 
+ * events/activities that happened during the day and display them in a "cardview".
+ * 
+ * The format of the received data from the backend (the props {programmeContent} ) is:
+ * Each day of the event is linked to an array of objects, where each one contains the information
+ * about a specific event/activity happening during the day. For example, day1 could contain an
+ * array of 2 objects, and each object will contain the information about its specific activity
+ * (such as its title, the location, the schedule, etc...).
+ * The same format will be applied the permanent exhibition (expos_permanentes).
+ * Additionnaly, there will be a list of title which are the titles of each day, and the
+ * exceptional_infos variable which will contain information that should be shown at the top of
+ * the view.
  */
 class ProgramMainScene extends Component {
 
