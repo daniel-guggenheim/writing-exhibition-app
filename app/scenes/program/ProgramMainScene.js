@@ -7,6 +7,8 @@ import {
 } from 'native-base';
 
 import ExceptionalInfos from '../../components/ExceptionalInfos';
+import ProgramSingleDayView from './ProgramSingleDayView';
+import ProgramEventComponent from './ProgramEventComponent';
 
 import myTheme from '../../themes/myTheme';
 import GLOBAL from '../../global/GlobalVariables';
@@ -19,13 +21,14 @@ const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
 const TITLES_COLOR = ['#C0DDFA', '#59ABE3', '#446CB3', '#10375C'];
 
 const propTypes = {
-  programmeContent: React.PropTypes.shape({
-    exceptional_infos: React.PropTypes.shape({
+  goToProgramDetailedView: PropTypes.func.isRequired,
+  programmeContent: PropTypes.shape({
+    exceptional_infos: PropTypes.shape({
       title: PropTypes.string,
       text: PropTypes.string,
     }),
-    day1: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
+    day1: PropTypes.arrayOf(
+      PropTypes.shape({
         location: PropTypes.string,
         schedule: PropTypes.string,
         speaker: PropTypes.string,
@@ -33,8 +36,8 @@ const propTypes = {
         type: PropTypes.string,
       },
       )),
-    day2: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
+    day2: PropTypes.arrayOf(
+      PropTypes.shape({
         location: PropTypes.string,
         schedule: PropTypes.string,
         speaker: PropTypes.string,
@@ -42,8 +45,8 @@ const propTypes = {
         type: PropTypes.string,
       },
       )),
-    day3: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
+    day3: PropTypes.arrayOf(
+      PropTypes.shape({
         location: PropTypes.string,
         schedule: PropTypes.string,
         speaker: PropTypes.string,
@@ -51,14 +54,14 @@ const propTypes = {
         type: PropTypes.string,
       },
       )),
-    expos_permanentes: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
+    expos_permanentes: PropTypes.arrayOf(
+      PropTypes.shape({
         location: PropTypes.string,
         organizer: PropTypes.string,
         title: PropTypes.string,
       },
       )),
-    titles: React.PropTypes.arrayOf(PropTypes.string),
+    titles: PropTypes.arrayOf(PropTypes.string),
   }),
 };
 
@@ -79,20 +82,16 @@ class ProgramMainScene extends Component {
   }
 
   componentDidMount() {
-    //This will allow to render only a spinner at the beginning, and when the component
-    // has loaded, to render it immediately. 
+    /*
+      The component takes time to render entirely. The following will allow to quickly render the
+      page with a loading spinner, and when the component is ready, to display it immediately.
+    */
     setTimeout(() => {
       this.setState({ mainComponentIsRendering: false });
     }, 0);
   }
 
   render() {
-    if (this.state.mainComponentIsRendering) {
-      console.log('Programme salon : mainComponentIsRendering');
-    } else {
-      console.log('Programme salon : mainComponentIsRendering is FALSE.');
-    }
-
 
     let programme = this.props.programmeContent;
     if (programme == null) {
@@ -107,27 +106,48 @@ class ProgramMainScene extends Component {
     const exceptionalInfo = programme.exceptional_infos;
 
     return (
-
       <Container theme={myTheme}>
+
+        {/* --- Header --- */}
         <Header>
           <Button transparent disabled>
             <Image resizeMode={"contain"} style={{ width: 32 }} source={logo_icon} />
           </Button>
-
           <Title>Programme du Salon</Title>
-
         </Header>
 
-
+        {/* --- Main --- */}
         {this.state.mainComponentIsRendering ?
-          <View style={styles.spinnerView}><Spinner /></View>
-
+          <View style={styles.spinnerView}>
+            <Spinner />
+          </View>
           :
-
-
           <Content style={styles.content}>
-
             <ExceptionalInfos title={exceptionalInfo.title} text={exceptionalInfo.text} />
+
+            {/* --- Main content --- */}
+
+            <ProgramSingleDayView
+              titleColor={TITLES_COLOR[0]}
+              title={day1Title}
+              dayEventList={programme.day1}
+              goToProgramDetailedView={(progElem) => this.props.goToProgramDetailedView(progElem)}
+            />
+
+            <ProgramSingleDayView
+              titleColor={TITLES_COLOR[1]}
+              title={day2Title}
+              dayEventList={programme.day2}
+              goToProgramDetailedView={(progElem) => this.props.goToProgramDetailedView(progElem)}
+            />
+
+            <ProgramSingleDayView
+              titleColor={TITLES_COLOR[2]}
+              title={day3Title}
+              dayEventList={programme.day3}
+              goToProgramDetailedView={(progElem) => this.props.goToProgramDetailedView(progElem)}
+            />
+
 
             <Card>
               <CardItem header style={[styles.cardTitle, { borderLeftColor: TITLES_COLOR[0], }]}>
