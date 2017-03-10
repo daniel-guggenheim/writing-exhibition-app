@@ -6,7 +6,6 @@ import { Card, CardItem, H2, Icon, } from 'native-base';
 
 import GLOBAL from '../../global/GlobalVariables';
 
-
 const propTypes = {
     goToProgramDetailedView: PropTypes.func.isRequired,
     progElem: PropTypes.shape({
@@ -57,7 +56,6 @@ class ProgramEventComponent extends Component {
         );
     }
 }
-
 
 
 const styles = StyleSheet.create({
