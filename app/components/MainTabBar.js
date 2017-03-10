@@ -1,3 +1,10 @@
+/**
+ * Code coming from:
+ * https://github.com/skv-headless/react-native-scrollable-tab-view/blob/master/examples/FacebookTabsExample/FacebookExample.js
+ * and modified for the need of the project.
+ */
+'use strict';
+
 import React from 'react';
 import {
     Platform,
@@ -6,9 +13,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-// import {Icon} from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import GLOBAL from '../global/GlobalVariables';
 
 
@@ -49,7 +54,7 @@ const MainTabBar = React.createClass({
 
     iconColor(progress) {
         let exportColor = [0, 0, 0]
-        for (i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
             exportColor[i] = ACTIVE_COLOR[i] + (PASSIVE_COLOR[i] - ACTIVE_COLOR[i]) * progress
         }
         return rgb_color(exportColor);

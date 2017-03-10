@@ -8,7 +8,9 @@ const propTypes = {
     loading: PropTypes.bool.isRequired,
 };
 
-
+/**
+ * A small spinner that appears only when the props {loading} is set to true.
+ */
 class UpdateSpinner extends Component {
 
     render() {

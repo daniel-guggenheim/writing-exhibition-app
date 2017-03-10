@@ -16,7 +16,10 @@ const defaultProps = {
     text: ""
 };
 
-
+/**
+ * View that shows "exceptional information". It stays hidden, and appears only when both 
+ * the {title} and the {text} passed as props are non-empty.
+ */
 class ExceptionalInfos extends Component {
 
     render() {
