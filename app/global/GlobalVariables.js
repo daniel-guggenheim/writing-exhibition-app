@@ -13,7 +13,7 @@ module.exports = {
     ROUTES: {
         SplashScreen: 0,
         MainTabView: 1,
-        ActualitesDetails: 2,
+        NewsDetailedView: 2,
         ProgrammeDetails: 3,
     },
 
@@ -63,12 +63,12 @@ module.exports = {
     // Pictures and names of the elements of the tabbar component
     MAIN_TAB_BAR: {
         tabPictures: {
-            'Actualites': 'ios-cafe',
+            'NewsMainView': 'ios-cafe',
             'ProgrammeSalon': 'ios-list-box',
             'InfoMainScene': 'ios-information-circle',
         },
         tabNames: {
-            "Actualites": "Actualités",
+            "NewsMainView": "Actualités",
             "ProgrammeSalon": "Programme",
             "InfoMainScene": "Informations",
         }

@@ -22,7 +22,7 @@ const propTypes = {
  * Webview showing an article. It will take the html given in props and show it 
  * in the webview.
  */
-class ActualitesDetails extends Component {
+class NewsDetailedView extends Component {
 
     constructor(props) {
         super(props);
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     },
 });
 
-ActualitesDetails.propTypes = propTypes;
+NewsDetailedView.propTypes = propTypes;
 
-export default ActualitesDetails;
+export default NewsDetailedView;

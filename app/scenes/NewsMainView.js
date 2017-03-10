@@ -32,7 +32,7 @@ const propTypes = {
 
   // Other props
   fetchBackendToUpdateAll: PropTypes.func.isRequired,
-  goToActualitesDetails: PropTypes.func.isRequired,
+  goToNewsDetailedView: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
@@ -53,7 +53,7 @@ const defaultProps = {
  * - articlesContent will contain the html code of the article. It will not be shown here but will
  * be transfered to the detailed view of the article is the user click on it.
  */
-class Actualites extends Component {
+class NewsMainView extends Component {
 
   constructor(props) {
     super(props);
@@ -115,7 +115,7 @@ class Actualites extends Component {
           renderRow={(article) =>
             <ListItem
               button
-              onPress={() => this.props.goToActualitesDetails(article, articlesHTML[article.id])}
+              onPress={() => this.props.goToNewsDetailedView(article, articlesHTML[article.id])}
             >
               <View>
                 <View style={styles.categoryAndDate}>
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
 });
 
-Actualites.propTypes = propTypes;
-Actualites.defaultProps = defaultProps;
+NewsMainView.propTypes = propTypes;
+NewsMainView.defaultProps = defaultProps;
 
-export default Actualites;
+export default NewsMainView;

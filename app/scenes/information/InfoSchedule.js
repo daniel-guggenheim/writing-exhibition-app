@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, } from 'react-native';
-import { Icon, H2, Text, Card, CardItem, } from 'native-base';
+import { Card, CardItem, H2, Icon, Text, } from 'native-base';
 
 /**
  * This component contains the schedule informations.
@@ -62,9 +62,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         marginTop: 3,
         marginBottom: 5,
-    }
-        :
-        {},
+    } : {},
 });
 
 export default InfoSchedule;

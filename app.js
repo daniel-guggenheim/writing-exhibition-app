@@ -43,7 +43,7 @@ import {
 //Scenes
 import SplashScreen from './app/scenes/SplashScreen';
 import MainTabView from './app/scenes/MainTabView';
-import ActualitesDetails from './app/scenes/ActualitesDetails'
+import NewsDetailedView from './app/scenes/NewsDetailedView'
 import ProgrammeDetails from './app/scenes/ProgrammeDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');
@@ -124,11 +124,11 @@ class SalonEcritureApp extends Component {
                     programmeContent={this.state[GLOBAL.URL_STORAGE_KEY_ADDRESS.programme.statePrefix + STATE_CONTENT_SUFFIX]}
                     fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
                     currentlyFetchingContent={this.state.currentlyFetchingContent}
-                    goToActualitesDetails={(to_article_info, to_article_html) => this.goToActualitesDetails(navigator, to_article_info, to_article_html)}
+                    goToNewsDetailedView={(to_article_info, to_article_html) => this.goToNewsDetailedView(navigator, to_article_info, to_article_html)}
                     goToProgrammeDetails={(programmeElement) => this.goToProgrammeDetails(navigator, programmeElement)}
                 />;
-            case GLOBAL.ROUTES.ActualitesDetails:
-                return <ActualitesDetails
+            case GLOBAL.ROUTES.NewsDetailedView:
+                return <NewsDetailedView
                     article_infos={route.article_infos}
                     article_html={route.article_html}
                     goBackOneScene={() => this.goBackOneScene(navigator)}
@@ -147,9 +147,9 @@ class SalonEcritureApp extends Component {
         navigator.pop();
     }
 
-    goToActualitesDetails(navigator, to_article_info, to_article_html) {
+    goToNewsDetailedView(navigator, to_article_info, to_article_html) {
         console.log('Goto actualite detail : ' + to_article_info.id);
-        navigator.push({ index: GLOBAL.ROUTES.ActualitesDetails, article_infos: to_article_info, article_html: to_article_html });
+        navigator.push({ index: GLOBAL.ROUTES.NewsDetailedView, article_infos: to_article_info, article_html: to_article_html });
     }
 
     goToProgrammeDetails(navigator, programmeElement) {

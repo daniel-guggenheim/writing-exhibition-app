@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 
 // Local components
-import Actualites from './Actualites';
+import NewsMainView from './NewsMainView';
 import InfoMainScene from './information/InfoMainScene';
 import MainTabBar from '../components/MainTabBar';
 import ProgrammeSalon from './ProgrammeSalon';
@@ -22,14 +22,14 @@ const propTypes = {
     //Required
     fetchBackendToUpdateAll: PropTypes.func.isRequired,
     currentlyFetchingContent: PropTypes.bool.isRequired,
-    goToActualitesDetails: PropTypes.func.isRequired,
+    goToNewsDetailedView: PropTypes.func.isRequired,
     goToProgrammeDetails: PropTypes.func.isRequired,
 };
 
 
 /**
  * This component consists of the tab view. It renders the tab bar, and each
- * element of it: Actualites, ProgrammeSalon and InfoMainScene.
+ * element of it: NewsMainView, ProgrammeSalon and InfoMainScene.
  */
 class MainTabView extends Component {
     render() {
@@ -41,14 +41,14 @@ class MainTabView extends Component {
                 tabBarPosition='bottom'
             >
 
-                <Actualites
-                    tabLabel="Actualites"
+                <NewsMainView
+                    tabLabel="NewsMainView"
                     articlesContent={this.props.articlesHtmlContent}
                     articlesInfo={this.props.articlesInfosContent}
                     fetchBackendToUpdateAll={this.props.fetchBackendToUpdateAll}
-                    goToActualitesDetails={
+                    goToNewsDetailedView={
                         (article_info, article_html) =>
-                            this.props.goToActualitesDetails(article_info, article_html)
+                            this.props.goToNewsDetailedView(article_info, article_html)
                     }
                     loading={this.props.currentlyFetchingContent}
                 />
