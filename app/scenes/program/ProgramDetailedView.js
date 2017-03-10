@@ -1,20 +1,10 @@
+'use strict';
 
 import React, { Component, PropTypes } from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    View,
-    WebView,
-    BackAndroid,
-    Image,
-} from 'react-native';
-import {
-    Spinner, Container, Header, Title, Content, Button, Icon, Card, CardItem, H3,
-    Grid, Row, Col
-} from 'native-base';
-import myTheme from '../../themes/myTheme';
+import { BackAndroid, Image, Platform, StyleSheet, Text, View, } from 'react-native';
+import { Button, Container, Content, Header, Icon, Title, } from 'native-base';
 
+import myTheme from '../../themes/myTheme';
 import GLOBAL from '../../global/GlobalVariables';
 
 const PLACES_IMG_SRC_BY_ID = [
@@ -22,7 +12,13 @@ const PLACES_IMG_SRC_BY_ID = [
     require("../../images/lieux/echichens.jpg")
 ];
 
+const SCHEDULE_COLOR = '#f1c40f';
+const TYPE_COLOR = '#27ae60';
+const LOCATION_COLOR = '#c0392b';
+
+
 const propTypes = {
+    goBackOneScene: PropTypes.func.isRequired,
     programmeElement: React.PropTypes.shape({
         duration: PropTypes.string,
         location: PropTypes.string,
@@ -30,73 +26,100 @@ const propTypes = {
         speaker: PropTypes.string,
         title: PropTypes.string,
         type: PropTypes.string,
-    }),
+    }).isRequired,
 };
 
-const defaultProps = {
-};
-
+/**
+ * Detailed view of a specific event / activity of the program. Additionnal information are
+ * shown such as the speaker, the duration and a picture of the location.
+ */
 class ProgramDetailedView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            start: true,
-        };
-    }
 
     componentDidMount() {
         //Add android back button listener
-        BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
-        this.setState({ start: false });
+        if (Platform.OS === 'android') {
+            BackAndroid.addEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        }
     }
 
     componentWillUnmount() {
         //Remove android back button listener
-        BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        if (Platform.OS === 'android') {
+            BackAndroid.removeEventListener('hardwareBackPress', this._handleAndroidBackButton);
+        }
     }
 
+    /**
+     * Activate the back button on android
+     */
     _handleAndroidBackButton = () => {
         this.props.goBackOneScene();
         return true;
     }
 
+
     render() {
-        let progElement = this.props.programmeElement;
-        // let progElement = progElemTest;
-        // console.log(progElement);
-        let locationId = GLOBAL.PLACES_ID(progElement.location);
+        const progElement = this.props.programmeElement;
+        const locationId = GLOBAL.PLACES_ID(progElement.location);
+
         return (
             <Container theme={myTheme}>
+
+                {/* --- Header --- */}
                 <Header>
                     <Button transparent onPress={() => this.props.goBackOneScene()}>
-                        <Icon name='ios-arrow-back' style={{color:GLOBAL.TEXT_THEME_COLOR}}  />
+                        <Icon name='ios-arrow-back' style={{ color: GLOBAL.TEXT_THEME_COLOR }} />
                     </Button>
                     <Title>Programme du Salon</Title>
                 </Header>
+
+                {/* --- Main --- */}
                 <Content style={styles.content}>
 
+                    {/* --- Title & Speaker --- */}
                     <Text style={styles.title}>{progElement.title}</Text>
-                    {progElement.duration && <Text style={styles.speaker}>{progElement.speaker}</Text>}
-                    <View style={styles.infoBlocView}>
-                        <View style={styles.infoElemView}>
-                            <Icon name="ios-time" style={[styles.icon, { color: '#f1c40f' }]} />
-                            <Text style={[styles.infoElemText, styles.schedule]}>{progElement.schedule}</Text>
-                            {progElement.duration && <Text style={styles.duration}>- (Durée: {progElement.duration})</Text>}
+                    { // If there is a speaker, show it
+                        progElement.speaker &&
+                        <Text style={styles.speaker}>{progElement.speaker}</Text>
+                    }
 
-                        </View>
+                    {/* --- Info bloc --- */}
+                    <View style={styles.infoBlocView}>
+
+                        {/* - Schedule - */}
                         <View style={styles.infoElemView}>
-                            {/* ios-albums ios-book ios-folder  ios-pricetag ios-pricetags ios-bookmark-outline*/}
-                            <Icon name='ios-pricetag' style={[styles.icon, { color: '#27ae60' }]} />
+                            <Icon name="ios-time" style={[styles.icon, { color: SCHEDULE_COLOR }]} />
+                            <Text style={[styles.infoElemText, styles.schedule]}>
+                                {progElement.schedule}
+                            </Text>
+                            { // If there is a duration, show it
+                                progElement.duration &&
+                                <Text style={styles.duration}>
+                                    - (Durée: {progElement.duration})
+                                </Text>
+                            }
+                        </View>
+
+                        {/* - Category - */}
+                        <View style={styles.infoElemView}>
+                            <Icon name='ios-pricetag' style={[styles.icon, { color: TYPE_COLOR }]} />
                             <Text style={styles.infoElemText}>{progElement.type}</Text>
                         </View>
+
+                        {/* - Location - */}
                         <View style={styles.infoElemView}>
                             <Icon name='ios-pin' style={[styles.icon, styles.iconPin]} />
                             <Text style={[styles.infoElemText,]}>{progElement.location}</Text>
                         </View>
                     </View>
-                    {/*<Image style={styles.lieuImage} source={PLACES_IMG_SRC_BY_ID[GLOBAL.PLACES_ID[progElement.location]]} />*/}
+
+                    {/* --- Location picture --- */}
                     <View style={styles.imageContainer}>
-                        <Image resizeMode="contain" style={styles.placeImage} source={PLACES_IMG_SRC_BY_ID[locationId]} />
+                        <Image
+                            resizeMode="contain"
+                            style={styles.placeImage}
+                            source={PLACES_IMG_SRC_BY_ID[locationId]}
+                        />
                     </View>
                 </Content>
             </Container>
@@ -105,16 +128,12 @@ class ProgramDetailedView extends Component {
 }
 
 const styles = StyleSheet.create({
-    /* --- Main view --- */
     content: {
         marginTop: 8,
         marginBottom: 8,
         paddingRight: 16,
         paddingLeft: 16,
-        // backgroundColor:'white',
     },
-
-
     title: {
         fontSize: (Platform.OS === 'ios') ? 17 : 20,
         color: 'black',
@@ -122,7 +141,7 @@ const styles = StyleSheet.create({
     },
     speaker: {
         color: 'black',
-        fontSize:  (Platform.OS === 'ios') ? 15 : 18,
+        fontSize: (Platform.OS === 'ios') ? 15 : 18,
         marginTop: 8,
     },
     infoBlocView: {
@@ -147,23 +166,19 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 12,
+        textAlign: 'center',
         fontSize: 25,
         height: 25,
         width: 28,
-        textAlign: 'center',
-        // backgroundColor:'orange'
     },
     iconPin: {
         fontSize: 28,
         height: 28,
         width: 28,
-        color: '#c0392b',
+        color: LOCATION_COLOR,
     },
     imageContainer: {
         flex: 1,
-        // backgroundColor:'blue',
-        // flexDirection:'row',
-        // alignItems: 'stretch',
     },
     placeImage: {
         flex: 1,
@@ -173,6 +188,5 @@ const styles = StyleSheet.create({
 });
 
 ProgramDetailedView.propTypes = propTypes;
-ProgramDetailedView.defaultProps = defaultProps;
 
 export default ProgramDetailedView;
