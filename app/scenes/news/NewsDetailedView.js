@@ -4,8 +4,8 @@ import React, { Component, PropTypes } from 'react';
 import { BackAndroid, Platform, StyleSheet, Text, View, WebView, } from 'react-native';
 import { Spinner, Container, Header, Title, Content, Button, Icon } from 'native-base';
 
-import myTheme from '../themes/myTheme';
-import GLOBAL from '../global/GlobalVariables';
+import myTheme from '../../themes/myTheme';
+import GLOBAL from '../../global/GlobalVariables';
 
 const propTypes = {
     article_infos: PropTypes.shape({

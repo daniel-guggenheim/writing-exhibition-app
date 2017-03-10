@@ -43,7 +43,7 @@ import {
 //Scenes
 import SplashScreen from './app/scenes/SplashScreen';
 import MainTabView from './app/scenes/MainTabView';
-import NewsDetailedView from './app/scenes/NewsDetailedView'
+import NewsDetailedView from './app/scenes/news/NewsDetailedView'
 import ProgrammeDetails from './app/scenes/ProgrammeDetails'
 
 var GLOBAL = require('./app/global/GlobalVariables');

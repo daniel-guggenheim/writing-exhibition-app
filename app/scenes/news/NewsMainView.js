@@ -9,10 +9,10 @@ import {
 import moment from 'moment';
 import 'moment/locale/fr';
 
-import myTheme from '../themes/myTheme';
-import GLOBAL from '../global/GlobalVariables';
+import myTheme from '../../themes/myTheme';
+import GLOBAL from '../../global/GlobalVariables';
 
-const logo_icon = require("../images/logo/logo.png");
+const logo_icon = require("../../images/logo/logo.png");
 
 const NB_OF_LAST_DAYS_WITH_HUMANIZED_DATE = 7;
 const INTRO_MAX_NB_OF_LINE = 3;

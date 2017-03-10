@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 
 // Local components
-import NewsMainView from './NewsMainView';
+import NewsMainView from './news/NewsMainView';
 import InfoMainScene from './information/InfoMainScene';
 import MainTabBar from '../components/MainTabBar';
 import ProgrammeSalon from './ProgrammeSalon';
@@ -29,7 +29,7 @@ const propTypes = {
 
 /**
  * This component consists of the tab view. It renders the tab bar, and each
- * element of it: NewsMainView, ProgrammeSalon and InfoMainScene.
+ * view in it: NewsMainView, ProgrammeSalon and InfoMainScene.
  */
 class MainTabView extends Component {
     render() {
