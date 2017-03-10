@@ -1,28 +1,22 @@
+'use strict';
+
 import React, { Component, PropTypes } from 'react';
+import { Platform, StyleSheet, Text, View, Image, } from 'react-native';
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-} from 'react-native';
-import { Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, Spinner } from 'native-base';
+  Container, Header, Title, Content, Button, Icon, Card, CardItem, H2, Spinner
+} from 'native-base';
 
-import ExceptionalInfos from '../components/ExceptionalInfos';
+import ExceptionalInfos from '../../components/ExceptionalInfos';
 
-import myTheme from '../themes/myTheme';
-import GLOBAL from '../global/GlobalVariables';
+import myTheme from '../../themes/myTheme';
+import GLOBAL from '../../global/GlobalVariables';
 
-import jsonDefaultContent from '../json/programme_default.json';
-const logo_icon = require("../images/logo/logo.png");
+import jsonDefaultContent from '../../json/programme_default.json';
+
+const logo_icon = require("../../images/logo/logo.png");
 
 const COLLEGE_COLOMBIER_COLOR = '#1F3A93';
 const TITLES_COLOR = ['#C0DDFA', '#59ABE3', '#446CB3', '#10375C'];
-
-// const ECHICHENS_COLOR = '#90C695';
-// const OTHER_PLACES_COLOR = '#EB974E';
-// const ECHICHENS_COLOR = '#67809F';
-// const OTHER_PLACES_COLOR = '#1F3A93';
 
 const propTypes = {
   programmeContent: React.PropTypes.shape({
@@ -69,10 +63,12 @@ const propTypes = {
 };
 
 
-const defaultProps = {
-};
 
-class ProgrammeSalon extends Component {
+/**
+ * Scene containing the programme of the event. There are 3 different days one after another
+ * and the "permanent exhibition" section at the end.
+ */
+class ProgramMainScene extends Component {
 
 
   constructor(props) {
@@ -104,11 +100,11 @@ class ProgrammeSalon extends Component {
       programme = jsonDefaultContent;
     }
 
-    day1Title = programme.titles[0];
-    day2Title = programme.titles[1];
-    day3Title = programme.titles[2];
-    expoPermanenteTitle = programme.titles[3];
-    exceptionalInfo = programme.exceptional_infos;
+    const day1Title = programme.titles[0];
+    const day2Title = programme.titles[1];
+    const day3Title = programme.titles[2];
+    const expoPermanenteTitle = programme.titles[3];
+    const exceptionalInfo = programme.exceptional_infos;
 
     return (
 
@@ -143,7 +139,7 @@ class ProgrammeSalon extends Component {
                   <ProgrammeElement
                     key={elemKey}
                     progElem={progElem}
-                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                    goToProgramDetailedView={() => this.props.goToProgramDetailedView(progElem)} />
                 );
               })}
             </Card>
@@ -160,7 +156,7 @@ class ProgrammeSalon extends Component {
                   <ProgrammeElement
                     key={elemKey}
                     progElem={progElem}
-                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                    goToProgramDetailedView={() => this.props.goToProgramDetailedView(progElem)} />
                 );
               })}
             </Card>
@@ -176,7 +172,7 @@ class ProgrammeSalon extends Component {
                   <ProgrammeElement
                     key={elemKey}
                     progElem={progElem}
-                    goToProgrammeDetails={() => this.props.goToProgrammeDetails(progElem)} />
+                    goToProgramDetailedView={() => this.props.goToProgramDetailedView(progElem)} />
                 );
               })}
             </Card>
@@ -214,11 +210,11 @@ class ProgrammeSalon extends Component {
 class ProgrammeElement extends Component {
 
   render() {
-    progElem = this.props.progElem;
-    placeColor = GLOBAL.PLACES_COLOR(progElem.location);
+    const progElem = this.props.progElem;
+    const placeColor = GLOBAL.PLACES_COLOR(progElem.location);
 
     return (
-      <CardItem style={styles.cardItem} button onPress={() => this.props.goToProgrammeDetails()} >
+      <CardItem style={styles.cardItem} button onPress={() => this.props.goToProgramDetailedView()} >
         <View style={styles.progElemView}>
           <View style={styles.scheduleView}>
             <Text style={styles.scheduleText}>{progElem.schedule}</Text>
@@ -244,7 +240,7 @@ const styles = StyleSheet.create({
   /* --- Main view --- */
   content: {
     paddingTop: (Platform.OS === 'ios') ? 5 : 8,
-    paddingBottom:  (Platform.OS === 'ios') ? -40 : 8,
+    paddingBottom: (Platform.OS === 'ios') ? -40 : 8,
     paddingRight: 8,
     paddingLeft: 8,
   },
@@ -269,12 +265,12 @@ const styles = StyleSheet.create({
     marginBottom: (Platform.OS === 'ios') ? 7 : 0,
   },
   scheduleView: {
-    marginRight: (Platform.OS === 'ios') ?  12  :  8,
+    marginRight: (Platform.OS === 'ios') ? 12 : 8,
     // justifyContent: 'center',
     alignItems: 'center',
   },
   scheduleText: {
-    fontSize: (Platform.OS === 'ios') ?  14  : 16,
+    fontSize: (Platform.OS === 'ios') ? 14 : 16,
     fontWeight: 'bold',
     color: 'black',
   },
@@ -288,7 +284,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: 'wrap',
     marginTop: 5,
-    fontSize: (Platform.OS === 'ios') ? 15  : 15,
+    fontSize: (Platform.OS === 'ios') ? 15 : 15,
   },
   infosView: {
     flex: 1,
@@ -316,10 +312,10 @@ const styles = StyleSheet.create({
     color: "rgba(86,86,86,1)",
     fontSize: 12,
   }
-  :
-  {
-    flex: 1,
-  },
+    :
+    {
+      flex: 1,
+    },
   typeText: (Platform.OS === 'ios') ? {
     flex: 1,
     textAlign: 'right',
@@ -329,36 +325,35 @@ const styles = StyleSheet.create({
     color: "rgba(86,86,86,1)",
     fontSize: 12,
   }
-  :
-  {
-    flex: 1,
-    textAlign: 'right',
-    marginLeft: 20,
-    // flexWrap: 'wrap',
-    fontStyle: 'italic',
-  },
+    :
+    {
+      flex: 1,
+      textAlign: 'right',
+      marginLeft: 20,
+      // flexWrap: 'wrap',
+      fontStyle: 'italic',
+    },
 
 
   /* --- Expo permanente --- */
   expoPermaLocationView: {
-    marginTop: (Platform.OS === 'ios') ? 10 :  8,
+    marginTop: (Platform.OS === 'ios') ? 10 : 8,
   },
   expoPermaOrganizerText: (Platform.OS === 'ios') ? {
-    color:  "rgba(86,86,86,1)",
-    fontSize: (Platform.OS === 'ios') ? 13  : 15,
+    color: "rgba(86,86,86,1)",
+    fontSize: (Platform.OS === 'ios') ? 13 : 15,
     marginTop: 4,
   }
-  :
-  {
-    fontSize: 15,
-    marginTop: 4,
-  }
+    :
+    {
+      fontSize: 15,
+      marginTop: 4,
+    }
   ,
 
 });
 
 
-ProgrammeSalon.propTypes = propTypes;
-ProgrammeSalon.defaultProps = defaultProps;
+ProgramMainScene.propTypes = propTypes;
 
-export default ProgrammeSalon;
+export default ProgramMainScene;

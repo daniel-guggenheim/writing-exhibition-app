@@ -7,7 +7,7 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 import NewsMainView from './news/NewsMainView';
 import InfoMainScene from './information/InfoMainScene';
 import MainTabBar from '../components/MainTabBar';
-import ProgrammeSalon from './ProgrammeSalon';
+import ProgramMainScene from './program/ProgramMainScene';
 
 import GLOBAL from '../global/GlobalVariables';
 
@@ -23,13 +23,13 @@ const propTypes = {
     fetchBackendToUpdateAll: PropTypes.func.isRequired,
     currentlyFetchingContent: PropTypes.bool.isRequired,
     goToNewsDetailedView: PropTypes.func.isRequired,
-    goToProgrammeDetails: PropTypes.func.isRequired,
+    goToProgramDetailedView: PropTypes.func.isRequired,
 };
 
 
 /**
  * This component consists of the tab view. It renders the tab bar, and each
- * view in it: NewsMainView, ProgrammeSalon and InfoMainScene.
+ * view in it: NewsMainView, ProgramMainScene and InfoMainScene.
  */
 class MainTabView extends Component {
     render() {
@@ -53,10 +53,10 @@ class MainTabView extends Component {
                     loading={this.props.currentlyFetchingContent}
                 />
 
-                <ProgrammeSalon
-                    tabLabel="ProgrammeSalon"
-                    goToProgrammeDetails={
-                        (programmeElement) => this.props.goToProgrammeDetails(programmeElement)
+                <ProgramMainScene
+                    tabLabel="ProgramMainScene"
+                    goToProgramDetailedView={
+                        (programmeElement) => this.props.goToProgramDetailedView(programmeElement)
                     }
                     programmeContent={this.props.programmeContent}
                 />

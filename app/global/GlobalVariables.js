@@ -14,7 +14,7 @@ module.exports = {
         SplashScreen: 0,
         MainTabView: 1,
         NewsDetailedView: 2,
-        ProgrammeDetails: 3,
+        ProgramDetailedView: 3,
     },
 
     /**  The information of each "data component" loaded from the backend
@@ -64,12 +64,12 @@ module.exports = {
     MAIN_TAB_BAR: {
         tabPictures: {
             'NewsMainView': 'ios-cafe',
-            'ProgrammeSalon': 'ios-list-box',
+            'ProgramMainScene': 'ios-list-box',
             'InfoMainScene': 'ios-information-circle',
         },
         tabNames: {
             "NewsMainView": "Actualités",
-            "ProgrammeSalon": "Programme",
+            "ProgramMainScene": "Programme",
             "InfoMainScene": "Informations",
         }
     },

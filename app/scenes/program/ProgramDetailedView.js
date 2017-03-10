@@ -13,13 +13,13 @@ import {
     Spinner, Container, Header, Title, Content, Button, Icon, Card, CardItem, H3,
     Grid, Row, Col
 } from 'native-base';
-import myTheme from '../themes/myTheme';
+import myTheme from '../../themes/myTheme';
 
-import GLOBAL from '../global/GlobalVariables';
+import GLOBAL from '../../global/GlobalVariables';
 
 const PLACES_IMG_SRC_BY_ID = [
-    require("../images/lieux/colombier_centre.jpg"),
-    require("../images/lieux/echichens.jpg")
+    require("../../images/lieux/colombier_centre.jpg"),
+    require("../../images/lieux/echichens.jpg")
 ];
 
 const propTypes = {
@@ -36,7 +36,7 @@ const propTypes = {
 const defaultProps = {
 };
 
-class ProgrammeDetails extends Component {
+class ProgramDetailedView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     },
 });
 
-ProgrammeDetails.propTypes = propTypes;
-ProgrammeDetails.defaultProps = defaultProps;
+ProgramDetailedView.propTypes = propTypes;
+ProgramDetailedView.defaultProps = defaultProps;
 
-export default ProgrammeDetails;
+export default ProgramDetailedView;

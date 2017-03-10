@@ -44,7 +44,7 @@ import {
 import SplashScreen from './app/scenes/SplashScreen';
 import MainTabView from './app/scenes/MainTabView';
 import NewsDetailedView from './app/scenes/news/NewsDetailedView'
-import ProgrammeDetails from './app/scenes/ProgrammeDetails'
+import ProgramDetailedView from './app/scenes/program/ProgramDetailedView'
 
 var GLOBAL = require('./app/global/GlobalVariables');
 
@@ -125,7 +125,7 @@ class SalonEcritureApp extends Component {
                     fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
                     currentlyFetchingContent={this.state.currentlyFetchingContent}
                     goToNewsDetailedView={(to_article_info, to_article_html) => this.goToNewsDetailedView(navigator, to_article_info, to_article_html)}
-                    goToProgrammeDetails={(programmeElement) => this.goToProgrammeDetails(navigator, programmeElement)}
+                    goToProgramDetailedView={(programmeElement) => this.goToProgramDetailedView(navigator, programmeElement)}
                 />;
             case GLOBAL.ROUTES.NewsDetailedView:
                 return <NewsDetailedView
@@ -133,8 +133,8 @@ class SalonEcritureApp extends Component {
                     article_html={route.article_html}
                     goBackOneScene={() => this.goBackOneScene(navigator)}
                 />;
-            case GLOBAL.ROUTES.ProgrammeDetails:
-                return <ProgrammeDetails
+            case GLOBAL.ROUTES.ProgramDetailedView:
+                return <ProgramDetailedView
                     programmeElement={route.programmeElement}
                     goBackOneScene={() => this.goBackOneScene(navigator)}
                 />;
@@ -152,9 +152,9 @@ class SalonEcritureApp extends Component {
         navigator.push({ index: GLOBAL.ROUTES.NewsDetailedView, article_infos: to_article_info, article_html: to_article_html });
     }
 
-    goToProgrammeDetails(navigator, programmeElement) {
+    goToProgramDetailedView(navigator, programmeElement) {
         console.log('Goto programme detail : ' + programmeElement.title);
-        navigator.push({ index: GLOBAL.ROUTES.ProgrammeDetails, programmeElement: programmeElement });
+        navigator.push({ index: GLOBAL.ROUTES.ProgramDetailedView, programmeElement: programmeElement });
     }
 
 
