@@ -97,6 +97,7 @@ class InfoMainScene extends Component {
         </Header>
 
         {/* --- Main --- */}
+        {/* Shows a spinner if the main content has not been rendered yet */}
         {this.state.mainComponentIsRendering ?
           <View style={styles.spinnerView}>
             <Spinner />
