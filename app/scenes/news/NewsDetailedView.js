@@ -16,6 +16,7 @@ const propTypes = {
         title: PropTypes.string,
     }).isRequired,
     article_html: PropTypes.string.isRequired,
+    goBackOneScene: PropTypes.func.isRequired,
 };
 
 /**
@@ -23,13 +24,6 @@ const propTypes = {
  * in the webview.
  */
 class NewsDetailedView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            start: true,
-        };
-    }
 
     componentDidMount() {
         //Add android back button listener
