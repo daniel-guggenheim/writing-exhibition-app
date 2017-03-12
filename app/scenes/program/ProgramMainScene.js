@@ -1,8 +1,8 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
-import { Platform, StyleSheet, Text, View, Image, } from 'react-native';
-import { Container, Header, Title, Content, Button, Spinner } from 'native-base';
+import { Image, Platform, StyleSheet, Text, View, } from 'react-native';
+import { Button, Container, Content, Header, Spinner, Title, } from 'native-base';
 
 import ExceptionalInfos from '../../components/ExceptionalInfos';
 import ProgramSingleDayView from './ProgramSingleDayView';
