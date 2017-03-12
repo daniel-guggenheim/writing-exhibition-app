@@ -5,7 +5,7 @@
 "use strict";
 
 // The base url of the backend service
-const firebaseURL = 'https://salonecriture.firebaseio.com/se_v002/';
+const backendURL = 'https://salonecriture.firebaseio.com/se_v002/';
 
 module.exports = {
 
@@ -29,28 +29,28 @@ module.exports = {
     URL_STORAGE_KEY_ADDRESS: {
         articles_infos: {
             string: 'articles_infos',
-            url: firebaseURL + 'articles_infos.json',
+            url: backendURL + 'articles_infos.json',
             storageKeyContent: '@storage_key_content_articles_infos',
             storageKeyLastRegisteredUpdate: '@storage_key_last_update_articles_infos',
             statePrefix: 'articlesInfos',
         },
         articles_html: {
             string: 'articles_html',
-            url: firebaseURL + 'articles_html.json',
+            url: backendURL + 'articles_html.json',
             storageKeyContent: '@storage_key_content_articles_html',
             storageKeyLastRegisteredUpdate: '@storage_key_last_update_articles_html',
             statePrefix: 'articlesHtml',
         },
         infos_pratiques: {
             string: 'infos_pratiques',
-            url: firebaseURL + 'infos_pratiques.json',
+            url: backendURL + 'infos_pratiques.json',
             storageKeyContent: '@storage_key_content_infos_pratiques',
             storageKeyLastRegisteredUpdate: '@storage_key_last_update_infos_pratiques',
             statePrefix: 'infosPratiques',
         },
         programme: {
             string: 'programme',
-            url: firebaseURL + 'programme.json',
+            url: backendURL + 'programme.json',
             storageKeyContent: '@storage_key_content_programme',
             storageKeyLastRegisteredUpdate: '@storage_key_last_update_programme',
             statePrefix: 'programme',
@@ -58,7 +58,7 @@ module.exports = {
     },
 
     // url of array containing the last updates
-    URL_LAST_SERVER_UPDATES: firebaseURL + 'last_updates.json',
+    URL_LAST_SERVER_UPDATES: backendURL + 'last_updates.json',
 
     // Pictures and names of the elements of the tabbar component
     MAIN_TAB_BAR: {
