@@ -34,7 +34,7 @@ import { NetInfo, AsyncStorage, } from 'react-native';
 
 import AppNavigator from './AppNavigator';
 
-var GLOBAL = require('./global/GlobalVariables');
+import GLOBAL from './global/GlobalVariables';
 
 // State names
 const STATE_CONTENT_SUFFIX = 'Content';
@@ -93,7 +93,7 @@ class AppSetup extends Component {
             <AppNavigator
                 // Backend communication methods
                 setupNetworkObservation={() => this.setupNetworkObservation()}
-                loadDataFromDB={() => this.loadDataFromDB()}
+                loadAllDataFromDbToStates={() => this.loadAllDataFromDbToStates()}
                 updateFromBackendIfNecessary={() => this.updateFromBackendIfNecessary()}
                 fetchBackendToUpdateAll={() => this.fetchBackendToUpdateAll()}
 
@@ -108,10 +108,13 @@ class AppSetup extends Component {
             />);
     }
 
+
+
     /**************************  NETWORK  **************************/
 
     /**
-     * Detect if device is connected to internet, and setup a listener that will detect any change.
+     * Detect if the device is connected to internet, and setup a listener that will detect
+     * any change.
      */
     async setupNetworkObservation() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange);
@@ -128,7 +131,7 @@ class AppSetup extends Component {
 
     /**
      * Detects connectivity changes on the device.
-     * If the connectivity is back, will try to update from the backend if it is necessary.
+     * If the device is connected again, it will check if it needs update from the backend.
      */
     _handleConnectivityChange = (isConnected) => {
         console.log('_handleConnectivityChange: Device connected? -> ' + isConnected);
@@ -145,9 +148,9 @@ class AppSetup extends Component {
 
 
     /**
-     * Load to the state all the data that is stored on the database in the state.
+     * Load in the state all the data that is stored on the database.
      */
-    async loadDataFromDB() {
+    async loadAllDataFromDbToStates() {
         console.log('Starting to load all data from DB.');
 
         //Iterating over all storage keys to load content and last update date in state.
@@ -156,8 +159,8 @@ class AppSetup extends Component {
             console.log('Reading db at addresses: ' + addressesHelper.storageKeyContent +
                 ' and ' + addressesHelper.storageKeyLastRegisteredUpdate);
 
-            let content = await this._loadSingleJsonInDB(addressesHelper.storageKeyContent);
-            let lastUpdate = await this._loadSingleJsonInDB(addressesHelper.storageKeyLastRegisteredUpdate);
+            let content = await this._getDataFromDB(addressesHelper.storageKeyContent);
+            let lastUpdate = await this._getDataFromDB(addressesHelper.storageKeyLastRegisteredUpdate);
 
             this.setState({
                 [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: lastUpdate,
@@ -167,20 +170,20 @@ class AppSetup extends Component {
 
         //Loading date of last check for online updates
         this.setState({
-            dateOfLastCheckForOnlineUpdate: await this._loadSingleJsonInDB(LAST_CHECK_FOR_UPDATE_STORAGE_KEY),
+            dateOfLastCheckForOnlineUpdate: await this._getDataFromDB(LAST_CHECK_FOR_UPDATE_STORAGE_KEY),
         });
         console.log('Finished loading data to state.');
     }
 
 
     /**
-     * Read in database to get a single element and returns it.
+     * Read in the database to get a single element and returns it.
      * Returns null if there is any problem or no element at all.
      * @param {String} storageKey : The address where to get the data.
      * @return {any} : returns the data it has read in the db. If there is any problem
      * or if there was no data initialized at this key, return {null} .
      */
-    async _loadSingleJsonInDB(storageKey) {
+    async _getDataFromDB(storageKey) {
 
         //Trying to get data from db
         let jsonData = null;
@@ -202,7 +205,7 @@ class AppSetup extends Component {
         try {
             data = JSON.parse(jsonData);
         } catch (error) {
-            console.log('Error while parsing json data during database reading.It leads to error: ' + error);
+            console.log('Error while parsing json data during database reading. It leads to error: ' + error);
             console.error(error);
             return null;
         }
@@ -217,13 +220,14 @@ class AppSetup extends Component {
     /************************  FETCH FROM WEB  ************************/
 
     /**
-     * Fetch all data to look for update, if the last search for update was less than a specific time ago.
-     * @return {boolean} : true if an update was performed, no if no update was performed.
+     * Decide whether to start the update process from the backend.
+     * More specifically, it will depend on the time that has passed since the last update and 
+     * on the network conditions.
      */
     async updateFromBackendIfNecessary() {
         console.log('Starting to update from backend if necessary.');
 
-        let lastCheck = this.state.dateOfLastCheckForOnlineUpdate;
+        const lastCheck = this.state.dateOfLastCheckForOnlineUpdate;
         let now = Date.now();
 
         let diffInMin = MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE + 1;
@@ -242,16 +246,16 @@ class AppSetup extends Component {
                     'so the "timer" will be set to null.');
                 now = null;
             }
+
+            // A new update was tried, the timestamp of the update is stored in state and DB
             try {
                 await AsyncStorage.setItem(LAST_CHECK_FOR_UPDATE_STORAGE_KEY, JSON.stringify(now));
             } catch (error) {
                 console.log('Error while trying to store last check for update.');
             }
             this.setState({ dateOfLastCheckForOnlineUpdate: now });
-            return true;
         } else {
             console.log('Update not needed or no connection to internet.');
-            return false;
         }
     }
 
@@ -268,31 +272,31 @@ class AppSetup extends Component {
 
         // "lastServerUpdateArr"" will contain an array of pairs:
         // [['categoryName1', lastUpdateDate], ['categoryName2', lastUpdateDate], ...]
-        let lastServerUpdateArr = await this._fetchJsonURL(GLOBAL.URL_LAST_SERVER_UPDATES);
+        const lastServerUpdateArr = await this._fetchJsonURL(GLOBAL.URL_LAST_SERVER_UPDATES);
 
-        if (lastServerUpdateArr != undefined) {
+        if (lastServerUpdateArr != null) {
             this.setState({ currentlyFetchingContent: true });
-            for (i = 0; i < lastServerUpdateArr.length; i++) {
+            for (let i = 0; i < lastServerUpdateArr.length; i++) {
                 //Understandable variables names
-                let categoryStr = lastServerUpdateArr[i][0];
-                let fetchedLastUpdate = lastServerUpdateArr[i][1];
+                const categoryName = lastServerUpdateArr[i][0];
+                const lastServerUpdate = lastServerUpdateArr[i][1];
 
-                console.log('Last update of "' + categoryStr + '" : ' + fetchedLastUpdate);
+                console.log('Last update of "' + categoryName + '" : ' + lastServerUpdate);
 
                 // Get the all the urls and key storage, if the server name exists
-                let addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[categoryStr];
+                let addressesHelper = GLOBAL.URL_STORAGE_KEY_ADDRESS[categoryName];
                 if (addressesHelper == undefined) {
-                    console.log('Trying to update with nonexistent variable: ', lastServerUpdateArr[i][0]);
+                    console.log('Trying to update with nonexistent variable: ', categoryName);
                 } else {
                     //Getting last update state
                     let lastRegisteredUpdate = this.state[addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX];
 
                     //Getting update on content if needed
-                    let pairDateContent = await this._updateContent(fetchedLastUpdate, lastRegisteredUpdate, addressesHelper.url,
+                    let pairDateContent = await this._updateContent(lastServerUpdate, lastRegisteredUpdate, addressesHelper.url,
                         addressesHelper.storageKeyContent, addressesHelper.storageKeyLastRegisteredUpdate);
 
                     //Updating states if there was an update
-                    if (pairDateContent != undefined) {
+                    if (pairDateContent != null) {
                         updateWasDone = true;
                         this.setState({
                             [addressesHelper.statePrefix + STATE_LAST_UPDATE_SUFFIX]: pairDateContent[0],
@@ -303,10 +307,8 @@ class AppSetup extends Component {
             }
             this.setState({ currentlyFetchingContent: false });
             console.log('Fetching from backend is finished.');
-            return updateWasDone;
-        } else {
-            return false;
         }
+        return updateWasDone;
     }
 
 
@@ -315,14 +317,14 @@ class AppSetup extends Component {
      * Check if the local and online last server update date are different. If it is the case, 
      * fetch the new last server update date and the new content to the device and store them in the database.
      * @param {String} lastServerUpdate : a "date" of the current last update version of the server.
-     * @param {String} lastRegisteredServerUpdate : a "date" of the last update version of the server that was
-     * locally registered.
+     * @param {String} lastRegisteredServerUpdate : a "date" of the last update version of the 
+     * server that was locally registered.
      * @param {String} urlContent : The url where to fetch the updated content if needed
      * @param {String} storageKeyContent : The db storage key where to save the content to fetch
      * @param {String} storageKeyLastRegisteredServerUpdate : The db storage key where to save the 
      * new server update if there was a new one.
-     * @return {Pair} : returns [lastRegisteredServerUpdate, newContent] if an update was needed and
-     * returns {undefined} if no update was needed or if an exception was thrown during it.
+     * @return {Pair} : returns {[lastRegisteredServerUpdate, newContent]} if an update was needed and
+     * returns {null} if no update was needed or if an exception was thrown during it.
      */
     async _updateContent(lastServerUpdate, lastRegisteredServerUpdate,
         urlContent, storageKeyContent, storageKeyLastRegisteredServerUpdate) {
@@ -332,9 +334,9 @@ class AppSetup extends Component {
                 '. Update needed. Starting to look at url: ' + urlContent);
 
             // Fetch new content
-            newContent = await this._fetchJsonURL(urlContent);
+            const newContent = await this._fetchJsonURL(urlContent);
 
-            if (newContent != undefined) {
+            if (newContent != null) {
                 try {
                     //Store new content and new update date in local db
                     console.log('Storing on: ' + storageKeyContent + ' and ' + storageKeyLastRegisteredServerUpdate);
@@ -348,31 +350,29 @@ class AppSetup extends Component {
                 } catch (error) {
                     console.log('Error while trying to store in database at address: '
                         + storageKeyContent + ' or ' + storageKeyLastRegisteredServerUpdate);
-                    console.error(error); // TODO: remove error
+                    console.error(error);
                 }
             }
         }
         // If no updates or any problem during fetch / db update, withdraw to previous state
-        return undefined;
+        return null;
     }
 
 
     /**
-     * Helper function. Fetch a url and parse it to json.
+     * Fetch the data at a url and parse it to json.
      * @param {String} url : The url where to fetch the data
-     * @return {JSON} map between text keys and text content {strings}
+     * @return {JSON} : json of the data downloaded at the url given in parameter
      */
     async _fetchJsonURL(url) {
         try {
             console.log('Fetching JSON from URL: ' + url);
             let response = await fetch(url);
             let responseJson = await response.json();
-            // console.log('Fetching JSON from URL: ' + url + '\n So the response is: ' + responseJson)
             return responseJson;
         } catch (error) {
             console.log('Error while fetching json with url: ', url);
-            // console.error(error);
-            return undefined;
+            return null;
         }
     }
 }

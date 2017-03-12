@@ -28,16 +28,16 @@ import { Navigator, } from 'react-native';
 //Scenes
 import SplashScreen from './scenes/SplashScreen';
 import MainTabView from './scenes/MainTabView';
-import NewsDetailedView from './scenes/news/NewsDetailedView'
-import ProgramDetailedView from './scenes/program/ProgramDetailedView'
+import NewsDetailedView from './scenes/news/NewsDetailedView';
+import ProgramDetailedView from './scenes/program/ProgramDetailedView';
 
-var GLOBAL = require('./global/GlobalVariables');
+import GLOBAL from './global/GlobalVariables';
 
 
 const propTypes = {
     // Backend communication methods
     setupNetworkObservation: PropTypes.func.isRequired,
-    loadDataFromDB: PropTypes.func.isRequired,
+    loadAllDataFromDbToStates: PropTypes.func.isRequired,
     updateFromBackendIfNecessary: PropTypes.func.isRequired,
     fetchBackendToUpdateAll: PropTypes.func.isRequired,
 
@@ -71,7 +71,7 @@ class AppNavigator extends Component {
                     navigator={navigator}
                     replaceViewByMainPage = {() => this.replaceViewByMainPage(navigator)}
                     setupNetworkObservation={() => this.props.setupNetworkObservation()}
-                    loadDataFromDB={() => this.props.loadDataFromDB()}
+                    loadAllDataFromDbToStates={() => this.props.loadAllDataFromDbToStates()}
                     updateFromBackendIfNecessary={() => this.props.updateFromBackendIfNecessary()}
                 />;
             case GLOBAL.ROUTES.MainTabView:

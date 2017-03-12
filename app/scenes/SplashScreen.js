@@ -10,7 +10,7 @@ import GLOBAL from '../global/GlobalVariables';
 const loadingImage = require('../images/logo/logo@4x.png');
 
 const propTypes = {
-    loadDataFromDB: PropTypes.func.isRequired,
+    loadAllDataFromDbToStates: PropTypes.func.isRequired,
     setupNetworkObservation: PropTypes.func.isRequired,
     updateFromBackendIfNecessary: PropTypes.func.isRequired,
     navigator: PropTypes.object.isRequired,
@@ -41,7 +41,7 @@ class SplashScreen extends Component {
         let that = this;
         try {
             this.setState({ loadingText: "Chargement des données." });
-            await that.props.loadDataFromDB();
+            await that.props.loadAllDataFromDbToStates();
             this.setState({ loadingText: "Vérification de la connexion internet." });
             await that.props.setupNetworkObservation();
 
