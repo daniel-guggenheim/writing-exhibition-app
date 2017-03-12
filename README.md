@@ -1,4 +1,4 @@
-# App development in React Native <br>_for an international event_
+# App development in React Native _(for an international event)_
 Development of an app for the "[Salon International de l'Ecriture](https://www.salonecriture.org/)" (an international event on the art of writing). The app shows the weekly news, the program of the event and some information about it. It is made to fully work online and offline.
 
 <img src=".github/screenshot_app1.png" width="250">
