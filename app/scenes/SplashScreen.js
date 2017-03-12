@@ -11,9 +11,9 @@ const loadingImage = require('../images/logo/logo@4x.png');
 
 const propTypes = {
     loadAllDataFromDbToStates: PropTypes.func.isRequired,
+    replaceViewByMainPage: PropTypes.func.isRequired,
     setupNetworkObservation: PropTypes.func.isRequired,
     updateFromBackendIfNecessary: PropTypes.func.isRequired,
-    navigator: PropTypes.object.isRequired,
 };
 
 
@@ -62,9 +62,7 @@ class SplashScreen extends Component {
             that.props.updateFromBackendIfNecessary();
 
             // Changing view
-            that.props.navigator.replace({
-                index: GLOBAL.ROUTES.MainTabView,
-            });
+            that.props.replaceViewByMainPage();
         } catch (error) {
             console.log('Error while splash screen.')
             console.error(error);
