@@ -1,3 +1,22 @@
+'use strict';
+
+import React, { Component } from 'react';
+import { NetInfo, AsyncStorage, } from 'react-native';
+
+import AppNavigator from './AppNavigator';
+
+import GLOBAL from './global/GlobalVariables';
+
+// State names
+const STATE_CONTENT_SUFFIX = 'Content';
+const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
+
+// Last check storage key
+const LAST_CHECK_FOR_UPDATE_STORAGE_KEY = '@dateOfLastCheckForOnlineUpdate';
+
+// Time to wait before checking for an update
+const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 10;
+
 /**
 AppSetup contains all the different methods to load the data from from the local database and
 to get updates from the the backend server. The aim of this app was to have the capability to be
@@ -24,30 +43,7 @@ the url, the storage information, but also the name of the state (variable "stat
               > Take the new "update timestamp", store it in the local DB and update the state with it.
           Otherwise (if the "update timestamp" is not more recent): do nothing
     - If not, do nothing.
-
------ End -----
  */
-'use strict';
-
-import React, { Component } from 'react';
-import { NetInfo, AsyncStorage, } from 'react-native';
-
-import AppNavigator from './AppNavigator';
-
-import GLOBAL from './global/GlobalVariables';
-
-// State names
-const STATE_CONTENT_SUFFIX = 'Content';
-const STATE_LAST_UPDATE_SUFFIX = 'LastUpdate';
-
-// Last check storage key
-const LAST_CHECK_FOR_UPDATE_STORAGE_KEY = '@dateOfLastCheckForOnlineUpdate';
-
-// Time to wait before checking for an update
-const MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE = 10;
-
-
-
 class AppSetup extends Component {
 
     constructor(props) {
@@ -138,7 +134,7 @@ class AppSetup extends Component {
         this.setState({ deviceIsConnected: isConnected });
         if (isConnected) {
             console.log('Network here: will try to update if needed.');
-            this.updateFromBackendIfNecessary(); //TODO: check if it works without await...
+            this.updateFromBackendIfNecessary();
         }
     };
 

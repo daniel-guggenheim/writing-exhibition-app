@@ -1,25 +1,3 @@
-/**
-This part contains the navigator and all the different methods to load the data
-from the backend server and from the local database.
-The aim of this app was to have the capabilities to be used offline, while getting online
-updates.
-GLOBAL.URL_STORAGE_KEY_ADDRESS contains all the information about each screen. It contains
-the url, the storage information, but also the name of the state (variable "statePrefix")
-
------ The following "algorithm" was used here: -----
-1. First, try to load data from local DB.
-     - If there is NO data, set each state to "null". Each component will (at render) load default data
-       that are stored in local json files.
-     - If there exist data, each state will be set with the data from the local DB
-2. Check if internet connexion && update was not done already in the same time period (MIN_NB_MINUTE_BEFORE_CHECKING_FOR_UPDATE):
-    - If yes, download all the last udpates dates.
-        Foreach date, if the "update date"" is more recent that the one stored in the local DB:
-            > Download data, store it in local DB, update the states.
-            > Get the new "update date" from online, store it in local DB and update state.
-        Otherwise (if "update date" is not more recent): do nothing
-    - If not, do nothing.
------ End -----
- */
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
@@ -52,8 +30,15 @@ const propTypes = {
 };
 
 
+/**
+ * AppNavigator controls the navigation inside the app.
+ * The SplashScreen will start first and launch the setup methods of the app. It will be replaced
+ * by the MainTabView which contains the all the important scenes.
+ * NewsDetailedView and ProgramDetailedView contain detailed view of the news and program and are
+ * called directly from their respective main scenes.
+ * todo: Put Android back button methods here.
+ */
 class AppNavigator extends Component {
-
 
     render() {
         return (
@@ -68,8 +53,7 @@ class AppNavigator extends Component {
         switch (route.index) {
             case GLOBAL.ROUTES.SplashScreen:
                 return <SplashScreen
-                    navigator={navigator}
-                    replaceViewByMainPage = {() => this.replaceViewByMainPage(navigator)}
+                    replaceViewByMainPage={() => this.replaceViewByMainPage(navigator)}
                     setupNetworkObservation={() => this.props.setupNetworkObservation()}
                     loadAllDataFromDbToStates={() => this.props.loadAllDataFromDbToStates()}
                     updateFromBackendIfNecessary={() => this.props.updateFromBackendIfNecessary()}
@@ -120,5 +104,6 @@ class AppNavigator extends Component {
     }
 }
 
+AppNavigator.propTypes = propTypes;
 
 export default AppNavigator;
