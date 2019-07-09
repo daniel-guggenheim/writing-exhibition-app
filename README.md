@@ -1,8 +1,11 @@
 # App development (React Native)
 Development of an app for the "[Salon International de l'Ecriture](https://www.salonecriture.org/)" (an international event on the art of writing). The app shows the weekly news, the program of the event and some information about it. It is made to fully work online and offline.
 
-<img src=".github/screenshot_app1.png" width="250">
-<img src=".github/screenshot_app2.png" width="250">
+<p float="left">
+  <img src=".github/screenshot_app1.png" width="250" alt="screenshot of the mobile app">
+  <img src=".github/screenshot_app2.png" width="250" alt="screenshot of the mobile app">
+</p>
+
 
 You can download this app on <a href="https://play.google.com/store/apps/details?id=com.salonecritureapp">Google Play</a> and the <a href="https://itunes.apple.com/us/app/salonecriture/id1210470736?mt=8">App Store</a>.
 
